@@ -43,6 +43,19 @@ CREATE TABLE gebruiker (
 
 
 
+INSERT INTO gebruiker 
+(Voornaam,Tussenvoegsel,Achternaam,Gebruikersnaam,Wachtwoord,IsIngelogd,Ingelogd,Uitgelogd,Isactief,Opmerking) 
+VALUES
+('Jan','','Jansen','janj','password1',0,NULL,NULL,1,'Reguliere gebruiker'),
+('Sara','de','Vries','saradev','password2',0,NULL,NULL,1,NULL),
+('Kees','','Bakker','keesb','password3',0,NULL,NULL,1,'Test admin'),
+('Emma','','Janssen','emmaj','password4',0,NULL,NULL,1,NULL),
+('Ali','','Khan','alik','password5',0,NULL,NULL,1,'Gast gebruiker');
+
+
+
+
+
 
 /*
   Auteur       : Kene John
@@ -62,6 +75,18 @@ CREATE TABLE rol (
     ,Datumgewijzigd DATETIME(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6)
     ,FOREIGN KEY (GebruikerId) REFERENCES gebruiker(Id) ON DELETE CASCADE
 )ENGINE=InnoDB;
+
+
+
+INSERT INTO rol
+(GebruikerId,Naam,Isactief,Opmerking)
+VALUES
+(1,'Lid',1,'Heeft standaard toegang tot lessen'),
+(2,'Lid',1,NULL),
+(3,'Administrator',1,'Kan alles beheren'),
+(4,'Medewerker',1,'Beheert lessen en reserveringen'),
+(5,'Gastgebruiker',1,'Beperkte toegang');
+
 
 
 
@@ -85,6 +110,17 @@ CREATE TABLE medewerker (
     ,Datumaangemaakt DATETIME(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6)
     ,Datumgewijzigd DATETIME(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6)
 )ENGINE=InnoDB;
+
+
+INSERT INTO medewerker
+(Voornaam,Tussenvoegsel,Achternaam,Nummer,Medewerkersoort,Isactief,Opmerking)
+VALUES
+('Tom','','de Groot',101,'Manager',1,NULL),
+('Linda','','Smit',102,'Beheerder',1,NULL),
+('Rick','','Jansen',103,'Diskmedewerker',1,NULL),
+('Sanne','','de Boer',104,'Beheerder',1,'Ervaren medewerker'),
+('Mark','','Visser',105,'Manager',1,NULL);
+
 
 
 
@@ -112,6 +148,14 @@ CREATE TABLE lid (
 )ENGINE=InnoDB;
 
 
+INSERT INTO lid
+(Voornaam,Tussenvoegsel,Achternaam,Relatienummer,Mobiel,Email,Isactief,Opmerking)
+VALUES
+('Laura','','Klein',201,'0612345678','laura@example.com',1,NULL),
+('Peter','','de Wit',202,'0623456789','peter@example.com',1,NULL),
+('Sofie','','van Dijk',203,'0634567890','sofie@example.com',1,'VIP lid'),
+('Tim','','Bakker',204,'0645678901','tim@example.com',1,NULL),
+('Nina','','Jansen',205,'0656789012','nina@example.com',1,NULL);
 
 
 
@@ -119,7 +163,7 @@ CREATE TABLE lid (
   Auteur       : Kene John
   Datum        : 2026-02-15
   Beschrijving : Tabel voor de lessen aangemaakt. Deze tabel bevat informatie over de groepslessen die worden aangeboden door de sportschool, zoals de naam van de les, prijs, datum, tijd, minimum en maximum aantal personen, beschikbaarheid en of de les actief is.
-  Opmerkingen  : Eventuele extra info of opmerkingen
+  Opmerkingen  : Valideren van minder van min en maximalen lessen word gedaan in php
 */
 
 
@@ -137,6 +181,19 @@ CREATE TABLE les (
     ,Datumaangemaakt DATETIME(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6)
     ,Datumgewijzigd DATETIME(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6)
 )ENGINE=InnoDB;
+
+
+
+INSERT INTO les
+(Naam,Prijs,Datum,Tijd,MinAantalPersonen,MaxAantalPersonen,Beschikbaarheid,Isactief,Opmerking)
+VALUES
+('Yoga',12.50,'2026-03-01','09:00:00',3,9,'Ingepland',1,NULL),
+('Pilates',15.00,'2026-03-02','11:00:00',3,9,'Ingepland',1,NULL),
+('Spinning',10.00,'2026-03-03','18:00:00',3,9,'Niet gestart',1,NULL),
+('Zumba',8.50,'2026-03-04','19:00:00',3,9,'Ingepland',1,NULL),
+('BodyPump',14.00,'2026-03-05','17:00:00',3,9,'Geannuleerd',1,NULL);
+
+
 
 
 
@@ -164,5 +221,18 @@ CREATE TABLE reservering (
 )ENGINE=InnoDB;
 
 
+INSERT INTO reservering
+(Voornaam,Tussenvoegsel,Achternaam,Nummer,Datum,Tijd,Reserveringstatus,Isactief,Opmerking)
+VALUES
+('Laura','','Klein',201,'2026-03-01','09:00:00','Gereserveerd',1,NULL),
+('Peter','','Wit',202,'2026-03-02','11:00:00','Gereserveerd',1,NULL),
+('Sofie','','Dijkstra',203,'2026-03-03','18:00:00','Gereserveerd',1,NULL),
+('Tim','','Bakker',204,'2026-03-04','19:00:00','Vrij',1,NULL),
+('Nina','','Jansen',205,'2026-03-05','17:00:00','Gereserveerd',1,NULL);
+
+
+
+
+select * from les;
 
 SET sql_notes = 1;
