@@ -1,14 +1,15 @@
 <?php
 
 $host = "localhost";
+$dbname = "fitForFunDB";
 $user = "root";
 $password = "";
-$database = "fitForFunDB";
 
-$conn = mysqli_connect($host,$user,$password,$database);
+try {
+    $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $user, $password);
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-if (!$conn) {
-    die("Connectie mislukt: " . mysqli_connect_error());
+    // echo "Verbonden met database!";  // Alleen gebruiken voor testen
+} catch (PDOException $e) {
+    die("Connectie mislukt.");
 }
-
-echo "Verbonden met database!";

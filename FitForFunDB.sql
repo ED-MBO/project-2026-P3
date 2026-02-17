@@ -35,7 +35,7 @@ CREATE TABLE gebruiker (
     ,IsIngelogd TINYINT(1) NOT NULL DEFAULT 0
     ,Ingelogd DATE NULL
     ,Uitgelogd DATE NULL
-    ,Isactief TINYINT(1) NOT NULL DEFAULT 1
+    ,IsActief TINYINT(1) NOT NULL DEFAULT 1
     ,Opmerking VARCHAR(250) NULL
     ,Datumaangemaakt DATETIME(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6)
     ,Datumgewijzigd DATETIME(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6)
@@ -44,7 +44,7 @@ CREATE TABLE gebruiker (
 
 
 INSERT INTO gebruiker 
-(Voornaam,Tussenvoegsel,Achternaam,Gebruikersnaam,Wachtwoord,IsIngelogd,Ingelogd,Uitgelogd,Isactief,Opmerking) 
+(Voornaam,Tussenvoegsel,Achternaam,Gebruikersnaam,Wachtwoord,IsIngelogd,Ingelogd,Uitgelogd,IsActief,Opmerking) 
 VALUES
 ('Jan','','Jansen','janj','password1',0,NULL,NULL,1,'Reguliere gebruiker'),
 ('Sara','de','Vries','saradev','password2',0,NULL,NULL,1,NULL),
@@ -69,7 +69,7 @@ CREATE TABLE rol (
     Id INT AUTO_INCREMENT PRIMARY KEY
     ,GebruikerId INT NOT NULL
     ,Naam VARCHAR(100) NOT NULL
-    ,Isactief TINYINT(1) NOT NULL DEFAULT 1
+    ,IsActief TINYINT(1) NOT NULL DEFAULT 1
     ,Opmerking VARCHAR(250)
     ,Datumaangemaakt DATETIME(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6)
     ,Datumgewijzigd DATETIME(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6)
@@ -79,7 +79,7 @@ CREATE TABLE rol (
 
 
 INSERT INTO rol
-(GebruikerId,Naam,Isactief,Opmerking)
+(GebruikerId,Naam,IsActief,Opmerking)
 VALUES
 (1,'Lid',1,'Heeft standaard toegang tot lessen'),
 (2,'Lid',1,NULL),
@@ -105,7 +105,7 @@ CREATE TABLE medewerker (
     ,Achternaam VARCHAR(50) NOT NULL
     ,Nummer MEDIUMINT NOT NULL
     ,Medewerkersoort VARCHAR(20) NOT NULL
-    ,Isactief TINYINT(1) NOT NULL DEFAULT 1
+    ,IsActief TINYINT(1) NOT NULL DEFAULT 1
     ,Opmerking VARCHAR(250) NULL
     ,Datumaangemaakt DATETIME(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6)
     ,Datumgewijzigd DATETIME(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6)
@@ -113,7 +113,7 @@ CREATE TABLE medewerker (
 
 
 INSERT INTO medewerker
-(Voornaam,Tussenvoegsel,Achternaam,Nummer,Medewerkersoort,Isactief,Opmerking)
+(Voornaam,Tussenvoegsel,Achternaam,Nummer,Medewerkersoort,IsActief,Opmerking)
 VALUES
 ('Tom','','de Groot',101,'Manager',1,NULL),
 ('Linda','','Smit',102,'Beheerder',1,NULL),
@@ -141,7 +141,7 @@ CREATE TABLE lid (
     ,Relatienummer MEDIUMINT NOT NULL
     ,Mobiel VARCHAR(20) NOT NULL
     ,Email VARCHAR(100) NOT NULL UNIQUE
-    ,Isactief TINYINT(1) NOT NULL DEFAULT 1
+    ,IsActief TINYINT(1) NOT NULL DEFAULT 1
     ,Opmerking VARCHAR(250) NULL
     ,Datumaangemaakt DATETIME(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6)
     ,Datumgewijzigd DATETIME(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6)
@@ -149,7 +149,7 @@ CREATE TABLE lid (
 
 
 INSERT INTO lid
-(Voornaam,Tussenvoegsel,Achternaam,Relatienummer,Mobiel,Email,Isactief,Opmerking)
+(Voornaam,Tussenvoegsel,Achternaam,Relatienummer,Mobiel,Email,IsActief,Opmerking)
 VALUES
 ('Laura','','Klein',201,'0612345678','laura@example.com',1,NULL),
 ('Peter','','de Wit',202,'0623456789','peter@example.com',1,NULL),
@@ -176,7 +176,7 @@ CREATE TABLE les (
     ,MinAantalPersonen TINYINT NOT NULL DEFAULT 3
     ,MaxAantalPersonen TINYINT NOT NULL DEFAULT 9
     ,Beschikbaarheid ENUM('Ingepland','Niet gestart','Gestart','Geannuleerd')
-    ,Isactief TINYINT(1) NOT NULL DEFAULT 1
+    ,IsActief TINYINT(1) NOT NULL DEFAULT 1
     ,Opmerking VARCHAR(250) NULL
     ,Datumaangemaakt DATETIME(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6)
     ,Datumgewijzigd DATETIME(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6)
@@ -185,7 +185,7 @@ CREATE TABLE les (
 
 
 INSERT INTO les
-(Naam,Prijs,Datum,Tijd,MinAantalPersonen,MaxAantalPersonen,Beschikbaarheid,Isactief,Opmerking)
+(Naam,Prijs,Datum,Tijd,MinAantalPersonen,MaxAantalPersonen,Beschikbaarheid,IsActief,Opmerking)
 VALUES
 ('Yoga',12.50,'2026-03-01','09:00:00',3,9,'Ingepland',1,NULL),
 ('Pilates',15.00,'2026-03-02','11:00:00',3,9,'Ingepland',1,NULL),
@@ -214,7 +214,7 @@ CREATE TABLE reservering (
     ,Datum DATE NOT NULL
     ,Tijd TIME NOT NULL
     ,Reserveringstatus VARCHAR(20) NOT NULL
-    ,Isactief TINYINT(1) NOT NULL DEFAULT 1
+    ,IsActief TINYINT(1) NOT NULL DEFAULT 1
     ,Opmerking VARCHAR(250) NULL
     ,Datumaangemaakt DATETIME(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6)
     ,Datumgewijzigd DATETIME(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6)
@@ -222,7 +222,7 @@ CREATE TABLE reservering (
 
 
 INSERT INTO reservering
-(Voornaam,Tussenvoegsel,Achternaam,Nummer,Datum,Tijd,Reserveringstatus,Isactief,Opmerking)
+(Voornaam,Tussenvoegsel,Achternaam,Nummer,Datum,Tijd,Reserveringstatus,IsActief,Opmerking)
 VALUES
 ('Laura','','Klein',201,'2026-03-01','09:00:00','Gereserveerd',1,NULL),
 ('Peter','','Wit',202,'2026-03-02','11:00:00','Gereserveerd',1,NULL),
