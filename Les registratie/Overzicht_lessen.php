@@ -28,47 +28,56 @@ try {
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="nl">
 <head>
+    <meta charset="UTF-8">
     <title>Overzicht Geplande Lessen</title>
     <link rel="stylesheet" href="Overzicht_lessen.css">
 </head>
 <body>
 
-<h2 style="text-align:center;">Overzicht Geplande Lessen</h2>
+<div class="container">
+    <h1>📅 Overzicht Geplande Lessen</h1>
 
-<table>
-    <tr>
-        <th>Naam Les</th>
-        <th>Datum</th>
-        <th>Tijd</th>
-        <th>Min. Personen</th>
-        <th>Max. Personen</th>
-        <th>Beschikbaarheid</th>
-        <th>Prijs (€)</th>
-    </tr>
+    <div class="table-wrapper">
+        <table>
+            <thead>
+                <tr>
+                    <th>Naam Les</th>
+                    <th>Datum</th>
+                    <th>Tijd</th>
+                    <th>Min</th>
+                    <th>Max</th>
+                    <th>Status</th>
+                    <th>Prijs (€)</th>
+                </tr>
+            </thead>
+            <tbody>
 
-    <?php if (count($lessen) > 0): ?>
+            <?php if (count($lessen) > 0): ?>
+                <?php foreach ($lessen as $row): ?>
+                    <tr>
+                        <td><?= htmlspecialchars($row['Naam']) ?></td>
+                        <td><?= htmlspecialchars($row['Datum']) ?></td>
+                        <td><?= htmlspecialchars($row['Tijd']) ?></td>
+                        <td><?= htmlspecialchars($row['MinAantalPersonen']) ?></td>
+                        <td><?= htmlspecialchars($row['MaxAantalPersonen']) ?></td>
+                        <td class="status"><?= htmlspecialchars($row['Beschikbaarheid']) ?></td>
+                        <td class="prijs">€<?= htmlspecialchars($row['Prijs']) ?></td>
+                    </tr>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <tr>
+                    <td colspan="7" class="geen-data">
+                        Geen geplande lessen beschikbaar
+                    </td>
+                </tr>
+            <?php endif; ?>
 
-        <?php foreach ($lessen as $row): ?>
-            <tr>
-                <td><?= htmlspecialchars($row['Naam']) ?></td>
-                <td><?= htmlspecialchars($row['Datum']) ?></td>
-                <td><?= htmlspecialchars($row['Tijd']) ?></td>
-                <td><?= htmlspecialchars($row['MinAantalPersonen']) ?></td>
-                <td><?= htmlspecialchars($row['MaxAantalPersonen']) ?></td>
-                <td><?= htmlspecialchars($row['Beschikbaarheid']) ?></td>
-                <td><?= htmlspecialchars($row['Prijs']) ?></td>
-            </tr>
-        <?php endforeach; ?>
-
-    <?php else: ?>
-        <tr>
-            <td colspan="7">Geen geplande lessen beschikbaar</td>
-        </tr>
-    <?php endif; ?>
-
-</table>
+            </tbody>
+        </table>
+    </div>
+</div>
 
 </body>
 </html>
