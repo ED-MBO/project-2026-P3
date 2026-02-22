@@ -1,24 +1,36 @@
-   document.getElementById('searchInput').addEventListener('input', function () {
-        const query = this.value.toLowerCase().trim();
-        const rows  = document.querySelectorAll('#lessenTable tbody tr[data-naam]');
-        let visible = 0;
+// Sidebar openen en sluiten
+function toggleSidebar() {
+    var sidebar = document.getElementById("sidebar");
+    var overlay = document.getElementById("overlay");
 
-        rows.forEach(row => {
-            const match = row.dataset.naam.includes(query);
-            row.style.display = match ? '' : 'none';
-            if (match) visible++;
-        });
+    sidebar.classList.toggle("open");
+    overlay.classList.toggle("open");
+    document.body.classList.toggle('sidebar-open');
+}
 
-        document.getElementById('resultCount').textContent = visible + ' lessen';
-        document.getElementById('footerCount').textContent = visible + ' lessen weergegeven';
-    });
+function sluitSidebar() {
+    document.getElementById("sidebar").classList.remove("open");
+    document.getElementById("overlay").classList.remove("open");
+    document.body.classList.remove('sidebar-open');
+}
 
-    function openSidebar() {
-        document.getElementById('sidebar').classList.add('open');
-        document.getElementById('overlay').classList.add('open');
+// Zoekfunctie
+function zoekLes() {
+    var zoekterm = document.getElementById("zoekbalk").value.toLowerCase();
+    var tabel = document.getElementById("lessenTabel");
+    var rijen = tabel.getElementsByTagName("tr");
+
+    for (var i = 1; i < rijen.length; i++) {
+        var eersteKolom = rijen[i].getElementsByTagName("td")[0];
+
+        if (eersteKolom) {
+            var lesnaam = eersteKolom.textContent.toLowerCase();
+
+            if (lesnaam.includes(zoekterm)) {
+                rijen[i].style.display = "";
+            } else {
+                rijen[i].style.display = "none";
+            }
+        }
     }
-
-    function closeSidebar() {
-        document.getElementById('sidebar').classList.remove('open');
-        document.getElementById('overlay').classList.remove('open');
-    }
+}
