@@ -1,6 +1,14 @@
 <?php
 require_once '../config.php';
 
+session_start();
+
+
+if (!isset($_SESSION['gebruiker_id'])) {
+    header('Location: ../login.php');
+    exit();
+}
+
 $sql = "SELECT Naam, Datum, Tijd, MinAantalPersonen, MaxAantalPersonen, Beschikbaarheid, Prijs
         FROM les
         WHERE Isactief = 1
@@ -38,6 +46,8 @@ $aantalLessen = count($lessen);
 <!-- Zijbalk -->
 <div class="sidebar" id="sidebar">
     <a href="#">📋 Lessen</a>
+    <a href="../Reservering registratie/Reservering_Registratie.php">📅 Reserveringen</a>
+    <a href="../uitloggen.php">🚪 Uitloggen</a>
 </div>
 
 <!-- Hoofdinhoud -->
