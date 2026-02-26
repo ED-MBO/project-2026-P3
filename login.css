@@ -1,0 +1,96 @@
+/* Algemene stijl */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f2f5;
+    margin: 0;
+    padding: 0;
+}
+
+/* Pagina gecentreerd */
+.login-pagina {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+/* Het witte kaartje in het midden */
+.login-kaart {
+    background-color: white;
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 380px;
+}
+
+/* Titel */
+.login-kaart h1 {
+    font-size: 26px;
+    color: #2c3e50;
+    margin: 0 0 5px 0;
+    text-align: center;
+}
+
+.subtitel {
+    font-size: 13px;
+    color: #888;
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+/* Foutmelding */
+.foutmelding {
+    background-color: #fde8e8;
+    color: #9b2222;
+    padding: 10px 14px;
+    border-radius: 5px;
+    font-size: 13px;
+    margin-bottom: 15px;
+    border-left: 4px solid #e74c3c;
+}
+
+/* Labels */
+label {
+    display: block;
+    font-size: 13px;
+    font-weight: bold;
+    color: #2c3e50;
+    margin-bottom: 5px;
+    margin-top: 15px;
+}
+
+/* Invoervelden */
+input[type="text"],
+input[type="password"] {
+    width: 100%;
+    padding: 9px 12px;
+    border: 2px solid #ddd;
+    border-radius: 6px;
+    font-size: 13px;
+    box-sizing: border-box;
+    outline: none;
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus {
+    border-color: #2c3e50;
+}
+
+/* Inlogknop */
+button {
+    width: 100%;
+    padding: 11px;
+    margin-top: 25px;
+    background-color: #2c3e50;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #1a252f;
+}

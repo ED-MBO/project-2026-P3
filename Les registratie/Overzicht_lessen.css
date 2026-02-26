@@ -1,0 +1,316 @@
+:root {
+  --bg: #111318;
+  --card: #1a1d26;
+  --border: #262a36;
+  --text: #e6e8ef;
+  --muted: #8b90a7;
+  --accent: #6b8cff;
+}
+
+/* Algemene stijl */
+body {
+    font-family: Inter, system-ui, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+}
+
+html, body {
+    overflow-x: hidden;
+}
+
+/* HEADER / NAVBAR */
+.header {
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 50;
+}
+
+.navbar-container {
+    max-width: 1100px;
+    margin: auto;
+    padding: 20px 28px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-weight: 600;
+    font-size: 18px;
+    text-decoration: none;
+    color: var(--text);
+}
+
+.navbar {
+    display: flex;
+}
+
+.navbar-nav {
+    display: flex;
+    list-style: none;
+    gap: 22px;
+    margin: 0;
+    padding: 0;
+}
+
+.nav-link {
+    text-decoration: none;
+    font-size: 14px;
+    color: var(--muted);
+    transition: 0.2s ease;
+}
+
+.nav-link:hover {
+    color: var(--text);
+}
+
+/* Hamburger */
+.hamburger {
+    display: none;
+    font-size: 22px;
+    cursor: pointer;
+    color: var(--text);
+    background: none;
+    border: none;
+}
+
+.close-menu {
+    display: none;
+    font-size: 22px;
+    cursor: pointer;
+    align-self: flex-end;
+    color: var(--text);
+    background: none;
+    border: none;
+}
+
+/* Overlay */
+.overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    display: none;
+    z-index: 40;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+    .hamburger {
+        display: block;
+    }
+
+    .navbar {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 280px;
+        height: 100vh;
+        background: var(--card);
+        border-left: 1px solid var(--border);
+        flex-direction: column;
+        padding: 24px;
+        transition: right 0.3s ease;
+        z-index: 50;
+    }
+
+    .navbar.active {
+        right: 0;
+    }
+
+    .navbar-nav {
+        flex-direction: column;
+        gap: 18px;
+        margin-top: 40px;
+    }
+
+    .nav-link {
+        color: var(--text);
+    }
+
+    .nav-link:hover {
+        color: var(--accent);
+    }
+
+    .close-menu {
+        display: block;
+    }
+}
+
+/* Hoofdinhoud */
+.inhoud {
+    margin-top: 30px;
+    padding: 30px 20px;
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Titel blok */
+.titel-blok {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.titel-blok h1 {
+    font-size: 30px;
+    color: var(--text);
+    margin-bottom: 5px;
+}
+
+.titel-blok p {
+    font-size: 14px;
+    color: var(--muted);
+    margin: 0;
+}
+
+/* Kaartje met aantal lessen */
+.stat-kaart {
+    display: block;
+    width: fit-content;
+    margin: 0 auto 25px auto;
+    background-color: var(--card);
+    border-left: 4px solid var(--accent);
+    padding: 12px 24px;
+    border-radius: 6px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+    text-align: center;
+}
+
+.stat-kaart .getal {
+    font-size: 28px;
+    font-weight: bold;
+    color: var(--accent);
+}
+
+.stat-kaart .label {
+    font-size: 12px;
+    color: var(--muted);
+}
+
+/* Zoekbalk gecentreerd */
+.zoek-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+#zoekbalk {
+    padding: 9px 16px;
+    width: 100%;
+    max-width: 360px;
+    border: 2px solid var(--border);
+    border-radius: 25px;
+    font-size: 13px;
+    outline: none;
+    background: var(--card);
+    color: var(--text);
+}
+
+#zoekbalk:focus {
+    border-color: var(--accent);
+}
+
+/* Tabel */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: var(--card);
+    font-size: 13px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.table-wrapper {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+th, td {
+    border-bottom: 1px solid var(--border);
+    padding: 8px 12px;
+    text-align: left;
+}
+
+th {
+    background-color: var(--border);
+    color: var(--text);
+    font-size: 12px;
+}
+
+tr:last-child td {
+    border-bottom: none;
+}
+
+tr:nth-child(even) {
+    background-color: rgba(255,255,255,0.03);
+}
+
+tr:hover {
+    background-color: rgba(107, 140, 255, 0.08);
+}
+
+/* Responsive telefoon */
+@media (max-width: 600px) {
+    .inhoud {
+        padding: 16px 12px;
+        max-width: 100%;
+    }
+
+    .titel-blok h1 {
+        font-size: 20px;
+    }
+
+    #zoekbalk {
+        max-width: 100%;
+        font-size: 14px;
+        padding: 10px 14px;
+    }
+
+    table, thead, tbody, th, td, tr {
+        display: block;
+    }
+
+    thead {
+        display: none;
+    }
+
+    tr {
+        background: var(--card);
+        margin-bottom: 12px;
+        padding: 10px;
+        border-radius: 8px;
+        box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+        border: 1px solid var(--border);
+    }
+
+    td {
+        display: flex;
+        justify-content: space-between;
+        padding: 8px 6px;
+        border: none;
+        font-size: 14px;
+    }
+
+    td::before {
+        content: attr(data-label);
+        font-weight: 700;
+        color: var(--muted);
+        margin-right: 8px;
+        flex: 1 1 auto;
+    }
+
+    td > * {
+        flex: 0 0 auto;
+        text-align: right;
+    }
+
+    .stat-kaart {
+        margin-bottom: 16px;
+    }
+}
