@@ -9,7 +9,6 @@ if (!isset($_SESSION['gebruiker_id'])) {
 }
 
 // Haal alle actieve reserveringen op
-// De reservering tabel bevat zelf naam, datum, tijd en status — geen JOIN nodig
 $sql = "SELECT Voornaam, Tussenvoegsel, Achternaam, Datum, Tijd, Reserveringstatus
         FROM reservering
         WHERE IsActief = 1
@@ -22,7 +21,6 @@ $reserveringen = $stmt->fetchAll(PDO::FETCH_ASSOC);
 $aantalReserveringen = count($reserveringen);
 ?>
 
-
 <!DOCTYPE html>
 <html lang="nl">
 <head>
@@ -30,26 +28,39 @@ $aantalReserveringen = count($reserveringen);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Reserveringen Overzicht</title>
     <link rel="stylesheet" href="Reservering_Registratie.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
 
-<div class="overlay" id="overlay" onclick="sluitSidebar()"></div>
+<!-- Overlay -->
+<div class="overlay"></div>
 
-<div class="topbalk">
-    <button class="burger-knop" onclick="toggleSidebar()">
-        <span></span>
-        <span></span>
-        <span></span>
-    </button>
-    <h2>FitForFun</h2>
-</div>
+<!-- Header met navbar -->
+<header class="header">
+    <div class="navbar-container">
 
-<div class="sidebar" id="sidebar">
-    <a href="../Les registratie/Overzicht_lessen.php">📋 Lessen</a>
-    <a href="Reservering_Registratie.php">📅 Reserveringen</a>
-    <a href="../uitloggen.php">🚪 Uitloggen</a>
-</div>
+        <a href="#" class="logo">FitForFun</a>
 
+        <button class="hamburger">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+
+        <nav class="navbar">
+            <button class="close-menu">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <ul class="navbar-nav">
+                <li><a class="nav-link" href="../Les registratie/Overzicht_lessen.php">📋 Lessen</a></li>
+                <li><a class="nav-link" href="Reservering_Registratie.php">📅 Reserveringen</a></li>
+                <li><a class="nav-link" href="../uitloggen.php">🚪 Uitloggen</a></li>
+            </ul>
+        </nav>
+
+    </div>
+</header>
+
+<!-- Hoofdinhoud -->
 <div class="inhoud">
 
     <div class="titel-blok">

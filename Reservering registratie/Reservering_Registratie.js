@@ -1,20 +1,27 @@
-// Sidebar openen en sluiten
-function toggleSidebar() {
-    var sidebar = document.getElementById("sidebar");
-    var overlay = document.getElementById("overlay");
+document.addEventListener("DOMContentLoaded", function () {
+    // NAVBAR
+    const hamburger = document.querySelector(".hamburger");
+    const navMenu = document.querySelector(".navbar");
+    const closeBtn = document.querySelector(".close-menu");
+    const overlay = document.querySelector(".overlay");
 
-    sidebar.classList.toggle("open");
-    overlay.classList.toggle("open");
-    document.body.classList.toggle('sidebar-open');
-}
+    hamburger.addEventListener("click", function () {
+        navMenu.classList.add("active");
+        overlay.style.display = "block";
+        document.body.style.overflow = "hidden";
+    });
 
-function sluitSidebar() {
-    document.getElementById("sidebar").classList.remove("open");
-    document.getElementById("overlay").classList.remove("open");
-    document.body.classList.remove('sidebar-open');
-}
+    function closeMenu() {
+        navMenu.classList.remove("active");
+        overlay.style.display = "none";
+        document.body.style.overflow = "auto";
+    }
 
-// Zoekfunctie — zoekt op naam lid (kolom 1) en lesnaam (kolom 2)
+    closeBtn.addEventListener("click", closeMenu);
+    overlay.addEventListener("click", closeMenu);
+});
+
+// Zoekfunctie — zoekt op naam lid (kolom 1) en datum (kolom 2)
 function zoekReservering() {
     var zoekterm = document.getElementById("zoekbalk").value.toLowerCase();
     var tabel = document.getElementById("reserveringenTabel");
@@ -24,10 +31,9 @@ function zoekReservering() {
         var kolommen = rijen[i].getElementsByTagName("td");
 
         if (kolommen.length > 0) {
-            var lidnaam  = kolommen[0].textContent.toLowerCase();
-            var lesnaam  = kolommen[1].textContent.toLowerCase();
+            var lidnaam = kolommen[0].textContent.toLowerCase();
+            var lesnaam = kolommen[1].textContent.toLowerCase();
 
-            // Laat de rij zien als de zoekterm voorkomt in de naam of lesnaam
             if (lidnaam.includes(zoekterm) || lesnaam.includes(zoekterm)) {
                 rijen[i].style.display = "";
             } else {
