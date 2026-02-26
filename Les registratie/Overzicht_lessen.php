@@ -27,28 +27,37 @@ $aantalLessen = count($lessen);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lesoverzicht</title>
     <link rel="stylesheet" href="Overzicht_lessen.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
 
-<!-- Donker scherm achter sidebar -->
-<div class="overlay" id="overlay" onclick="sluitSidebar()"></div>
+<!-- Overlay -->
+<div class="overlay"></div>
 
-<!-- Topbalk met burgermenu -->
-<div class="topbalk">
-    <button class="burger-knop" onclick="toggleSidebar()">
-        <span></span>
-        <span></span>
-        <span></span>
-    </button>
-    <h2>FitForFun</h2>
-</div>
+<!-- Header met navbar -->
+<header class="header">
+    <div class="navbar-container">
 
-<!-- Zijbalk -->
-<div class="sidebar" id="sidebar">
-    <a href="#">📋 Lessen</a>
-    <a href="../Reservering registratie/Reservering_Registratie.php">📅 Reserveringen</a>
-    <a href="../uitloggen.php">🚪 Uitloggen</a>
-</div>
+        <a href="#" class="logo">FitForFun</a>
+
+        <button class="hamburger">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+
+        <nav class="navbar">
+            <button class="close-menu">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <ul class="navbar-nav">
+                <li><a class="nav-link" href="#">📋 Lessen</a></li>
+                <li><a class="nav-link" href="../Reservering registratie/Reservering_Registratie.php">📅 Reserveringen</a></li>
+                <li><a class="nav-link" href="../uitloggen.php">🚪 Uitloggen</a></li>
+            </ul>
+        </nav>
+
+    </div>
+</header>
 
 <!-- Hoofdinhoud -->
 <div class="inhoud">
