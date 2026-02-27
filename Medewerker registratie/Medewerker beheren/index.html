@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Medewerker Beheren</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+/>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+ <header class="header">
+  <div class="navbar-container">
+
+    <a href="#" class="logo">FitForFun</a>
+
+    <div class="hamburger">
+      <i class="fa-solid fa-bars"></i>
+    </div>
+
+    <nav class="navbar">
+      <div class="close-menu">
+        <i class="fa-solid fa-xmark"></i>
+      </div>
+
+      <ul class="navbar-nav">
+        <li><a class="nav-link" href="#">Home</a></li>
+        <li><a class="nav-link" href="#">Account beheren</a></li>
+        <li><a class="nav-link" href="#">Medewerker beheren</a></li>
+        <li><a class="nav-link" href="#">Lid beheren</a></li>
+        <li><a class="nav-link" href="#">Les beheren</a></li>
+        <li><a class="nav-link" href="#">Reservering beheren</a></li>
+        <li><a class="nav-link" href="#">Dashboard beheren</a></li>
+      </ul>
+    </nav>
+
+    <div class="overlay"></div>
+  </div>
+</header>
+
+<!-- Content -->
+<div class="wrapper">
+  <h1>Team</h1>
+  <div class="sub" id="countLine"></div>
+
+  <div class="topbar">
+    <input id="search" placeholder="Zoek op naam of functie..." />
+    <select id="afdeling">
+      <option value="">Alle afdelingen</option>
+    </select>
+    <select id="status">
+      <option value="">Alle statussen</option>
+      <option>Beschikbaar</option>
+      <option>Bezet</option>
+      <option>Afwezig</option>
+      <option>Op locatie</option>
+    </select>
+  </div>
+
+  <table id="table">
+    <thead>
+      <tr>
+        <th>Naam</th>
+        <th>Functie</th>
+        <th>Afdeling</th>
+        <th>Status</th>
+        <th>Contact</th>
+      </tr>
+    </thead>
+    <tbody id="body"></tbody>
+  </table>
+
+  <div id="cardContainer" class="card-container"></div>
+
+  <div id="emptyState" class="empty" style="display:none">
+    Geen resultaten. Probeer een andere zoekterm.
+  </div>
+</div>
+
+      <div id="emptyState" class="empty" style="display: none">
+        Geen resultaten. Probeer een andere zoekterm.
+      </div>
+      <footer class="footer">
+  © 2026 FitForFun — Alle rechten voorbehouden
+</footer>
+    </div>
+    <script src="script.js"></script>
+  </body>
+</html>
