@@ -55,6 +55,7 @@ $aantalReserveringen = count($reserveringen);
                 <li><a class="nav-link" href="../Les registratie/Overzicht_lessen.php">Les beheren</a></li>
                 <li><a class="nav-link" href="Reservering_Registratie.php">Reservering beheren</a></li>
                 <li><a class="nav-link" href="../Informatie/home.php">Dashboard beheren</a></li>
+                <li><a class="nav-link" href="../uitloggen.php">Uitloggen</a></li>
             </ul>
         </nav>
 

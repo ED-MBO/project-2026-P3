@@ -54,6 +54,7 @@ $aantalLessen = count($lessen);
                 <li><a class="nav-link" href="Overzicht_lessen.php">Les beheren</a></li>
                 <li><a class="nav-link" href="../Reservering registratie/Reservering_Registratie.php">Reservering beheren</a></li>
                 <li><a class="nav-link" href="../Informatie/home.php">Dashboard beheren</a></li>
+                <li><a class="nav-link" href="../uitloggen.php">Uitloggen</a></li>
             </ul>
         </nav>
 

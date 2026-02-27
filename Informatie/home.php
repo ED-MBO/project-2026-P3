@@ -42,6 +42,7 @@ if (!isset($_SESSION['gebruiker_id'])) {
                 <li><a class="nav-link" href="../Les registratie/Overzicht_lessen.php">Les beheren</a></li>
                 <li><a class="nav-link" href="../Reservering registratie/Reservering_Registratie.php">Reservering beheren</a></li>
                 <li><a class="nav-link" href="home.php">Dashboard beheren</a></li>
+                <li><a class="nav-link" href="../uitloggen.php">Uitloggen</a></li>
             </ul>
         </nav>
 
