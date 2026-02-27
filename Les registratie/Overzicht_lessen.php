@@ -1,14 +1,6 @@
 <?php
 require_once '../config.php';
 
-session_start();
-
-
-if (!isset($_SESSION['gebruiker_id'])) {
-    header('Location: ../login.php');
-    exit();
-}
-
 $sql = "SELECT Naam, Datum, Tijd, MinAantalPersonen, MaxAantalPersonen, Beschikbaarheid, Prijs
         FROM les
         WHERE Isactief = 1
@@ -54,7 +46,6 @@ $aantalLessen = count($lessen);
                 <li><a class="nav-link" href="Overzicht_lessen.php">Les beheren</a></li>
                 <li><a class="nav-link" href="../Reservering registratie/Reservering_Registratie.php">Reservering beheren</a></li>
                 <li><a class="nav-link" href="../Informatie/home.php">Dashboard beheren</a></li>
-                <li><a class="nav-link" href="../uitloggen.php">Uitloggen</a></li>
             </ul>
         </nav>
 

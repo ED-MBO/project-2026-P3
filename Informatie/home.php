@@ -1,12 +1,5 @@
 <?php
 require_once '../config.php';
-session_start();
-
-// Als de gebruiker niet is ingelogd, stuur door naar de loginpagina
-if (!isset($_SESSION['gebruiker_id'])) {
-    header('Location: ../login.php');
-    exit();
-}
 ?>
 <!DOCTYPE html>
 <html lang="nl">
@@ -42,7 +35,6 @@ if (!isset($_SESSION['gebruiker_id'])) {
                 <li><a class="nav-link" href="../Les registratie/Overzicht_lessen.php">Les beheren</a></li>
                 <li><a class="nav-link" href="../Reservering registratie/Reservering_Registratie.php">Reservering beheren</a></li>
                 <li><a class="nav-link" href="home.php">Dashboard beheren</a></li>
-                <li><a class="nav-link" href="../uitloggen.php">Uitloggen</a></li>
             </ul>
         </nav>
 
@@ -54,7 +46,7 @@ if (!isset($_SESSION['gebruiker_id'])) {
 <div class="inhoud">
 
     <div class="titel-blok">
-        <h1>Welkom, <?= htmlspecialchars($_SESSION['gebruiker_naam'] ?? 'Gebruiker') ?>!</h1>
+        <h1>Welkom bij FitForFun!</h1>
         <p>Kies waar je naartoe wilt — snel toegang tot je workouts, challenges en profiel</p>
     </div>
 

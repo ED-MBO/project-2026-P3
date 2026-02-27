@@ -1,12 +1,5 @@
 <?php
 require_once '../config.php';
-session_start();
-
-// Als de gebruiker niet is ingelogd, stuur door naar de loginpagina
-if (!isset($_SESSION['gebruiker_id'])) {
-    header('Location: ../login.php');
-    exit();
-}
 ?>
 <!DOCTYPE html>
 <html lang="nl">
@@ -42,7 +35,6 @@ if (!isset($_SESSION['gebruiker_id'])) {
                 <li><a class="nav-link" href="../Les registratie/Overzicht_lessen.php">Les beheren</a></li>
                 <li><a class="nav-link" href="../Reservering registratie/Reservering_Registratie.php">Reservering beheren</a></li>
                 <li><a class="nav-link" href="home.php">Dashboard beheren</a></li>
-                <li><a class="nav-link" href="../uitloggen.php">Uitloggen</a></li>
             </ul>
         </nav>
 
@@ -62,8 +54,8 @@ if (!isset($_SESSION['gebruiker_id'])) {
         <div class="kaart-icoon">
             <i class="fa-solid fa-user"></i>
         </div>
-        <h2><?= htmlspecialchars($_SESSION['gebruiker_naam'] ?? 'Gebruiker') ?></h2>
-        <p>Ingelogd als lid van FitForFun</p>
+        <h2>Account</h2>
+        <p>Lid van FitForFun</p>
         <a href="home.php" class="kaart-link">← Terug naar home</a>
     </div>
 
