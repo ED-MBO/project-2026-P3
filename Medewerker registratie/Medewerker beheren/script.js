@@ -21,59 +21,32 @@ hamburgerButton.addEventListener("click", openNavigatie);
 sluitKnop.addEventListener("click", sluitNavigatie);
 overlayElement.addEventListener("click", sluitNavigatie);
 
-/* Neppe data Medewerkers*/
+/* Data uit de Database */
 
-const medewerkers = [
-  {
-    naam: "Lara van den Berg",
-    functie: "Product Designer",
-    afdeling: "Design",
-    status: "Beschikbaar",
-    email: "l.vandenberg@org.nl",
-  },
-  {
-    naam: "Thomas Hendrikx",
-    functie: "Senior Developer",
-    afdeling: "Engineering",
-    status: "Bezet",
-    email: "t.hendrikx@org.nl",
-  },
-  {
-    naam: "Priya Nair",
-    functie: "Scrum Master",
-    afdeling: "Engineering",
-    status: "Beschikbaar",
-    email: "p.nair@org.nl",
-  },
-  {
-    naam: "Daan Smits",
-    functie: "Marketing Manager",
-    afdeling: "Marketing",
-    status: "Afwezig",
-    email: "d.smits@org.nl",
-  },
-  {
-    naam: "Fatima El Amine",
-    functie: "HR Adviseur",
-    afdeling: "HR",
-    status: "Beschikbaar",
-    email: null,
-  },
-  {
-    naam: "Joris Kuipers",
-    functie: "Lead Platform Engineer",
-    afdeling: "Product & Tech",
-    status: "Op locatie",
-    email: "j.kuipers@org.nl",
-  },
-  {
-    naam: "Sara Meijer",
-    functie: "UX Researcher",
-    afdeling: "Design",
-    status: "Beschikbaar",
-    email: "s.meijer@org.nl",
-  },
-];
+let medewerkers = [];
+
+/* Haal data uit de php */
+
+async function laadMedewerkers() {
+  try {
+    const response = await fetch("get_medewerkers.php");
+
+    if (!response.ok) {
+      throw new Error("Server gaf foutmelding");
+    }
+
+    medewerkers = await response.json();
+
+    vulAfdelingen();
+    update();
+  } catch (error) {
+    console.error("Fout bij laden medewerkers:", error);
+    emptyState.style.display = "block";
+    emptyState.textContent = "Database verbinding mislukt.";
+  }
+}
+
+/* Elementen */
 
 const zoekInput = document.getElementById("search");
 const afdelingSelect = document.getElementById("afdeling");
@@ -84,7 +57,10 @@ const emptyState = document.getElementById("emptyState");
 const countLine = document.getElementById("countLine");
 
 function vulAfdelingen() {
+  afdelingSelect.innerHTML = '<option value="">Alle afdelingen</option>';
+
   const uniek = [...new Set(medewerkers.map((m) => m.afdeling))];
+
   uniek.forEach((a) => {
     const option = document.createElement("option");
     option.value = a;
@@ -92,6 +68,8 @@ function vulAfdelingen() {
     afdelingSelect.appendChild(option);
   });
 }
+
+/* Filteren */
 
 function filterMedewerkers() {
   const zoek = zoekInput.value.toLowerCase();
@@ -108,6 +86,8 @@ function filterMedewerkers() {
   );
 }
 
+/* Tablen renderen */
+
 function renderTabel(lijst) {
   tabelBody.innerHTML = "";
 
@@ -120,20 +100,26 @@ function renderTabel(lijst) {
 
   lijst.forEach((m) => {
     const row = document.createElement("tr");
-
     const statusClass = "status-" + m.status.toLowerCase().replace(/\s/g, "");
 
     row.innerHTML = `
-        <td>${m.naam}</td>
-        <td>${m.functie}</td>
-        <td><span class="badge">${m.afdeling}</span></td>
-        <td><span class="status ${statusClass}">${m.status}</span></td>
-        <td>${m.email ? `<a href="mailto:${m.email}" class="email-link">${m.email}</a>` : `<span class="geen-email">geen e-mail</span>`}</td>
-      `;
+      <td>${m.naam}</td>
+      <td>${m.functie}</td>
+      <td><span class="badge">${m.afdeling}</span></td>
+      <td><span class="status ${statusClass}">${m.status}</span></td>
+      <td>${
+        m.email
+          ? `<a href="mailto:${m.email}" class="email-link">${m.email}</a>`
+          : `<span class="geen-email">geen e-mail</span>`
+      }
+      </td>
+    `;
 
     tabelBody.appendChild(row);
   });
 }
+
+/* cards renderen */
 
 function renderCards(lijst) {
   cardContainer.innerHTML = "";
@@ -145,39 +131,50 @@ function renderCards(lijst) {
     const statusClass = "status-" + m.status.toLowerCase().replace(/\s/g, "");
 
     card.innerHTML = `
-        <h3>${m.naam}</h3>
-        <div class="functie">${m.functie}</div>
+      <h3>${m.naam}</h3>
+      <div class="functie">${m.functie}</div>
 
-        <div class="card-row">
-          <span class="card-label">Afdeling</span>
-          <span class="badge">${m.afdeling}</span>
-        </div>
+      <div class="card-row">
+        <span class="card-label">Afdeling</span>
+        <span class="badge">${m.afdeling}</span>
+      </div>
 
-        <div class="card-row">
-          <span class="card-label">Status</span>
-          <span class="status ${statusClass}">${m.status}</span>
-        </div>
+      <div class="card-row">
+        <span class="card-label">Status</span>
+        <span class="status ${statusClass}">${m.status}</span>
+      </div>
 
-        <div class="card-row">
-          <span class="card-label">Contact</span>
-          <span>${m.email ? `<a href="mailto:${m.email}" class="email-link">${m.email}</a>` : `<span class="geen-email">geen e-mail</span>`}</span>
-        </div>
-      `;
+      <div class="card-row">
+        <span class="card-label">Contact</span>
+        <span>${
+          m.email
+            ? `<a href="mailto:${m.email}" class="email-link">${m.email}</a>`
+            : `<span class="geen-email">geen e-mail</span>`
+        }
+        </span>
+      </div>
+    `;
 
     cardContainer.appendChild(card);
   });
 }
 
+/* Update scherm*/
+
 function update() {
   const filtered = filterMedewerkers();
   countLine.textContent = `${filtered.length} van ${medewerkers.length} collega's zichtbaar`;
+
   renderTabel(filtered);
   renderCards(filtered);
 }
+
+/* EVENTS */
 
 zoekInput.addEventListener("input", update);
 afdelingSelect.addEventListener("change", update);
 statusSelect.addEventListener("change", update);
 
-vulAfdelingen();
-update();
+/* START */
+
+laadMedewerkers();
