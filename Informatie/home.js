@@ -20,24 +20,3 @@ document.addEventListener("DOMContentLoaded", function () {
     sluitKnop.addEventListener("click", sluitNavigatie);
     overlayElement.addEventListener("click", sluitNavigatie);
 });
-
-// Zoekfunctie
-function zoekLes() {
-    var zoekterm = document.getElementById("zoekbalk").value.toLowerCase();
-    var tabel = document.getElementById("lessenTabel");
-    var rijen = tabel.getElementsByTagName("tr");
-
-    for (var i = 1; i < rijen.length; i++) {
-        var eersteKolom = rijen[i].getElementsByTagName("td")[0];
-
-        if (eersteKolom) {
-            var lesnaam = eersteKolom.textContent.toLowerCase();
-
-            if (lesnaam.includes(zoekterm)) {
-                rijen[i].style.display = "";
-            } else {
-                rijen[i].style.display = "none";
-            }
-        }
-    }
-}

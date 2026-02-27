@@ -1,17 +1,17 @@
 :root {
-  --bg: #111318;
-  --card: #1a1d26;
-  --border: #262a36;
-  --text: #e6e8ef;
-  --muted: #8b90a7;
-  --accent: #6b8cff;
+  --color-background: #111318;
+  --color-card-bg: #1a1d26;
+  --color-border: #262a36;
+  --color-text-primary: #e6e8ef;
+  --color-text-muted: #8b90a7;
+  --color-accent: #6b8cff;
 }
 
 /* Algemene stijl */
 body {
     font-family: Inter, system-ui, Arial, sans-serif;
-    background: var(--bg);
-    color: var(--text);
+    background: var(--color-background);
+    color: var(--color-text-primary);
     margin: 0;
     padding: 0;
     min-height: 100vh;
@@ -23,8 +23,8 @@ html, body {
 
 /* HEADER / NAVBAR */
 .header {
-    background: var(--bg);
-    border-bottom: 1px solid var(--border);
+    background: var(--color-background);
+    border-bottom: 1px solid var(--color-border);
     position: sticky;
     top: 0;
     z-index: 50;
@@ -43,7 +43,7 @@ html, body {
     font-weight: 600;
     font-size: 18px;
     text-decoration: none;
-    color: var(--text);
+    color: var(--color-text-primary);
 }
 
 .navbar {
@@ -61,12 +61,12 @@ html, body {
 .nav-link {
     text-decoration: none;
     font-size: 14px;
-    color: var(--muted);
+    color: var(--color-text-muted);
     transition: 0.2s ease;
 }
 
 .nav-link:hover {
-    color: var(--text);
+    color: var(--color-text-primary);
 }
 
 /* Hamburger */
@@ -74,9 +74,7 @@ html, body {
     display: none;
     font-size: 22px;
     cursor: pointer;
-    color: var(--text);
-    background: none;
-    border: none;
+    color: var(--color-text-primary);
 }
 
 .close-menu {
@@ -84,9 +82,7 @@ html, body {
     font-size: 22px;
     cursor: pointer;
     align-self: flex-end;
-    color: var(--text);
-    background: none;
-    border: none;
+    color: var(--color-text-primary);
 }
 
 /* Overlay */
@@ -110,8 +106,8 @@ html, body {
         right: -100%;
         width: 280px;
         height: 100vh;
-        background: var(--card);
-        border-left: 1px solid var(--border);
+        background: var(--color-card-bg);
+        border-left: 1px solid var(--color-border);
         flex-direction: column;
         padding: 24px;
         transition: right 0.3s ease;
@@ -129,11 +125,11 @@ html, body {
     }
 
     .nav-link {
-        color: var(--text);
+        color: var(--color-text-primary);
     }
 
     .nav-link:hover {
-        color: var(--accent);
+        color: var(--color-accent);
     }
 
     .close-menu {
@@ -158,13 +154,13 @@ html, body {
 
 .titel-blok h1 {
     font-size: 30px;
-    color: var(--text);
+    color: var(--color-text-primary);
     margin-bottom: 5px;
 }
 
 .titel-blok p {
     font-size: 14px;
-    color: var(--muted);
+    color: var(--color-text-muted);
     margin: 0;
 }
 
@@ -173,8 +169,8 @@ html, body {
     display: block;
     width: fit-content;
     margin: 0 auto 25px auto;
-    background-color: var(--card);
-    border-left: 4px solid var(--accent);
+    background-color: var(--color-card-bg);
+    border-left: 4px solid var(--color-accent);
     padding: 12px 24px;
     border-radius: 6px;
     box-shadow: 0 2px 6px rgba(0,0,0,0.3);
@@ -184,12 +180,12 @@ html, body {
 .stat-kaart .getal {
     font-size: 28px;
     font-weight: bold;
-    color: var(--accent);
+    color: var(--color-accent);
 }
 
 .stat-kaart .label {
     font-size: 12px;
-    color: var(--muted);
+    color: var(--color-text-muted);
 }
 
 /* Zoekbalk */
@@ -203,23 +199,23 @@ html, body {
     padding: 9px 16px;
     width: 100%;
     max-width: 360px;
-    border: 2px solid var(--border);
+    border: 2px solid var(--color-border);
     border-radius: 25px;
     font-size: 13px;
     outline: none;
-    background: var(--card);
-    color: var(--text);
+    background: var(--color-card-bg);
+    color: var(--color-text-primary);
 }
 
 #zoekbalk:focus {
-    border-color: var(--accent);
+    border-color: var(--color-accent);
 }
 
 /* Tabel */
 table {
     width: 100%;
     border-collapse: collapse;
-    background-color: var(--card);
+    background-color: var(--color-card-bg);
     font-size: 13px;
     box-shadow: 0 2px 6px rgba(0,0,0,0.2);
     border-radius: 6px;
@@ -232,14 +228,14 @@ table {
 }
 
 th, td {
-    border-bottom: 1px solid var(--border);
+    border-bottom: 1px solid var(--color-border);
     padding: 8px 12px;
     text-align: left;
 }
 
 th {
-    background-color: var(--border);
-    color: var(--text);
+    background-color: var(--color-border);
+    color: var(--color-text-primary);
     font-size: 12px;
 }
 
@@ -259,7 +255,7 @@ tr:hover {
 .leeg {
     text-align: center;
     padding: 30px;
-    color: var(--muted);
+    color: var(--color-text-muted);
     font-size: 14px;
 }
 
@@ -283,7 +279,7 @@ tr:hover {
 
 .badge.grijs {
     background-color: rgba(139, 144, 167, 0.2);
-    color: var(--muted);
+    color: var(--color-text-muted);
 }
 
 /* Responsive voor telefoon */
@@ -312,12 +308,12 @@ tr:hover {
     }
 
     tr {
-        background: var(--card);
+        background: var(--color-card-bg);
         margin-bottom: 12px;
         padding: 10px;
         border-radius: 8px;
         box-shadow: 0 1px 4px rgba(0,0,0,0.2);
-        border: 1px solid var(--border);
+        border: 1px solid var(--color-border);
     }
 
     td {
@@ -331,7 +327,7 @@ tr:hover {
     td::before {
         content: attr(data-label);
         font-weight: 700;
-        color: var(--muted);
+        color: var(--color-text-muted);
         margin-right: 8px;
         flex: 1 1 auto;
     }
@@ -344,4 +340,15 @@ tr:hover {
     .stat-kaart {
         margin-bottom: 16px;
     }
+}
+
+/* Footer */
+.footer {
+    margin-top: 60px;
+    padding: 20px;
+    text-align: center;
+    font-size: 12px;
+    color: var(--color-text-muted);
+    border-top: 1px solid var(--color-border);
+    background: var(--color-card-bg);
 }

@@ -1,24 +1,24 @@
 document.addEventListener("DOMContentLoaded", function () {
-    // NAVBAR
-    const hamburger = document.querySelector(".hamburger");
-    const navMenu = document.querySelector(".navbar");
-    const closeBtn = document.querySelector(".close-menu");
-    const overlay = document.querySelector(".overlay");
+    const hamburgerButton = document.querySelector(".hamburger");
+    const navigatieMenu = document.querySelector(".navbar");
+    const sluitKnop = document.querySelector(".close-menu");
+    const overlayElement = document.querySelector(".overlay");
 
-    hamburger.addEventListener("click", function () {
-        navMenu.classList.add("active");
-        overlay.style.display = "block";
+    function openNavigatie() {
+        navigatieMenu.classList.add("active");
+        overlayElement.style.display = "block";
         document.body.style.overflow = "hidden";
-    });
+    }
 
-    function closeMenu() {
-        navMenu.classList.remove("active");
-        overlay.style.display = "none";
+    function sluitNavigatie() {
+        navigatieMenu.classList.remove("active");
+        overlayElement.style.display = "none";
         document.body.style.overflow = "auto";
     }
 
-    closeBtn.addEventListener("click", closeMenu);
-    overlay.addEventListener("click", closeMenu);
+    hamburgerButton.addEventListener("click", openNavigatie);
+    sluitKnop.addEventListener("click", sluitNavigatie);
+    overlayElement.addEventListener("click", sluitNavigatie);
 });
 
 // Zoekfunctie — zoekt op naam lid (kolom 1) en datum (kolom 2)

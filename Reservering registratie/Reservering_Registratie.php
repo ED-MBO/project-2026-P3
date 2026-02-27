@@ -32,31 +32,33 @@ $aantalReserveringen = count($reserveringen);
 </head>
 <body>
 
-<!-- Overlay -->
-<div class="overlay"></div>
-
 <!-- Header met navbar -->
 <header class="header">
     <div class="navbar-container">
 
-        <a href="#" class="logo">FitForFun</a>
+        <a href="../Informatie/home.php" class="logo">FitForFun</a>
 
-        <button class="hamburger">
+        <div class="hamburger">
             <i class="fa-solid fa-bars"></i>
-        </button>
+        </div>
 
         <nav class="navbar">
-            <button class="close-menu">
+            <div class="close-menu">
                 <i class="fa-solid fa-xmark"></i>
-            </button>
+            </div>
 
             <ul class="navbar-nav">
-                <li><a class="nav-link" href="../Les registratie/Overzicht_lessen.php">📋 Lessen</a></li>
-                <li><a class="nav-link" href="Reservering_Registratie.php">📅 Reserveringen</a></li>
-                <li><a class="nav-link" href="../uitloggen.php">🚪 Uitloggen</a></li>
+                <li><a class="nav-link" href="../Informatie/home.php">Home</a></li>
+                <li><a class="nav-link" href="../Informatie/profiel.php">Account beheren</a></li>
+                <li><a class="nav-link" href="#">Medewerker beheren</a></li>
+                <li><a class="nav-link" href="#">Lid beheren</a></li>
+                <li><a class="nav-link" href="../Les registratie/Overzicht_lessen.php">Les beheren</a></li>
+                <li><a class="nav-link" href="Reservering_Registratie.php">Reservering beheren</a></li>
+                <li><a class="nav-link" href="../Informatie/home.php">Dashboard beheren</a></li>
             </ul>
         </nav>
 
+        <div class="overlay"></div>
     </div>
 </header>
 
@@ -125,6 +127,10 @@ $aantalReserveringen = count($reserveringen);
     </div>
 
 </div>
+
+<footer class="footer">
+    © 2026 FitForFun — Alle rechten voorbehouden
+</footer>
 
 <script src="Reservering_Registratie.js"></script>
 </body>

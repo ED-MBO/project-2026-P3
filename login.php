@@ -2,9 +2,9 @@
 require_once 'config.php';
 session_start();
 
-// Als de gebruiker al ingelogd is, stuur door naar de reserveringen pagina
+// Als de gebruiker al ingelogd is, stuur door naar de homepagina
 if (isset($_SESSION['gebruiker_id'])) {
-    header('Location: reservering registratie/Reservering_Registratie.php');
+    header('Location: Informatie/home.php');
     exit();
 }
 
@@ -24,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($gebruiker && $gebruiker['Wachtwoord'] === $wachtwoord) {
         $_SESSION['gebruiker_id']   = $gebruiker['Id'];
         $_SESSION['gebruiker_naam'] = $gebruiker['Voornaam'] . ' ' . $gebruiker['Achternaam'];
-        header('Location: reservering registratie/Reservering_Registratie.php');
+        header('Location: Informatie/home.php');
         exit();
     } else {
         $foutmelding = 'Gebruikersnaam of wachtwoord is onjuist.';
