@@ -22,21 +22,16 @@ sluitKnop.addEventListener("click", sluitNavigatie);
 overlayElement.addEventListener("click", sluitNavigatie);
 
 /* Data uit de Database */
-
 let medewerkers = [];
 
 /* Haal data uit de php */
-
 async function laadMedewerkers() {
   try {
     const response = await fetch("get_medewerkers.php");
-
     if (!response.ok) {
       throw new Error("Server gaf foutmelding");
     }
-
     medewerkers = await response.json();
-
     vulAfdelingen();
     update();
   } catch (error) {
@@ -58,9 +53,7 @@ const countLine = document.getElementById("countLine");
 
 function vulAfdelingen() {
   afdelingSelect.innerHTML = '<option value="">Alle afdelingen</option>';
-
   const uniek = [...new Set(medewerkers.map((m) => m.afdeling))];
-
   uniek.forEach((a) => {
     const option = document.createElement("option");
     option.value = a;
@@ -70,12 +63,10 @@ function vulAfdelingen() {
 }
 
 /* Filteren */
-
 function filterMedewerkers() {
   const zoek = zoekInput.value.toLowerCase();
   const afd = afdelingSelect.value;
   const stat = statusSelect.value;
-
   return medewerkers.filter(
     (m) =>
       (!zoek ||
@@ -95,63 +86,37 @@ function renderTabel(lijst) {
     emptyState.style.display = "block";
     return;
   }
-
   emptyState.style.display = "none";
-
   lijst.forEach((m) => {
     const row = document.createElement("tr");
     const statusClass = "status-" + m.status.toLowerCase().replace(/\s/g, "");
-
     row.innerHTML = `
       <td>${m.naam}</td>
       <td>${m.functie}</td>
       <td><span class="badge">${m.afdeling}</span></td>
       <td><span class="status ${statusClass}">${m.status}</span></td>
-      <td>${
-        m.email
-          ? `<a href="mailto:${m.email}" class="email-link">${m.email}</a>`
-          : `<span class="geen-email">geen e-mail</span>`
-      }
-      </td>
     `;
-
     tabelBody.appendChild(row);
   });
 }
 
 /* cards renderen */
-
 function renderCards(lijst) {
   cardContainer.innerHTML = "";
-
   lijst.forEach((m) => {
     const card = document.createElement("div");
     card.classList.add("team-card");
-
     const statusClass = "status-" + m.status.toLowerCase().replace(/\s/g, "");
-
     card.innerHTML = `
       <h3>${m.naam}</h3>
       <div class="functie">${m.functie}</div>
-
       <div class="card-row">
         <span class="card-label">Afdeling</span>
         <span class="badge">${m.afdeling}</span>
       </div>
-
       <div class="card-row">
         <span class="card-label">Status</span>
         <span class="status ${statusClass}">${m.status}</span>
-      </div>
-
-      <div class="card-row">
-        <span class="card-label">Contact</span>
-        <span>${
-          m.email
-            ? `<a href="mailto:${m.email}" class="email-link">${m.email}</a>`
-            : `<span class="geen-email">geen e-mail</span>`
-        }
-        </span>
       </div>
     `;
 
@@ -159,22 +124,17 @@ function renderCards(lijst) {
   });
 }
 
-/* Update scherm*/
-
+// Update scherm
 function update() {
   const filtered = filterMedewerkers();
   countLine.textContent = `${filtered.length} van ${medewerkers.length} collega's zichtbaar`;
-
   renderTabel(filtered);
   renderCards(filtered);
 }
 
-/* EVENTS */
-
+// Events
 zoekInput.addEventListener("input", update);
 afdelingSelect.addEventListener("change", update);
 statusSelect.addEventListener("change", update);
-
-/* START */
 
 laadMedewerkers();

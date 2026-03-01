@@ -22,8 +22,6 @@ body {
   flex-direction: column;
 }
 
-/* Navbar */
-
 .header {
   background: var(--color-background);
   border-bottom: 1px solid var(--color-border);
@@ -109,8 +107,6 @@ h1 {
   color: var(--color-text-muted);
 }
 
-/* Filters */
-
 .topbar {
   display: flex;
   gap: 12px;
@@ -134,15 +130,19 @@ input {
   min-width: 220px;
 }
 
-/* Table */
+.table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+}
 
 table {
   width: 100%;
   border-collapse: collapse;
   background: var(--color-card-bg);
-  border: 1px solid var(--color-border);
-  border-radius: 8px;
-  overflow: hidden;
+  min-width: 500px;
 }
 
 th,
@@ -166,14 +166,6 @@ tr:hover {
   background: #202330;
 }
 
-.badge {
-  font-size: 11px;
-  padding: 3px 8px;
-  border-radius: 4px;
-  background: #232734;
-  color: var(--color-text-muted);
-}
-
 .status {
   font-size: 11px;
   padding: 3px 8px;
@@ -181,35 +173,24 @@ tr:hover {
   display: inline-block;
 }
 
-.status-beschikbaar {
-  background: #1e3328;
-  color: #4ade80;
-}
-
-.status-bezet {
-  background: #332e1e;
-  color: #facc15;
-}
-
-.status-afwezig {
-  background: #331e22;
-  color: #f87171;
-}
-
-.status-oplocatie {
+.status-ingepland {
   background: #1e2733;
   color: #60a5fa;
 }
 
-.email-link {
-  color: var(--color-accent);
-  text-decoration: none;
-  font-size: 13px;
+.status-niet-gestart {
+  background: #232734;
+  color: var(--color-text-muted);
 }
 
-.geen-email {
-  font-size: 13px;
-  color: var(--color-text-muted);
+.status-gestart {
+  background: #1e3328;
+  color: #4ade80;
+}
+
+.status-geannuleerd {
+  background: #331e22;
+  color: #f87171;
 }
 
 .empty {
@@ -223,8 +204,6 @@ tr:hover {
   display: none;
 }
 
-/* Footer */
-
 .footer {
   margin-top: 60px;
   padding: 20px;
@@ -234,8 +213,6 @@ tr:hover {
   border-top: 1px solid var(--color-border);
   background: var(--color-card-bg);
 }
-
-/* Mobile */
 
 @media (max-width: 768px) {
   .hamburger {
@@ -278,50 +255,68 @@ tr:hover {
     display: block;
   }
 
-  /* Hide table */
+  .wrapper {
+    padding: 16px;
+  }
+
+  .table-wrapper,
   table {
     display: none;
   }
 
-  /* Show cards */
   .card-container {
     display: flex;
     flex-direction: column;
     gap: 12px;
   }
 
-  .team-card {
+  .les-card {
     background: var(--color-card-bg);
     border: 1px solid var(--color-border);
-    border-radius: 8px;
-    padding: 14px;
+    border-radius: 10px;
+    padding: 16px;
     display: flex;
     flex-direction: column;
+    gap: 10px;
+  }
+
+  .les-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
     gap: 8px;
   }
 
-  .team-card h3 {
+  .les-card-title {
     font-size: 14px;
+    font-weight: 600;
+    color: var(--color-text-primary);
+  }
+
+  .les-card-sub {
+    font-size: 12px;
+    color: var(--color-text-muted);
+    margin-top: 2px;
+  }
+
+  .les-card-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px 16px;
+  }
+
+  .les-card-field label {
+    display: block;
+    font-size: 10px;
     font-weight: 500;
-  }
-
-  .team-card .functie {
-    font-size: 12px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
     color: var(--color-text-muted);
+    margin-bottom: 2px;
   }
 
-  .card-row {
-    display: flex;
-    justify-content: space-between;
-    font-size: 12px;
-  }
-
-  .card-label {
-    color: var(--color-text-muted);
-  }
-
-  .badge,
-  .status {
-    margin-top: 4px;
+  .les-card-field span {
+    font-size: 13px;
+    color: var(--color-text-primary);
   }
 }
