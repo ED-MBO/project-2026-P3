@@ -1,9 +1,9 @@
 <?php
 require_once '../config.php';
 
-$sql = "SELECT Naam, Datum, Tijd, MinAantalPersonen, MaxAantalPersonen, Beschikbaarheid, Prijs
+$sql = "SELECT Naam, Prijs, Datum, Tijd, Beschikbaarheid
         FROM les
-        WHERE Isactief = 1
+        WHERE IsActief = 1
         ORDER BY Datum, Tijd";
 
 $stmt = $pdo->prepare($sql);
@@ -15,103 +15,116 @@ $aantalLessen = count($lessen);
 <!DOCTYPE html>
 <html lang="nl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lesoverzicht</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="Overzicht_lessen.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Les Beheren</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+  <link rel="stylesheet" href="Overzicht_lessen.css"/>
 </head>
 <body>
 
-<!-- Header met navbar -->
 <header class="header">
-    <div class="navbar-container">
-
-        <a href="../Informatie/home.php" class="logo">FitForFun</a>
-
-        <div class="hamburger">
-            <i class="fa-solid fa-bars"></i>
-        </div>
-
-        <nav class="navbar">
-            <div class="close-menu">
-                <i class="fa-solid fa-xmark"></i>
-            </div>
-
-            <ul class="navbar-nav">
-                <li><a class="nav-link" href="../Informatie/home.php">Home</a></li>
-                <li><a class="nav-link" href="../Account registratie/Account beheren/index.html">Account beheren</a></li>
-                <li><a class="nav-link" href="../Medewerker registratie/Medewerker beheren/index.html">Medewerker beheren</a></li>
-                <li><a class="nav-link" href="../Lid registratie/index.php">Lid beheren</a></li>
-                <li><a class="nav-link" href="Overzicht_lessen.php">Les beheren</a></li>
-                <li><a class="nav-link" href="../Reservering registratie/Reservering_Registratie.php">Reservering beheren</a></li>
-                <li><a class="nav-link" href="../Management Dashboard/Dashboard beheren/index.html">Dashboard beheren</a></li>
-            </ul>
-        </nav>
-
-        <div class="overlay"></div>
-    </div>
+  <div class="navbar-container">
+    <a href="../Informatie/home.php" class="logo">FitForFun</a>
+    <div class="hamburger"><i class="fa-solid fa-bars"></i></div>
+    <nav class="navbar">
+      <div class="close-menu"><i class="fa-solid fa-xmark"></i></div>
+      <ul class="navbar-nav">
+        <li><a class="nav-link" href="../Informatie/home.php">Home</a></li>
+        <li><a class="nav-link" href="../Account registratie/Account beheren/index.html">Account beheren</a></li>
+        <li><a class="nav-link" href="../Medewerker registratie/Medewerker beheren/index.html">Medewerker beheren</a></li>
+        <li><a class="nav-link" href="../Lid registratie/index.php">Lid beheren</a></li>
+        <li><a class="nav-link" href="Overzicht_lessen.php">Les beheren</a></li>
+        <li><a class="nav-link" href="../Reservering registratie/Reservering_Registratie.php">Reservering beheren</a></li>
+        <li><a class="nav-link" href="../Management Dashboard/Dashboard beheren/index.html">Dashboard beheren</a></li>
+      </ul>
+    </nav>
+    <div class="overlay"></div>
+  </div>
 </header>
 
-<!-- Hoofdinhoud -->
-<div class="inhoud">
+<div class="wrapper">
+  <h1>Lessen</h1>
+  <p class="sub" id="countLine"><?= $aantalLessen ?> van <?= $aantalLessen ?> lessen zichtbaar</p>
 
-    <!-- Titel -->
-    <div class="titel-blok">
-        <h1>Geplande Lessen</h1>
-        <p>Overzicht van alle actieve lessen</p>
-    </div>
+  <div class="topbar">
+    <input type="text" id="search" placeholder="Zoek op naam..."/>
+    <select id="statusFilter">
+      <option value="">Alle statussen</option>
+      <option value="Ingepland">Ingepland</option>
+      <option value="Niet gestart">Niet gestart</option>
+      <option value="Gestart">Gestart</option>
+      <option value="Geannuleerd">Geannuleerd</option>
+    </select>
+  </div>
 
-    <!-- Kaartje aantal lessen -->
-    <div class="stat-kaart">
-        <div class="getal"><?= $aantalLessen ?></div>
-        <div class="label">Actieve lessen</div>
-    </div>
+  <table>
+    <thead>
+      <tr>
+        <th>Naam</th>
+        <th>Prijs</th>
+        <th>Datum</th>
+        <th>Tijd</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody id="tabelBody">
+      <?php foreach ($lessen as $les): ?>
+        <?php
+          $statusRaw   = $les['Beschikbaarheid'];
+          $statusClass = 'status-' . strtolower(str_replace(' ', '', $statusRaw));
+        ?>
+        <tr data-naam="<?= htmlspecialchars(strtolower($les['Naam'])) ?>"
+            data-status="<?= htmlspecialchars($statusRaw) ?>">
+          <td><?= htmlspecialchars($les['Naam']) ?></td>
+          <td>€<?= number_format($les['Prijs'], 2, ',', '.') ?></td>
+          <td><?= htmlspecialchars(date('d-m-Y', strtotime($les['Datum']))) ?></td>
+          <td><?= htmlspecialchars(substr($les['Tijd'], 0, 5)) ?></td>
+          <td><span class="status <?= $statusClass ?>"><?= htmlspecialchars($statusRaw) ?></span></td>
+        </tr>
+      <?php endforeach; ?>
+    </tbody>
+  </table>
 
-    <!-- Zoekbalk -->
-    <div class="zoek-wrapper">
-        <input type="text" id="zoekbalk" placeholder="Zoek op lesnaam..." onkeyup="zoekLes()">
-    </div>
+  <div class="card-container" id="cardContainer">
+    <?php foreach ($lessen as $les): ?>
+      <?php
+        $statusRaw   = $les['Beschikbaarheid'];
+        $statusClass = 'status-' . strtolower(str_replace(' ', '', $statusRaw));
+      ?>
+      <div class="les-card"
+           data-naam="<?= htmlspecialchars(strtolower($les['Naam'])) ?>"
+           data-status="<?= htmlspecialchars($statusRaw) ?>">
+        <h3><?= htmlspecialchars($les['Naam']) ?></h3>
+        <div class="prijs">€<?= number_format($les['Prijs'], 2, ',', '.') ?></div>
+        <div class="card-row">
+          <span class="card-label">Datum</span>
+          <span><?= htmlspecialchars(date('d-m-Y', strtotime($les['Datum']))) ?></span>
+        </div>
+        <div class="card-row">
+          <span class="card-label">Tijd</span>
+          <span><?= htmlspecialchars(substr($les['Tijd'], 0, 5)) ?></span>
+        </div>
+        <div class="card-row">
+          <span class="card-label">Status</span>
+          <span class="status <?= $statusClass ?>"><?= htmlspecialchars($statusRaw) ?></span>
+        </div>
+      </div>
+    <?php endforeach; ?>
+  </div>
 
-    <!-- Tabel -->
-    <div class="table-wrapper">
-    <table id="lessenTabel">
-        <thead>
-            <tr>
-                <th>Naam</th>
-                <th>Datum</th>
-                <th>Tijd</th>
-                <th>Min / Max</th>
-                <th>Status</th>
-                <th>Prijs</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php if ($aantalLessen > 0): ?>
-                <?php foreach ($lessen as $les): ?>
-                <tr>
-                    <td data-label="Naam"><?= htmlspecialchars($les['Naam']) ?></td>
-                    <td data-label="Datum"><?= htmlspecialchars($les['Datum']) ?></td>
-                    <td data-label="Tijd"><?= htmlspecialchars(substr($les['Tijd'], 0, 5)) ?></td>
-                    <td data-label="Min / Max"><?= (int)$les['MinAantalPersonen'] ?> – <?= (int)$les['MaxAantalPersonen'] ?></td>
-                    <td data-label="Status"><?= htmlspecialchars($les['Beschikbaarheid']) ?></td>
-                    <td data-label="Prijs">€<?= number_format((float)$les['Prijs'], 2, ',', '.') ?></td>
-                </tr>
-                <?php endforeach; ?>
-            <?php else: ?>
-                <tr>
-                    <td colspan="6">Geen lessen gevonden.</td>
-                </tr>
-            <?php endif; ?>
-        </tbody>
-    </table>
-    </div>
-
+  <div id="emptyState" class="empty" style="display:none">
+    Geen resultaten. Probeer een andere zoekterm.
+  </div>
 </div>
 
-    <footer class="footer">© 2026 FitForFun — Alle rechten voorbehouden</footer>
+<footer class="footer">© 2026 FitForFun — Alle rechten voorbehouden</footer>
 
+<script>
+  const totaal = <?= $aantalLessen ?>;
+</script>
 <script src="Overzicht_lessen.js"></script>
+
 </body>
 </html>
