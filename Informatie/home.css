@@ -1,3 +1,9 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
 :root {
   --color-background: #111318;
   --color-card-bg: #1a1d26;
@@ -7,91 +13,82 @@
   --color-accent: #6b8cff;
 }
 
-/* Algemene stijl */
 body {
-    font-family: Inter, system-ui, Arial, sans-serif;
-    background: var(--color-background);
-    color: var(--color-text-primary);
-    margin: 0;
-    padding: 0;
-    min-height: 100vh;
+  font-family: Inter, system-ui, sans-serif;
+  background: var(--color-background);
+  color: var(--color-text-primary);
+  min-height: 100vh;
 }
 
 html, body {
-    overflow-x: hidden;
+  overflow-x: hidden;
 }
 
-/* HEADER / NAVBAR */
+/* Header / navbar – gelijk aan Account beheren */
 .header {
-    background: var(--color-background);
-    border-bottom: 1px solid var(--color-border);
-    position: sticky;
-    top: 0;
-    z-index: 50;
+  background: var(--color-background);
+  border-bottom: 1px solid var(--color-border);
+  position: sticky;
+  top: 0;
+  z-index: 50;
 }
 
 .navbar-container {
-    max-width: 1100px;
-    margin: auto;
-    padding: 20px 28px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  max-width: 1100px;
+  margin: auto;
+  padding: 20px 28px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .logo {
-    font-weight: 600;
-    font-size: 18px;
-    text-decoration: none;
-    color: var(--color-text-primary);
+  font-weight: 600;
+  font-size: 18px;
+  text-decoration: none;
+  color: var(--color-text-primary);
 }
 
 .navbar {
-    display: flex;
+  display: flex;
 }
 
 .navbar-nav {
-    display: flex;
-    list-style: none;
-    gap: 22px;
-    margin: 0;
-    padding: 0;
+  display: flex;
+  list-style: none;
+  gap: 22px;
 }
 
 .nav-link {
-    text-decoration: none;
-    font-size: 14px;
-    color: var(--color-text-muted);
-    transition: 0.2s ease;
+  text-decoration: none;
+  font-size: 14px;
+  color: var(--color-text-muted);
+  transition: 0.2s ease;
 }
 
 .nav-link:hover {
-    color: var(--color-text-primary);
+  color: var(--color-text-primary);
 }
 
-/* Hamburger */
 .hamburger {
-    display: none;
-    font-size: 22px;
-    cursor: pointer;
-    color: var(--color-text-primary);
+  display: none;
+  font-size: 22px;
+  cursor: pointer;
 }
 
 .close-menu {
-    display: none;
-    font-size: 22px;
-    cursor: pointer;
-    align-self: flex-end;
-    color: var(--color-text-primary);
+  display: none;
+  font-size: 22px;
+  cursor: pointer;
+  align-self: flex-end;
 }
 
-/* Overlay */
 .overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.6);
-    display: none;
-    z-index: 40;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: none;
+  z-index: 40;
 }
 
 /* Mobile */
@@ -261,11 +258,11 @@ html, body {
     margin-top: 60px;
     padding: 20px;
     text-align: center;
-    font-size: 12px;
+    font-size: 11px;
     color: var(--color-text-muted);
     border-top: 1px solid var(--color-border);
     background: var(--color-card-bg);
-}
+  }
 
 /* Responsive */
 @media (max-width: 600px) {

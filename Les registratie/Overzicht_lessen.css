@@ -1,3 +1,9 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
 :root {
   --color-background: #111318;
   --color-card-bg: #1a1d26;
@@ -7,21 +13,18 @@
   --color-accent: #6b8cff;
 }
 
-/* Algemene stijl */
 body {
-    font-family: Inter, system-ui, Arial, sans-serif;
-    background: var(--color-background);
-    color: var(--color-text-primary);
-    margin: 0;
-    padding: 0;
-    min-height: 100vh;
+  font-family: Inter, system-ui, sans-serif;
+  background: var(--color-background);
+  color: var(--color-text-primary);
+  min-height: 100vh;
 }
 
 html, body {
     overflow-x: hidden;
 }
 
-/* HEADER / NAVBAR */
+/* Header / navbar – gelijk aan Account beheren */
 .header {
     background: var(--color-background);
     border-bottom: 1px solid var(--color-border);
@@ -51,11 +54,9 @@ html, body {
 }
 
 .navbar-nav {
-    display: flex;
-    list-style: none;
-    gap: 22px;
-    margin: 0;
-    padding: 0;
+  display: flex;
+  list-style: none;
+  gap: 22px;
 }
 
 .nav-link {
@@ -69,20 +70,17 @@ html, body {
     color: var(--color-text-primary);
 }
 
-/* Hamburger */
 .hamburger {
-    display: none;
-    font-size: 22px;
-    cursor: pointer;
-    color: var(--color-text-primary);
+  display: none;
+  font-size: 22px;
+  cursor: pointer;
 }
 
 .close-menu {
-    display: none;
-    font-size: 22px;
-    cursor: pointer;
-    align-self: flex-end;
-    color: var(--color-text-primary);
+  display: none;
+  font-size: 22px;
+  cursor: pointer;
+  align-self: flex-end;
 }
 
 /* Overlay */
@@ -316,8 +314,8 @@ tr:hover {
     margin-top: 60px;
     padding: 20px;
     text-align: center;
-    font-size: 12px;
+    font-size: 11px;
     color: var(--color-text-muted);
     border-top: 1px solid var(--color-border);
     background: var(--color-card-bg);
-}
+  }

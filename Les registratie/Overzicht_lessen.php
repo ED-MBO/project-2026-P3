@@ -18,6 +18,7 @@ $aantalLessen = count($lessen);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lesoverzicht</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="Overzicht_lessen.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
@@ -40,12 +41,12 @@ $aantalLessen = count($lessen);
 
             <ul class="navbar-nav">
                 <li><a class="nav-link" href="../Informatie/home.php">Home</a></li>
-                <li><a class="nav-link" href="../Informatie/profiel.php">Account beheren</a></li>
-                <li><a class="nav-link" href="#">Medewerker beheren</a></li>
-                <li><a class="nav-link" href="#">Lid beheren</a></li>
+                <li><a class="nav-link" href="../Account registratie/Account beheren/index.html">Account beheren</a></li>
+                <li><a class="nav-link" href="../Medewerker registratie/Medewerker beheren/index.html">Medewerker beheren</a></li>
+                <li><a class="nav-link" href="../Lid registratie/">Lid beheren</a></li>
                 <li><a class="nav-link" href="Overzicht_lessen.php">Les beheren</a></li>
                 <li><a class="nav-link" href="../Reservering registratie/Reservering_Registratie.php">Reservering beheren</a></li>
-                <li><a class="nav-link" href="../Informatie/home.php">Dashboard beheren</a></li>
+                <li><a class="nav-link" href="../Management Dashboard/Dashboard beheren/index.html">Dashboard beheren</a></li>
             </ul>
         </nav>
 
@@ -70,7 +71,7 @@ $aantalLessen = count($lessen);
 
     <!-- Zoekbalk -->
     <div class="zoek-wrapper">
-        <input type="text" id="zoekbalk" placeholder="🔍  Zoek op lesnaam..." onkeyup="zoekLes()">
+        <input type="text" id="zoekbalk" placeholder="Zoek op lesnaam..." onkeyup="zoekLes()">
     </div>
 
     <!-- Tabel -->
@@ -109,9 +110,7 @@ $aantalLessen = count($lessen);
 
 </div>
 
-<footer class="footer">
-    © 2026 FitForFun — Alle rechten voorbehouden
-</footer>
+    <footer class="footer">© 2026 FitForFun — Alle rechten voorbehouden</footer>
 
 <script src="Overzicht_lessen.js"></script>
 </body>
