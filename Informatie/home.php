@@ -34,7 +34,7 @@ require_once __DIR__ . '/../config.php';
                 <li><a class="nav-link" href="home.php">Home</a></li>
                 <li><a class="nav-link" href="../Account registratie/Account beheren/index.html">Account beheren</a></li>
                 <li><a class="nav-link" href="../Medewerker registratie/Medewerker beheren/index.html">Medewerker beheren</a></li>
-                <li><a class="nav-link" href="../Lid registratie/">Lid beheren</a></li>
+                <li><a class="nav-link" href="../Lid registratie/index.php">Lid beheren</a></li>
                 <li><a class="nav-link" href="../Les registratie/Overzicht_lessen.php">Les beheren</a></li>
                 <li><a class="nav-link" href="../Reservering registratie/Reservering_Registratie.php">Reservering beheren</a></li>
                 <li><a class="nav-link" href="../Management Dashboard/Dashboard beheren/index.html">Dashboard beheren</a></li>
