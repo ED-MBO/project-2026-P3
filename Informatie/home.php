@@ -1,5 +1,7 @@
 <?php
-require_once '../config.php';
+session_start();
+require_once __DIR__ . '/../config.php';
+
 ?>
 <!DOCTYPE html>
 <html lang="nl">
@@ -36,6 +38,7 @@ require_once '../config.php';
                 <li><a class="nav-link" href="../Les registratie/Overzicht_lessen.php">Les beheren</a></li>
                 <li><a class="nav-link" href="../Reservering registratie/Reservering_Registratie.php">Reservering beheren</a></li>
                 <li><a class="nav-link" href="../Management Dashboard/Dashboard beheren/index.html">Dashboard beheren</a></li>
+                <li><a class="nav-link nav-link-uitloggen" href="../uitloggen.php">Uitloggen</a></li>
             </ul>
         </nav>
 
@@ -44,45 +47,34 @@ require_once '../config.php';
 </header>
 
 <!-- Hoofdinhoud -->
-<div class="inhoud">
+<main class="inhoud">
 
     <div class="titel-blok">
-        <h1>Welkom bij FitForFun!</h1>
-        <p>Kies waar je naartoe wilt — snel toegang tot je workouts, challenges en profiel</p>
+        <h1>Welkom bij FitForFun</h1>
+        <p>Snel toegang tot workouts, challenges en je profiel</p>
     </div>
 
-    <div class="kaarten-grid">
-        <a href="../Les registratie/Overzicht_lessen.php" class="kaart kaart-workouts">
-            <div class="kaart-icoon">
-                <i class="fa-solid fa-dumbbell"></i>
-            </div>
+    <div class="home-kaarten">
+        <a href="../Les registratie/Overzicht_lessen.php" class="home-kaart">
+            <span class="home-kaart-icoon"><i class="fa-solid fa-dumbbell"></i></span>
             <h2>Workouts</h2>
-            <p>Bekijk en reserveer groepslessen zoals Yoga, Spinning en Zumba</p>
-            <span class="kaart-link">Ga naar workouts <i class="fa-solid fa-arrow-right"></i></span>
+            <p>Bekijk en beheer lessen en workouts</p>
         </a>
-
-        <a href="#" class="kaart kaart-challenges">
-            <div class="kaart-icoon">
-                <i class="fa-solid fa-trophy"></i>
-            </div>
+        <a href="#" class="home-kaart">
+            <span class="home-kaart-icoon"><i class="fa-solid fa-trophy"></i></span>
             <h2>Challenges</h2>
-            <p>Doe mee met uitdagingen en behaal je doelen</p>
-            <span class="kaart-link">Binnenkort beschikbaar <i class="fa-solid fa-clock"></i></span>
+            <p>Doe mee met challenges en behaal doelen</p>
         </a>
-
-        <a href="../Account registratie/Account beheren/index.html" class="kaart kaart-profiel">
-            <div class="kaart-icoon">
-                <i class="fa-solid fa-user"></i>
-            </div>
-            <h2>Accounten overzicht</h2>
-            <p>Bekijk het overzicht van alle accounts</p>
-            <span class="kaart-link">Ga naar accounten overzicht <i class="fa-solid fa-arrow-right"></i></span>
+        <a href="../Account registratie/Account beheren/index.html" class="home-kaart">
+            <span class="home-kaart-icoon"><i class="fa-solid fa-user"></i></span>
+            <h2>Mijn profiel</h2>
+            <p>Beheer je account en gegevens</p>
         </a>
     </div>
 
-</div>
+</main>
 
-    <footer class="footer">© 2026 FitForFun — Alle rechten voorbehouden</footer>
+<footer class="footer">© 2026 FitForFun — Alle rechten voorbehouden</footer>
 
 <script src="home.js"></script>
 </body>

@@ -18,13 +18,15 @@ body {
   background: var(--color-background);
   color: var(--color-text-primary);
   min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 html, body {
   overflow-x: hidden;
 }
 
-/* Header / navbar – gelijk aan Account beheren */
+/* Header / navbar – gelijk aan andere pagina's */
 .header {
   background: var(--color-background);
   border-bottom: 1px solid var(--color-border);
@@ -70,6 +72,14 @@ html, body {
   color: var(--color-text-primary);
 }
 
+.nav-link-uitloggen {
+  color: var(--color-accent);
+}
+
+.nav-link-uitloggen:hover {
+  color: #8ba3ff;
+}
+
 .hamburger {
   display: none;
   font-size: 22px;
@@ -91,194 +101,181 @@ html, body {
   z-index: 40;
 }
 
-/* Mobile */
+/* Mobile navbar */
 @media (max-width: 768px) {
-    .hamburger {
-        display: block;
-    }
+  .hamburger {
+    display: block;
+  }
 
-    .navbar {
-        position: fixed;
-        top: 0;
-        right: -100%;
-        width: 280px;
-        height: 100vh;
-        background: var(--color-card-bg);
-        border-left: 1px solid var(--color-border);
-        flex-direction: column;
-        padding: 24px;
-        transition: right 0.3s ease;
-        z-index: 50;
-    }
+  .navbar {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: 280px;
+    height: 100vh;
+    background: var(--color-card-bg);
+    border-left: 1px solid var(--color-border);
+    flex-direction: column;
+    padding: 24px;
+    transition: right 0.3s ease;
+    z-index: 50;
+  }
 
-    .navbar.active {
-        right: 0;
-    }
+  .navbar.active {
+    right: 0;
+  }
 
-    .navbar-nav {
-        flex-direction: column;
-        gap: 18px;
-        margin-top: 40px;
-    }
+  .navbar-nav {
+    flex-direction: column;
+    gap: 18px;
+    margin-top: 40px;
+  }
 
-    .nav-link {
-        color: var(--color-text-primary);
-    }
+  .nav-link {
+    color: var(--color-text-primary);
+  }
 
-    .nav-link:hover {
-        color: var(--color-accent);
-    }
+  .nav-link:hover {
+    color: var(--color-accent);
+  }
 
-    .close-menu {
-        display: block;
-    }
+  .close-menu {
+    display: block;
+  }
 }
 
 /* Hoofdinhoud */
 .inhoud {
-    margin-top: 30px;
-    padding: 30px 20px;
-    max-width: 1000px;
-    margin-left: auto;
-    margin-right: auto;
+  flex: 1;
+  margin-top: 30px;
+  padding: 30px 20px;
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
 }
 
-/* Titel blok */
 .titel-blok {
-    text-align: center;
-    margin-bottom: 40px;
+  text-align: center;
+  margin-bottom: 35px;
 }
 
 .titel-blok h1 {
-    font-size: 28px;
-    color: var(--color-text-primary);
-    margin-bottom: 8px;
+  font-size: 30px;
+  color: var(--color-text-primary);
+  margin-bottom: 5px;
 }
 
 .titel-blok p {
-    font-size: 15px;
-    color: var(--color-text-muted);
-    margin: 0;
+  font-size: 14px;
+  color: var(--color-text-muted);
+  margin: 0;
 }
 
-/* Kaarten grid */
-.kaarten-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 24px;
+/* Home kaarten grid */
+.home-kaarten {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-top: 20px;
 }
 
-.kaart {
-    display: flex;
-    flex-direction: column;
-    background: var(--color-card-bg);
-    border: 1px solid var(--color-border);
-    border-radius: 12px;
-    padding: 28px;
-    text-decoration: none;
-    color: var(--color-text-primary);
-    transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+.home-kaart {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  background: var(--color-card-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  padding: 28px 20px;
+  text-decoration: none;
+  color: var(--color-text-primary);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
 }
 
-.kaart:hover {
-    transform: translateY(-4px);
-    border-color: var(--color-accent);
-    box-shadow: 0 8px 24px rgba(107, 140, 255, 0.15);
+.home-kaart:hover {
+  border-color: var(--color-accent);
+  box-shadow: 0 4px 12px rgba(107, 140, 255, 0.15);
 }
 
-.kaart-icoon {
-    width: 56px;
-    height: 56px;
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 24px;
-    margin-bottom: 18px;
+.home-kaart-icoon {
+  width: 56px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(107, 140, 255, 0.15);
+  border-radius: 12px;
+  margin-bottom: 16px;
+  font-size: 24px;
+  color: var(--color-accent);
 }
 
-.kaart-workouts .kaart-icoon {
-    background: rgba(107, 140, 255, 0.2);
-    color: var(--color-accent);
+.home-kaart h2 {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: var(--color-text-primary);
 }
 
-.kaart-challenges .kaart-icoon {
-    background: rgba(245, 185, 66, 0.2);
-    color: #f5b942;
+.home-kaart p {
+  font-size: 13px;
+  color: var(--color-text-muted);
+  margin: 0;
+  line-height: 1.4;
 }
 
-.kaart-profiel .kaart-icoon {
-    background: rgba(111, 207, 151, 0.2);
-    color: #6fcf97;
-}
-
-.kaart h2 {
-    font-size: 20px;
-    margin: 0 0 10px 0;
-}
-
-.kaart p {
-    font-size: 14px;
-    color: var(--color-text-muted);
-    line-height: 1.5;
-    margin: 0 0 16px 0;
-    flex: 1;
-}
-
-.kaart-link {
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--color-accent);
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.kaart-challenges .kaart-link {
-    color: var(--color-text-muted);
-}
-
-/* Profiel pagina kaart */
-.profiel-kaart {
-    max-width: 400px;
-    margin: 0 auto;
-}
-
-.profiel-kaart:hover {
-    transform: none;
-}
-
-.profiel-kaart .kaart-link {
-    margin-top: 8px;
-    text-decoration: none;
-}
-
-/* Footer */
-.footer {
-    margin-top: 60px;
-    padding: 20px;
-    text-align: center;
-    font-size: 11px;
-    color: var(--color-text-muted);
-    border-top: 1px solid var(--color-border);
-    background: var(--color-card-bg);
+/* Responsive: tablet */
+@media (max-width: 768px) {
+  .home-kaarten {
+    grid-template-columns: 1fr;
+    gap: 18px;
   }
 
-/* Responsive */
+  .inhoud {
+    padding: 24px 16px;
+  }
+
+  .titel-blok h1 {
+    font-size: 24px;
+  }
+}
+
+/* Responsive: telefoon */
 @media (max-width: 600px) {
-    .inhoud {
-        padding: 16px 12px;
-    }
+  .inhoud {
+    padding: 16px 12px;
+    max-width: 100%;
+  }
 
-    .titel-blok h1 {
-        font-size: 22px;
-    }
+  .titel-blok h1 {
+    font-size: 20px;
+  }
 
-    .titel-blok p {
-        font-size: 14px;
-    }
+  .home-kaart {
+    padding: 22px 16px;
+  }
 
-    .kaarten-grid {
-        grid-template-columns: 1fr;
-    }
+  .home-kaart-icoon {
+    width: 48px;
+    height: 48px;
+    font-size: 20px;
+  }
+
+  .home-kaart h2 {
+    font-size: 16px;
+  }
+}
+
+/* Footer – onderaan de pagina */
+.footer {
+  margin-top: auto;
+  padding: 20px;
+  text-align: center;
+  font-size: 11px;
+  color: var(--color-text-muted);
+  border-top: 1px solid var(--color-border);
+  background: var(--color-card-bg);
 }
