@@ -39,15 +39,11 @@ $ingelogd = !empty($_SESSION['ingelogd']) && !empty($_SESSION['gebruiker_id']);
                 <li><a class="nav-link" href="../Les registratie/Overzicht_lessen.php">Les beheren</a></li>
                 <li><a class="nav-link" href="../Reservering registratie/Reservering_Registratie.php">Reservering beheren</a></li>
                 <li><a class="nav-link" href="../Management Dashboard/Dashboard beheren/index.html">Dashboard beheren</a></li>
-<<<<<<< HEAD
                 <?php if ($ingelogd): ?>
                 <li><a class="nav-link nav-link-uitloggen" href="../uitloggen.php">Uitloggen</a></li>
                 <?php else: ?>
                 <li><a class="nav-link nav-link-uitloggen" href="../login.php">Inloggen</a></li>
                 <?php endif; ?>
-=======
-                <li><a class="nav-link nav-link-uitloggen" href="../uitloggen.php">Uitloggen</a></li>
->>>>>>> 61d7e87ac8244bcebf92044f513a32be7a62a6a0
             </ul>
         </nav>
 

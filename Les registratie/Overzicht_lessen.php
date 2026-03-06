@@ -2,16 +2,12 @@
 session_start();
 require_once '../config.php';
 
-<<<<<<< HEAD
 if (empty($_SESSION['ingelogd']) || empty($_SESSION['gebruiker_id'])) {
     header('Location: ../login.php');
     exit();
 }
 
 $sql = "SELECT Naam, Datum, Tijd, MinAantalPersonen, MaxAantalPersonen, Beschikbaarheid, Prijs
-=======
-$sql = "SELECT Naam, Prijs, Datum, Tijd, Beschikbaarheid
->>>>>>> 61d7e87ac8244bcebf92044f513a32be7a62a6a0
         FROM les
         WHERE IsActief = 1
         ORDER BY Datum, Tijd";
