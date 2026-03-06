@@ -1,5 +1,11 @@
 <?php
+session_start();
 require_once '../config.php';
+
+if (empty($_SESSION['ingelogd']) || empty($_SESSION['gebruiker_id'])) {
+    header('Location: ../login.php');
+    exit();
+}
 
 // Haal alle actieve reserveringen op
 $sql = "SELECT Voornaam, Tussenvoegsel, Achternaam, Datum, Tijd, Reserveringstatus

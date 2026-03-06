@@ -1,5 +1,11 @@
 <?php
+session_start();
 require_once '../config.php';
+
+if (empty($_SESSION['ingelogd']) || empty($_SESSION['gebruiker_id'])) {
+    header('Location: ../login.php');
+    exit();
+}
 
 $sql = "SELECT Naam, Datum, Tijd, MinAantalPersonen, MaxAantalPersonen, Beschikbaarheid, Prijs
         FROM les
