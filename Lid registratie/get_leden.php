@@ -1,4 +1,9 @@
 <?php
+session_start();
+if (empty($_SESSION['ingelogd']) || empty($_SESSION['gebruiker_id'])) {
+    header('Location: ../login.php');
+    exit();
+}
 require_once __DIR__ . '/../config.php';
 
 header('Content-Type: application/json; charset=utf-8');

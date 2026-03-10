@@ -1,3 +1,11 @@
+<?php
+session_start();
+require_once __DIR__ . '/../../config.php';
+if (empty($_SESSION['ingelogd']) || empty($_SESSION['gebruiker_id'])) {
+    header('Location: ../../login.php');
+    exit();
+}
+?>
 <!doctype html>
 <html lang="nl">
   <head>
@@ -27,12 +35,12 @@
           </div>
           <ul class="navbar-nav">
                      <li><a class="nav-link" href="../../Informatie/home.php">Home</a></li>
-            <li><a class="nav-link" href="../../Account registratie/Account beheren/index.html">Account beheren</a></li>
-            <li><a class="nav-link" href="../../Medewerker registratie/Medewerker beheren/index.html">Medewerker beheren</a></li>
+            <li><a class="nav-link" href="../../Account registratie/Account beheren/index.php">Account beheren</a></li>
+            <li><a class="nav-link" href="../../Medewerker registratie/Medewerker beheren/index.php">Medewerker beheren</a></li>
             <li><a class="nav-link" href="../../Lid registratie/index.php">Lid beheren</a></li>
             <li><a class="nav-link" href="../../Les registratie/Overzicht_lessen.php">Les beheren</a></li>
             <li><a class="nav-link" href="../../Reservering registratie/Reservering_Registratie.php">Reservering beheren</a></li>
-            <li><a class="nav-link" href="../../Management Dashboard/Dashboard beheren/index.html">Dashboard beheren</a></li>
+            <li><a class="nav-link" href="../../Management Dashboard/Dashboard beheren/index.php">Dashboard beheren</a></li>
           </ul>
         </nav>
         <div class="overlay"></div>

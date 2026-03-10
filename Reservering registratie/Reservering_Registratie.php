@@ -2,15 +2,12 @@
 session_start();
 require_once '../config.php';
 
-<<<<<<< HEAD
 if (empty($_SESSION['ingelogd']) || empty($_SESSION['gebruiker_id'])) {
     header('Location: ../login.php');
     exit();
 }
 
 // Haal alle actieve reserveringen op
-=======
->>>>>>> 61d7e87ac8244bcebf92044f513a32be7a62a6a0
 $sql = "SELECT Voornaam, Tussenvoegsel, Achternaam, Datum, Tijd, Reserveringstatus
         FROM reservering
         WHERE IsActief = 1
@@ -42,12 +39,12 @@ $aantalReserveringen = count($reserveringen);
       <div class="close-menu"><i class="fa-solid fa-xmark"></i></div>
       <ul class="navbar-nav">
         <li><a class="nav-link" href="../Informatie/home.php">Home</a></li>
-        <li><a class="nav-link" href="../Account registratie/Account beheren/index.html">Account beheren</a></li>
-        <li><a class="nav-link" href="../Medewerker registratie/Medewerker beheren/index.html">Medewerker beheren</a></li>
+        <li><a class="nav-link" href="../Account registratie/Account beheren/index.php">Account beheren</a></li>
+        <li><a class="nav-link" href="../Medewerker registratie/Medewerker beheren/index.php">Medewerker beheren</a></li>
         <li><a class="nav-link" href="../Lid registratie/index.php">Lid beheren</a></li>
         <li><a class="nav-link" href="../Les registratie/Overzicht_lessen.php">Les beheren</a></li>
         <li><a class="nav-link" href="Reservering_Registratie.php">Reservering beheren</a></li>
-        <li><a class="nav-link" href="../Management Dashboard/Dashboard beheren/index.html">Dashboard beheren</a></li>
+        <li><a class="nav-link" href="../Management Dashboard/Dashboard beheren/index.php">Dashboard beheren</a></li>
       </ul>
     </nav>
     <div class="overlay"></div>

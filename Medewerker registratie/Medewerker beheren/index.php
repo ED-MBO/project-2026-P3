@@ -1,3 +1,11 @@
+<?php
+session_start();
+require_once __DIR__ . '/../../config.php';
+if (empty($_SESSION['ingelogd']) || empty($_SESSION['gebruiker_id'])) {
+    header('Location: ../../login.php');
+    exit();
+}
+?>
 <!doctype html>
 <html lang="nl">
   <head>
@@ -31,7 +39,7 @@
             <li>
               <a
                 class="nav-link"
-                href="../../Account registratie/Account beheren/index.html"
+                href="../../Account registratie/Account beheren/index.php"
                 >Account beheren</a
               >
             </li>
@@ -58,7 +66,7 @@
             <li>
               <a
                 class="nav-link"
-                href="../../Management Dashboard/Dashboard beheren/index.html"
+                href="../../Management Dashboard/Dashboard beheren/index.php"
                 >Dashboard beheren</a
               >
             </li>
