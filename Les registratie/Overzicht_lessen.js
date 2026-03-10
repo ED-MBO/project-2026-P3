@@ -35,17 +35,17 @@ function filterLessen() {
   let zichtbaar = 0;
 
   rijen.forEach((rij) => {
-    const naamOk   = !zoek   || rij.dataset.naam.includes(zoek);
-    const statusOk = !status || rij.dataset.status === status;
-    const toon = naamOk && statusOk;
+    const achternaamOk = !zoek || (rij.dataset.achternaam && rij.dataset.achternaam.includes(zoek));
+    const statusOk    = !status || rij.dataset.status === status;
+    const toon = achternaamOk && statusOk;
     rij.style.display = toon ? '' : 'none';
     if (toon) zichtbaar++;
   });
 
   cards.forEach((card) => {
-    const naamOk   = !zoek   || card.dataset.naam.includes(zoek);
-    const statusOk = !status || card.dataset.status === status;
-    card.style.display = (naamOk && statusOk) ? '' : 'none';
+    const achternaamOk = !zoek || (card.dataset.achternaam && card.dataset.achternaam.includes(zoek));
+    const statusOk    = !status || card.dataset.status === status;
+    card.style.display = (achternaamOk && statusOk) ? '' : 'none';
   });
 
   countLine.textContent = `${zichtbaar} van ${totaal} lessen zichtbaar`;
