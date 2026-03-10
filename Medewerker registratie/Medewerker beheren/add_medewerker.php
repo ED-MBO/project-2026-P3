@@ -1,4 +1,9 @@
 <?php
+session_start();
+if (empty($_SESSION['ingelogd']) || empty($_SESSION['gebruiker_id'])) {
+    header('Location: ../../login.php');
+    exit();
+}
 require "../../config.php";
 
 if($_SERVER["REQUEST_METHOD"] === "POST"){
@@ -23,7 +28,7 @@ if($_SERVER["REQUEST_METHOD"] === "POST"){
         ":n" => $nummer
     ]);
 
-    header("Location: index.html");
+    header("Location: index.php");
     exit;
 
 }

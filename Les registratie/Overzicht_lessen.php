@@ -7,10 +7,11 @@ if (empty($_SESSION['ingelogd']) || empty($_SESSION['gebruiker_id'])) {
     exit();
 }
 
-$sql = "SELECT Naam, Datum, Tijd, MinAantalPersonen, MaxAantalPersonen, Beschikbaarheid, Prijs
-        FROM les
-        WHERE IsActief = 1
-        ORDER BY Datum, Tijd";
+$sql = "SELECT r.Voornaam, r.Tussenvoegsel, r.Achternaam, r.Datum, r.Tijd, r.Reserveringstatus, l.Naam AS LesNaam, l.Prijs, l.Beschikbaarheid
+        FROM reservering r
+        LEFT JOIN les l ON l.Datum = r.Datum AND l.Tijd = r.Tijd AND l.IsActief = 1
+        WHERE r.IsActief = 1
+        ORDER BY r.Datum, r.Tijd";
 
 $stmt = $pdo->prepare($sql);
 $stmt->execute();
@@ -38,12 +39,12 @@ $aantalLessen = count($lessen);
       <div class="close-menu"><i class="fa-solid fa-xmark"></i></div>
       <ul class="navbar-nav">
         <li><a class="nav-link" href="../Informatie/home.php">Home</a></li>
-        <li><a class="nav-link" href="../Account registratie/Account beheren/index.html">Account beheren</a></li>
-        <li><a class="nav-link" href="../Medewerker registratie/Medewerker beheren/index.html">Medewerker beheren</a></li>
+        <li><a class="nav-link" href="../Account registratie/Account beheren/index.php">Account beheren</a></li>
+        <li><a class="nav-link" href="../Medewerker registratie/Medewerker beheren/index.php">Medewerker beheren</a></li>
         <li><a class="nav-link" href="../Lid registratie/index.php">Lid beheren</a></li>
         <li><a class="nav-link" href="Overzicht_lessen.php">Les beheren</a></li>
         <li><a class="nav-link" href="../Reservering registratie/Reservering_Registratie.php">Reservering beheren</a></li>
-        <li><a class="nav-link" href="../Management Dashboard/Dashboard beheren/index.html">Dashboard beheren</a></li>
+        <li><a class="nav-link" href="../Management Dashboard/Dashboard beheren/index.php">Dashboard beheren</a></li>
       </ul>
     </nav>
     <div class="overlay"></div>
@@ -55,7 +56,7 @@ $aantalLessen = count($lessen);
   <p class="sub" id="countLine"><?= $aantalLessen ?> van <?= $aantalLessen ?> lessen zichtbaar</p>
 
   <div class="topbar">
-    <input type="text" id="search" placeholder="Zoek op naam..."/>
+    <input type="text" id="search" placeholder="Zoek op achternaam..."/>
     <select id="statusFilter">
       <option value="">Alle statussen</option>
       <option value="Ingepland">Ingepland</option>
@@ -68,7 +69,9 @@ $aantalLessen = count($lessen);
   <table>
     <thead>
       <tr>
-        <th>Naam</th>
+        <th>Voornaam</th>
+        <th>Achternaam</th>
+        <th>Les</th>
         <th>Prijs</th>
         <th>Datum</th>
         <th>Tijd</th>
@@ -78,13 +81,17 @@ $aantalLessen = count($lessen);
     <tbody id="tabelBody">
       <?php foreach ($lessen as $les): ?>
         <?php
-          $statusRaw   = $les['Beschikbaarheid'];
+          $statusRaw   = $les['Reserveringstatus'] ?? $les['Beschikbaarheid'] ?? '';
           $statusClass = 'status-' . strtolower(str_replace(' ', '', $statusRaw));
+          $achternaam  = $les['Achternaam'] ?? '';
+          $voornaam  = $les['Voornaam'] ?? '';
         ?>
-        <tr data-naam="<?= htmlspecialchars(strtolower($les['Naam'])) ?>"
+        <tr data-achternaam="<?= htmlspecialchars(strtolower($achternaam)) ?>"
             data-status="<?= htmlspecialchars($statusRaw) ?>">
-          <td><?= htmlspecialchars($les['Naam']) ?></td>
-          <td>€<?= number_format($les['Prijs'], 2, ',', '.') ?></td>
+          <td><?= htmlspecialchars($voornaam) ?></td>
+          <td><?= htmlspecialchars($achternaam) ?></td>
+          <td><?= htmlspecialchars($les['LesNaam'] ?? '—') ?></td>
+          <td>€<?= number_format((float)($les['Prijs'] ?? 0), 2, ',', '.') ?></td>
           <td><?= htmlspecialchars(date('d-m-Y', strtotime($les['Datum']))) ?></td>
           <td><?= htmlspecialchars(substr($les['Tijd'], 0, 5)) ?></td>
           <td><span class="status <?= $statusClass ?>"><?= htmlspecialchars($statusRaw) ?></span></td>
@@ -96,14 +103,15 @@ $aantalLessen = count($lessen);
   <div class="card-container" id="cardContainer">
     <?php foreach ($lessen as $les): ?>
       <?php
-        $statusRaw   = $les['Beschikbaarheid'];
+        $statusRaw   = $les['Reserveringstatus'] ?? $les['Beschikbaarheid'] ?? '';
         $statusClass = 'status-' . strtolower(str_replace(' ', '', $statusRaw));
+        $achternaam  = $les['Achternaam'] ?? '';
       ?>
       <div class="les-card"
-           data-naam="<?= htmlspecialchars(strtolower($les['Naam'])) ?>"
+           data-achternaam="<?= htmlspecialchars(strtolower($achternaam)) ?>"
            data-status="<?= htmlspecialchars($statusRaw) ?>">
-        <h3><?= htmlspecialchars($les['Naam']) ?></h3>
-        <div class="prijs">€<?= number_format($les['Prijs'], 2, ',', '.') ?></div>
+        <h3><?= htmlspecialchars($achternaam) ?></h3>
+        <div class="prijs"><?= htmlspecialchars($les['LesNaam'] ?? '—') ?> — €<?= number_format((float)($les['Prijs'] ?? 0), 2, ',', '.') ?></div>
         <div class="card-row">
           <span class="card-label">Datum</span>
           <span><?= htmlspecialchars(date('d-m-Y', strtotime($les['Datum']))) ?></span>

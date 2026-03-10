@@ -33,12 +33,12 @@ $ingelogd = !empty($_SESSION['ingelogd']) && !empty($_SESSION['gebruiker_id']);
 
             <ul class="navbar-nav">
                 <li><a class="nav-link" href="home.php">Home</a></li>
-                <li><a class="nav-link" href="../Account registratie/Account beheren/index.html">Account beheren</a></li>
-                <li><a class="nav-link" href="../Medewerker registratie/Medewerker beheren/index.html">Medewerker beheren</a></li>
+                <li><a class="nav-link" href="../Account registratie/Account beheren/index.php">Account beheren</a></li>
+                <li><a class="nav-link" href="../Medewerker registratie/Medewerker beheren/index.php">Medewerker beheren</a></li>
                 <li><a class="nav-link" href="../Lid registratie/index.php">Lid beheren</a></li>
                 <li><a class="nav-link" href="../Les registratie/Overzicht_lessen.php">Les beheren</a></li>
                 <li><a class="nav-link" href="../Reservering registratie/Reservering_Registratie.php">Reservering beheren</a></li>
-                <li><a class="nav-link" href="../Management Dashboard/Dashboard beheren/index.html">Dashboard beheren</a></li>
+                <li><a class="nav-link" href="../Management Dashboard/Dashboard beheren/index.php">Dashboard beheren</a></li>
                 <?php if ($ingelogd): ?>
                 <li><a class="nav-link nav-link-uitloggen" href="../uitloggen.php">Uitloggen</a></li>
                 <?php else: ?>
@@ -70,7 +70,7 @@ $ingelogd = !empty($_SESSION['ingelogd']) && !empty($_SESSION['gebruiker_id']);
             <h2>Challenges</h2>
             <p>Doe mee met challenges en behaal doelen</p>
         </a>
-        <a href="../Account registratie/Account beheren/index.html" class="home-kaart">
+        <a href="../Account registratie/Account beheren/index.php" class="home-kaart">
             <span class="home-kaart-icoon"><i class="fa-solid fa-user"></i></span>
             <h2>Mijn profiel</h2>
             <p>Beheer je account en gegevens</p>
