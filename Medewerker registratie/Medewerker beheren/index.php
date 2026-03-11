@@ -29,38 +29,20 @@
               <a class="nav-link" href="../../Informatie/home.php">Home</a>
             </li>
             <li>
-              <a
-                class="nav-link"
-                href="../../Account registratie/Account beheren/index.html"
-                >Account beheren</a
-              >
+              <a class="nav-link" href="../../Account registratie/Account beheren/index.html">Account beheren</a>
             </li>
             <li><a class="nav-link" href="index.php">Medewerker beheren</a></li>
             <li>
-              <a class="nav-link" href="../../Lid registratie/index.php"
-                >Lid beheren</a
-              >
+              <a class="nav-link" href="../../Lid registratie/index.php">Lid beheren</a>
             </li>
             <li>
-              <a
-                class="nav-link"
-                href="../../Les registratie/Overzicht_lessen.php"
-                >Les beheren</a
-              >
+              <a class="nav-link" href="../../Les registratie/Overzicht_lessen.php">Les beheren</a>
             </li>
             <li>
-              <a
-                class="nav-link"
-                href="../../Reservering registratie/Reservering_Registratie.php"
-                >Reservering beheren</a
-              >
+              <a class="nav-link" href="../../Reservering registratie/Reservering_Registratie.php">Reservering beheren</a>
             </li>
             <li>
-              <a
-                class="nav-link"
-                href="../../Management Dashboard/Dashboard beheren/index.html"
-                >Dashboard beheren</a
-              >
+              <a class="nav-link" href="../../Management Dashboard/Dashboard beheren/index.html">Dashboard beheren</a>
             </li>
           </ul>
         </nav>
@@ -134,9 +116,7 @@
         </div>
         <form method="POST" action="add_medewerker.php">
           <div class="form-group">
-            <label for="voornaam"
-              >Voornaam <span class="required">*</span></label
-            >
+            <label for="voornaam">Voornaam <span class="required">*</span></label>
             <input
               type="text"
               id="voornaam"
@@ -155,9 +135,7 @@
             />
           </div>
           <div class="form-group">
-            <label for="achternaam"
-              >Achternaam <span class="required">*</span></label
-            >
+            <label for="achternaam">Achternaam <span class="required">*</span></label>
             <input
               type="text"
               id="achternaam"
@@ -167,14 +145,14 @@
             />
           </div>
           <div class="form-group">
-            <label for="functie">Functie <span class="required">*</span></label>
-            <input
-              type="text"
-              id="functie"
-              name="functie"
-              placeholder="Bijv. Trainer"
-              required
-            />
+            <label for="rol">Rol <span class="required">*</span></label>
+            <select id="rol" name="rol" required>
+              <option value="" disabled selected>Kies een rol...</option>
+              <option value="Lid">Lid</option>
+              <option value="Medewerker">Medewerker</option>
+              <option value="Administrator">Administrator</option>
+              <option value="Gastgebruiker">Gastgebruiker</option>
+            </select>
           </div>
           <div class="modal-footer">
             <button type="submit" class="btn-primary">
