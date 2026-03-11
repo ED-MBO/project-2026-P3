@@ -1,17 +1,13 @@
 let ledenChart = null;
 let jarenGeladen = false;
 
-// huidig jaar alvast in dropdown zetten
 (() => {
   const select = document.getElementById("jaarSelect");
   if (!select) return;
-
   const huidigJaar = new Date().getFullYear();
   const option = document.createElement("option");
-
   option.value = huidigJaar;
   option.textContent = huidigJaar;
-
   select.appendChild(option);
 })();
 
@@ -19,7 +15,6 @@ function toonFout(msg) {
   const el = document.getElementById("alertEl");
   const tekst = document.getElementById("alertMsg");
   if (!el || !tekst) return;
-
   tekst.textContent = msg;
   el.style.display = "flex";
 }
@@ -50,14 +45,9 @@ function vulKaarten(data) {
 function maakGroeiBadge(delta, percentage) {
   const badge = document.createElement("span");
   badge.style.cssText = `
-    display:inline-flex;
-    align-items:center;
-    gap:4px;
-    font-size:11px;
-    padding:2px 8px;
-    border-radius:4px;
+    display:inline-flex;align-items:center;gap:4px;
+    font-size:11px;padding:2px 8px;border-radius:4px;
   `;
-
   const icon = document.createElement("i");
   const waarde = document.createElement("span");
 
@@ -77,7 +67,6 @@ function maakGroeiBadge(delta, percentage) {
     icon.className = "fa-solid fa-minus";
     waarde.textContent = "—";
   }
-
   badge.append(icon, waarde);
   return badge;
 }
@@ -93,20 +82,16 @@ function vulTabel(labels, totaal, nieuw) {
     const percentage = vorig ? ((delta / vorig) * 100).toFixed(1) : null;
 
     const tr = document.createElement("tr");
-
     const tdLabel = document.createElement("td");
     tdLabel.textContent = label;
-
-    const tdTotaal = document.createElement("td");
-    tdTotaal.textContent = totaal[i];
-
+    const tdTot = document.createElement("td");
+    tdTot.textContent = totaal[i];
     const tdNieuw = document.createElement("td");
     tdNieuw.textContent = nieuw[i];
-
     const tdGroei = document.createElement("td");
     tdGroei.appendChild(maakGroeiBadge(delta, percentage));
 
-    tr.append(tdLabel, tdTotaal, tdNieuw, tdGroei);
+    tr.append(tdLabel, tdTot, tdNieuw, tdGroei);
     body.appendChild(tr);
   });
 }
@@ -175,10 +160,8 @@ function tekenGrafiek(labels, totaal) {
 function vulJarenDropdown(jaren) {
   const select = document.getElementById("jaarSelect");
   if (!select) return;
-
   const huidig = String(new Date().getFullYear());
   select.innerHTML = "";
-
   jaren.forEach((jaar) => {
     const option = document.createElement("option");
     option.value = jaar;
@@ -186,7 +169,6 @@ function vulJarenDropdown(jaren) {
     if (String(jaar) === huidig) option.selected = true;
     select.appendChild(option);
   });
-
   jarenGeladen = true;
 }
 
@@ -227,14 +209,16 @@ async function laadLedenData() {
   }
 }
 
-// opstarten
+// Opstarten
 laadLedenData();
 document
   .getElementById("periodeType")
-  .addEventListener("change", laadLedenData);
-document.getElementById("jaarSelect").addEventListener("change", laadLedenData);
+  ?.addEventListener("change", laadLedenData);
+document
+  .getElementById("jaarSelect")
+  ?.addEventListener("change", laadLedenData);
 
-// resize met debounce
+// Resize met debounce
 let resizeTimer;
 window.addEventListener("resize", () => {
   clearTimeout(resizeTimer);
