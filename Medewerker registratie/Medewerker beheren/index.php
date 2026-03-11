@@ -30,12 +30,8 @@ if (empty($_SESSION['ingelogd']) || empty($_SESSION['gebruiker_id'])) {
                         <a class="nav-link" href="../../Informatie/home.php">Home</a>
                     </li>
                     <li>
-                        <<<<<<< HEAD <a class="nav-link" href="../../Account registratie/Account beheren/index.html">
-                            Account beheren</a>
-                            =======
-                            <a class="nav-link" href="../../Account registratie/Account beheren/index.php">Account
-                                beheren</a>
-                            >>>>>>> origin/dev
+                        <a class="nav-link" href="../../Account registratie/Account beheren/index.php">Account
+                            beheren</a>
                     </li>
                     <li><a class="nav-link" href="index.php">Medewerker beheren</a></li>
                     <li>
@@ -48,10 +44,8 @@ if (empty($_SESSION['ingelogd']) || empty($_SESSION['gebruiker_id'])) {
                         <a class="nav-link" href="../../Reservering registratie/Reservering_Registratie.php">Reservering
                             beheren</a>
                     </li>
-                    <li>
-                        <a class="nav-link" href="../../Management Dashboard/Dashboard beheren/index.html">Dashboard
-                            beheren</a>
-                    </li>
+                    <li><a class="nav-link" href="../../Management Dashboard/Dashboard beheren/index.php">Dashboard
+                            beheren</a></li>
                 </ul>
             </nav>
             <div class="overlay"></div>

@@ -71,69 +71,84 @@ $aantalLessen = count($lessen);
 
 <body>
 
-<header class="header">
-  <div class="navbar-container">
-    <a href="../Informatie/home.php" class="logo">FitForFun</a>
-    <div class="hamburger"><i class="fa-solid fa-bars"></i></div>
-    <nav class="navbar">
-      <div class="close-menu"><i class="fa-solid fa-xmark"></i></div>
-      <ul class="navbar-nav">
-        <li><a class="nav-link" href="../Informatie/home.php">Home</a></li>
-        <li><a class="nav-link" href="../Account registratie/Account beheren/index.html">Account beheren</a></li>
-        <li><a class="nav-link" href="../Medewerker registratie/Medewerker beheren/index.html">Medewerker beheren</a></li>
-        <li><a class="nav-link" href="../Lid registratie/index.php">Lid beheren</a></li>
-        <li><a class="nav-link" href="Overzicht_lessen.php">Les beheren</a></li>
-        <li><a class="nav-link" href="../Reservering registratie/Reservering_Registratie.php">Reservering beheren</a></li>
-        <li><a class="nav-link" href="../Management Dashboard/Dashboard beheren/index.html">Dashboard beheren</a></li>
-      </ul>
-    </nav>
-    <div class="overlay"></div>
-  </div>
-</header>
+    <header class="header">
+        <div class="navbar-container">
+            <a href="../Informatie/home.php" class="logo">FitForFun</a>
+            <div class="hamburger"><i class="fa-solid fa-bars"></i></div>
+            <nav class="navbar">
+                <div class="close-menu"><i class="fa-solid fa-xmark"></i></div>
+                <ul class="navbar-nav">
+                    <li>
+                        <a class="nav-link" href="../../Informatie/home.php">Home</a>
+                    </li>
+                    <li>
+                        <a class="nav-link" href="../../Account registratie/Account beheren/index.php">Account
+                            beheren</a>
+                    </li>
+                    <li><a class="nav-link" href="../Medewerker registratie/Medewerker beheren/index.php">Medewerker
+                            beheren</a>
+                    </li>
+                    <li>
+                        <a class="nav-link" href="../../Lid registratie/index.php">Lid beheren</a>
+                    </li>
+                    <li>
+                        <a class="nav-link" href="Overzicht_lessen.php">Les beheren</a>
+                    </li>
+                    <li>
+                        <a class="nav-link" href="../../Reservering registratie/Reservering_Registratie.php">Reservering
+                            beheren</a>
+                    </li>
+                    <li><a class="nav-link" href="../../Management Dashboard/Dashboard beheren/index.php">Dashboard
+                            beheren</a></li>
+                </ul>
+            </nav>
+            <div class="overlay"></div>
+        </div>
+    </header>
 
-<div class="wrapper">
+    <div class="wrapper">
 
-  <div class="heading-row">
-    <div>
-      <h1>Lessen</h1>
-      <p class="sub" id="countLine"><?= $aantalLessen ?> van <?= $aantalLessen ?> lessen zichtbaar</p>
-    </div>
-    <button class="btn-primary" id="openModal">
-      <i class="fa-solid fa-plus"></i> Nieuwe les
-    </button>
-  </div>
+        <div class="heading-row">
+            <div>
+                <h1>Lessen</h1>
+                <p class="sub" id="countLine"><?= $aantalLessen ?> van <?= $aantalLessen ?> lessen zichtbaar</p>
+            </div>
+            <button class="btn-primary" id="openModal">
+                <i class="fa-solid fa-plus"></i> Nieuwe les
+            </button>
+        </div>
 
-  <?php if ($modalSucces): ?>
-    <div class="alert-success">
-      <i class="fa-solid fa-circle-check"></i>
-      Les is succesvol aangemaakt en toegevoegd aan de tabel.
-    </div>
-  <?php endif; ?>
+        <?php if ($modalSucces): ?>
+        <div class="alert-success">
+            <i class="fa-solid fa-circle-check"></i>
+            Les is succesvol aangemaakt en toegevoegd aan de tabel.
+        </div>
+        <?php endif; ?>
 
-  <div class="topbar">
-    <input type="text" id="search" placeholder="Zoek op naam..."/>
-    <select id="statusFilter">
-      <option value="">Alle statussen</option>
-      <option value="Ingepland">Ingepland</option>
-      <option value="Niet gestart">Niet gestart</option>
-      <option value="Gestart">Gestart</option>
-      <option value="Geannuleerd">Geannuleerd</option>
-    </select>
-  </div>
+        <div class="topbar">
+            <input type="text" id="search" placeholder="Zoek op naam..." />
+            <select id="statusFilter">
+                <option value="">Alle statussen</option>
+                <option value="Ingepland">Ingepland</option>
+                <option value="Niet gestart">Niet gestart</option>
+                <option value="Gestart">Gestart</option>
+                <option value="Geannuleerd">Geannuleerd</option>
+            </select>
+        </div>
 
-  <table>
-    <thead>
-      <tr>
-        <th>Naam</th>
-        <th>Prijs</th>
-        <th>Datum</th>
-        <th>Tijd</th>
-        <th>Status</th>
-      </tr>
-    </thead>
-    <tbody id="tabelBody">
-      <?php foreach ($lessen as $les): ?>
-        <?php
+        <table>
+            <thead>
+                <tr>
+                    <th>Naam</th>
+                    <th>Prijs</th>
+                    <th>Datum</th>
+                    <th>Tijd</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody id="tabelBody">
+                <?php foreach ($lessen as $les): ?>
+                <?php
           $statusRaw   = $les['Beschikbaarheid'];
           $statusClass = 'status-' . strtolower(str_replace(' ', '', $statusRaw));
         ?>
@@ -182,122 +197,117 @@ $aantalLessen = count($lessen);
 
     <footer class="footer">© 2026 FitForFun — Alle rechten voorbehouden</footer>
 
-<!-- ===================== MODAL ===================== -->
-<div class="modal-backdrop <?= !empty($modalFouten) ? 'open' : '' ?>" id="modalBackdrop">
-  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitel">
+    <!-- ===================== MODAL ===================== -->
+    <div class="modal-backdrop <?= !empty($modalFouten) ? 'open' : '' ?>" id="modalBackdrop">
+        <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitel">
 
-    <div class="modal-header">
-      <h2 id="modalTitel">Nieuwe les toevoegen</h2>
-      <button class="modal-close" id="sluitModal" aria-label="Sluiten">
-        <i class="fa-solid fa-xmark"></i>
-      </button>
+            <div class="modal-header">
+                <h2 id="modalTitel">Nieuwe les toevoegen</h2>
+                <button class="modal-close" id="sluitModal" aria-label="Sluiten">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <?php if (!empty($modalFouten['db'])): ?>
+            <div class="modal-db-error">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+                <?= htmlspecialchars($modalFouten['db']) ?>
+            </div>
+            <?php endif; ?>
+
+            <form method="POST" action="Overzicht_lessen.php" novalidate>
+                <input type="hidden" name="nieuweLes" value="1" />
+
+                <div class="form-group">
+                    <label for="naam">Lesnaam <span class="required">*</span></label>
+                    <input type="text" id="naam" name="naam" maxlength="50" placeholder="Bijv. Yoga, Spinning..."
+                        value="<?= htmlspecialchars($_POST['naam'] ?? '') ?>"
+                        class="<?= isset($modalFouten['naam']) ? 'invalid' : '' ?>" />
+                    <?php if (isset($modalFouten['naam'])): ?>
+                    <span class="field-error"><?= htmlspecialchars($modalFouten['naam']) ?></span>
+                    <?php endif; ?>
+                </div>
+
+                <div class="form-group">
+                    <label for="prijs">Prijs (€) <span class="required">*</span></label>
+                    <input type="number" id="prijs" name="prijs" min="0" step="0.01" placeholder="Bijv. 12.50"
+                        value="<?= htmlspecialchars($_POST['prijs'] ?? '') ?>"
+                        class="<?= isset($modalFouten['prijs']) ? 'invalid' : '' ?>" />
+                    <?php if (isset($modalFouten['prijs'])): ?>
+                    <span class="field-error"><?= htmlspecialchars($modalFouten['prijs']) ?></span>
+                    <?php endif; ?>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="datum">Datum <span class="required">*</span></label>
+                        <input type="date" id="datum" name="datum"
+                            value="<?= htmlspecialchars($_POST['datum'] ?? '') ?>"
+                            class="<?= isset($modalFouten['datum']) ? 'invalid' : '' ?>" />
+                        <?php if (isset($modalFouten['datum'])): ?>
+                        <span class="field-error"><?= htmlspecialchars($modalFouten['datum']) ?></span>
+                        <?php endif; ?>
+                    </div>
+                    <div class="form-group">
+                        <label for="tijd">Tijd <span class="required">*</span></label>
+                        <input type="time" id="tijd" name="tijd" value="<?= htmlspecialchars($_POST['tijd'] ?? '') ?>"
+                            class="<?= isset($modalFouten['tijd']) ? 'invalid' : '' ?>" />
+                        <?php if (isset($modalFouten['tijd'])): ?>
+                        <span class="field-error"><?= htmlspecialchars($modalFouten['tijd']) ?></span>
+                        <?php endif; ?>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="min_personen">Min. personen <span class="required">*</span></label>
+                        <input type="number" id="min_personen" name="min_personen" min="1" max="127" placeholder="3"
+                            value="<?= htmlspecialchars($_POST['min_personen'] ?? '3') ?>"
+                            class="<?= isset($modalFouten['min_personen']) ? 'invalid' : '' ?>" />
+                        <?php if (isset($modalFouten['min_personen'])): ?>
+                        <span class="field-error"><?= htmlspecialchars($modalFouten['min_personen']) ?></span>
+                        <?php endif; ?>
+                    </div>
+                    <div class="form-group">
+                        <label for="max_personen">Max. personen <span class="required">*</span></label>
+                        <input type="number" id="max_personen" name="max_personen" min="1" max="127" placeholder="9"
+                            value="<?= htmlspecialchars($_POST['max_personen'] ?? '9') ?>"
+                            class="<?= isset($modalFouten['max_personen']) ? 'invalid' : '' ?>" />
+                        <?php if (isset($modalFouten['max_personen'])): ?>
+                        <span class="field-error"><?= htmlspecialchars($modalFouten['max_personen']) ?></span>
+                        <?php endif; ?>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="beschikbaarheid">Status</label>
+                    <select id="beschikbaarheid" name="beschikbaarheid">
+                        <?php foreach (['Ingepland', 'Niet gestart', 'Gestart', 'Geannuleerd'] as $opt): ?>
+                        <option value="<?= $opt ?>"
+                            <?= (($_POST['beschikbaarheid'] ?? 'Ingepland') === $opt) ? 'selected' : '' ?>>
+                            <?= $opt ?>
+                        </option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="submit" class="btn-primary">
+                        <i class="fa-solid fa-floppy-disk"></i> Opslaan
+                    </button>
+                    <button type="button" class="btn-secondary" id="annuleerModal">Annuleren</button>
+                </div>
+            </form>
+
+        </div>
     </div>
+    <!-- ================================================= -->
 
-    <?php if (!empty($modalFouten['db'])): ?>
-      <div class="modal-db-error">
-        <i class="fa-solid fa-triangle-exclamation"></i>
-        <?= htmlspecialchars($modalFouten['db']) ?>
-      </div>
-    <?php endif; ?>
-
-    <form method="POST" action="Overzicht_lessen.php" novalidate>
-      <input type="hidden" name="nieuweLes" value="1"/>
-
-      <div class="form-group">
-        <label for="naam">Lesnaam <span class="required">*</span></label>
-        <input type="text" id="naam" name="naam" maxlength="50"
-               placeholder="Bijv. Yoga, Spinning..."
-               value="<?= htmlspecialchars($_POST['naam'] ?? '') ?>"
-               class="<?= isset($modalFouten['naam']) ? 'invalid' : '' ?>"/>
-        <?php if (isset($modalFouten['naam'])): ?>
-          <span class="field-error"><?= htmlspecialchars($modalFouten['naam']) ?></span>
-        <?php endif; ?>
-      </div>
-
-      <div class="form-group">
-        <label for="prijs">Prijs (€) <span class="required">*</span></label>
-        <input type="number" id="prijs" name="prijs" min="0" step="0.01"
-               placeholder="Bijv. 12.50"
-               value="<?= htmlspecialchars($_POST['prijs'] ?? '') ?>"
-               class="<?= isset($modalFouten['prijs']) ? 'invalid' : '' ?>"/>
-        <?php if (isset($modalFouten['prijs'])): ?>
-          <span class="field-error"><?= htmlspecialchars($modalFouten['prijs']) ?></span>
-        <?php endif; ?>
-      </div>
-
-      <div class="form-row">
-        <div class="form-group">
-          <label for="datum">Datum <span class="required">*</span></label>
-          <input type="date" id="datum" name="datum"
-                 value="<?= htmlspecialchars($_POST['datum'] ?? '') ?>"
-                 class="<?= isset($modalFouten['datum']) ? 'invalid' : '' ?>"/>
-          <?php if (isset($modalFouten['datum'])): ?>
-            <span class="field-error"><?= htmlspecialchars($modalFouten['datum']) ?></span>
-          <?php endif; ?>
-        </div>
-        <div class="form-group">
-          <label for="tijd">Tijd <span class="required">*</span></label>
-          <input type="time" id="tijd" name="tijd"
-                 value="<?= htmlspecialchars($_POST['tijd'] ?? '') ?>"
-                 class="<?= isset($modalFouten['tijd']) ? 'invalid' : '' ?>"/>
-          <?php if (isset($modalFouten['tijd'])): ?>
-            <span class="field-error"><?= htmlspecialchars($modalFouten['tijd']) ?></span>
-          <?php endif; ?>
-        </div>
-      </div>
-
-      <div class="form-row">
-        <div class="form-group">
-          <label for="min_personen">Min. personen <span class="required">*</span></label>
-          <input type="number" id="min_personen" name="min_personen" min="1" max="127"
-                 placeholder="3"
-                 value="<?= htmlspecialchars($_POST['min_personen'] ?? '3') ?>"
-                 class="<?= isset($modalFouten['min_personen']) ? 'invalid' : '' ?>"/>
-          <?php if (isset($modalFouten['min_personen'])): ?>
-            <span class="field-error"><?= htmlspecialchars($modalFouten['min_personen']) ?></span>
-          <?php endif; ?>
-        </div>
-        <div class="form-group">
-          <label for="max_personen">Max. personen <span class="required">*</span></label>
-          <input type="number" id="max_personen" name="max_personen" min="1" max="127"
-                 placeholder="9"
-                 value="<?= htmlspecialchars($_POST['max_personen'] ?? '9') ?>"
-                 class="<?= isset($modalFouten['max_personen']) ? 'invalid' : '' ?>"/>
-          <?php if (isset($modalFouten['max_personen'])): ?>
-            <span class="field-error"><?= htmlspecialchars($modalFouten['max_personen']) ?></span>
-          <?php endif; ?>
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label for="beschikbaarheid">Status</label>
-        <select id="beschikbaarheid" name="beschikbaarheid">
-          <?php foreach (['Ingepland', 'Niet gestart', 'Gestart', 'Geannuleerd'] as $opt): ?>
-            <option value="<?= $opt ?>"
-              <?= (($_POST['beschikbaarheid'] ?? 'Ingepland') === $opt) ? 'selected' : '' ?>>
-              <?= $opt ?>
-            </option>
-          <?php endforeach; ?>
-        </select>
-      </div>
-
-      <div class="modal-footer">
-        <button type="submit" class="btn-primary">
-          <i class="fa-solid fa-floppy-disk"></i> Opslaan
-        </button>
-        <button type="button" class="btn-secondary" id="annuleerModal">Annuleren</button>
-      </div>
-    </form>
-
-  </div>
-</div>
-<!-- ================================================= -->
-
-<script>
-  const totaal         = <?= $aantalLessen ?>;
-  const modalOpenBijLaad = <?= !empty($modalFouten) ? 'true' : 'false' ?>;
-</script>
-<script src="Overzicht_lessen.js"></script>
+    <script>
+    const totaal = <?= $aantalLessen ?>;
+    const modalOpenBijLaad = <?= !empty($modalFouten) ? 'true' : 'false' ?>;
+    </script>
+    <script src="Overzicht_lessen.js"></script>
 
 </body>
 

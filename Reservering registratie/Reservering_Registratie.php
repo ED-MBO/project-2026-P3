@@ -71,65 +71,81 @@ $aantalReserveringen = count($reserveringen);
 
 <body>
 
-<header class="header">
-  <div class="navbar-container">
-    <a href="../Informatie/home.php" class="logo">FitForFun</a>
-    <div class="hamburger"><i class="fa-solid fa-bars"></i></div>
-    <nav class="navbar">
-      <div class="close-menu"><i class="fa-solid fa-xmark"></i></div>
-      <ul class="navbar-nav">
-        <li><a class="nav-link" href="../Informatie/home.php">Home</a></li>
-        <li><a class="nav-link" href="../Account registratie/Account beheren/index.html">Account beheren</a></li>
-        <li><a class="nav-link" href="../Medewerker registratie/Medewerker beheren/index.html">Medewerker beheren</a></li>
-        <li><a class="nav-link" href="../Lid registratie/index.php">Lid beheren</a></li>
-        <li><a class="nav-link" href="../Les registratie/Overzicht_lessen.php">Les beheren</a></li>
-        <li><a class="nav-link" href="Reservering_Registratie.php">Reservering beheren</a></li>
-        <li><a class="nav-link" href="../Management Dashboard/Dashboard beheren/index.html">Dashboard beheren</a></li>
-      </ul>
-    </nav>
-    <div class="overlay"></div>
-  </div>
-</header>
+    <header class="header">
+        <div class="navbar-container">
+            <a href="../Informatie/home.php" class="logo">FitForFun</a>
+            <div class="hamburger"><i class="fa-solid fa-bars"></i></div>
+            <nav class="navbar">
+                <div class="close-menu"><i class="fa-solid fa-xmark"></i></div>
+                <ul class="navbar-nav">
+                    <li>
+                        <a class="nav-link" href="../../Informatie/home.php">Home</a>
+                    </li>
+                    <li>
+                        <a class="nav-link" href="../../Account registratie/Account beheren/index.php">Account
+                            beheren</a>
+                    </li>
+                    <li><a class="nav-link" href="../Medewerker registratie/Medewerker beheren/index.php">Medewerker
+                            beheren</a>
+                    </li>
+                    <li>
+                        <a class="nav-link" href="../../Lid registratie/index.php">Lid beheren</a>
+                    </li>
+                    <li>
+                        <a class="nav-link" href="../../Les registratie/Overzicht_lessen.php">Les beheren</a>
+                    </li>
+                    <li>
+                        <a class="nav-link" href="Reservering_Registratie.php">Reservering
+                            beheren</a>
+                    </li>
+                    <li><a class="nav-link" href="../../Management Dashboard/Dashboard beheren/index.php">Dashboard
+                            beheren</a></li>
+                </ul>
+            </nav>
+            <div class="overlay"></div>
+        </div>
+    </header>
 
-<div class="wrapper">
+    <div class="wrapper">
 
-  <div class="heading-row">
-    <div>
-      <h1>Reserveringen</h1>
-      <p class="sub" id="countLine"><?= $aantalReserveringen ?> van <?= $aantalReserveringen ?> reserveringen zichtbaar</p>
-    </div>
-    <button class="btn-primary" id="openModal">
-      <i class="fa-solid fa-plus"></i> Nieuwe reservering
-    </button>
-  </div>
+        <div class="heading-row">
+            <div>
+                <h1>Reserveringen</h1>
+                <p class="sub" id="countLine"><?= $aantalReserveringen ?> van <?= $aantalReserveringen ?> reserveringen
+                    zichtbaar</p>
+            </div>
+            <button class="btn-primary" id="openModal">
+                <i class="fa-solid fa-plus"></i> Nieuwe reservering
+            </button>
+        </div>
 
-  <?php if ($modalSucces): ?>
-    <div class="alert-success">
-      <i class="fa-solid fa-circle-check"></i>
-      Reservering is succesvol aangemaakt en toegevoegd aan de tabel.
-    </div>
-  <?php endif; ?>
+        <?php if ($modalSucces): ?>
+        <div class="alert-success">
+            <i class="fa-solid fa-circle-check"></i>
+            Reservering is succesvol aangemaakt en toegevoegd aan de tabel.
+        </div>
+        <?php endif; ?>
 
-  <div class="topbar">
-    <input type="text" id="search" placeholder="Zoek op naam..."/>
-    <select id="statusFilter">
-      <option value="">Alle statussen</option>
-      <option value="Gereserveerd">Gereserveerd</option>
-      <option value="Vrij">Vrij</option>
-    </select>
-  </div>
+        <div class="topbar">
+            <input type="text" id="search" placeholder="Zoek op naam..." />
+            <select id="statusFilter">
+                <option value="">Alle statussen</option>
+                <option value="Gereserveerd">Gereserveerd</option>
+                <option value="Vrij">Vrij</option>
+            </select>
+        </div>
 
-  <table>
-    <thead>
-      <tr>
-        <th>Naam lid</th>
-        <th>Datum</th>
-        <th>Tijd</th>
-        <th>Status</th>
-      </tr>
-    </thead>
-    <tbody id="tabelBody">
-      <?php foreach ($reserveringen as $res):
+        <table>
+            <thead>
+                <tr>
+                    <th>Naam lid</th>
+                    <th>Datum</th>
+                    <th>Tijd</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody id="tabelBody">
+                <?php foreach ($reserveringen as $res):
         $naam = $res['Voornaam'];
         if (!empty(trim($res['Tussenvoegsel']))) {
           $naam .= ' ' . $res['Tussenvoegsel'];
@@ -187,118 +203,113 @@ $aantalReserveringen = count($reserveringen);
 
     <footer class="footer">© 2026 FitForFun — Alle rechten voorbehouden</footer>
 
-<!-- ===================== MODAL ===================== -->
-<div class="modal-backdrop <?= !empty($modalFouten) ? 'open' : '' ?>" id="modalBackdrop">
-  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitel">
+    <!-- ===================== MODAL ===================== -->
+    <div class="modal-backdrop <?= !empty($modalFouten) ? 'open' : '' ?>" id="modalBackdrop">
+        <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitel">
 
-    <div class="modal-header">
-      <h2 id="modalTitel">Nieuwe reservering toevoegen</h2>
-      <button class="modal-close" id="sluitModal" aria-label="Sluiten">
-        <i class="fa-solid fa-xmark"></i>
-      </button>
+            <div class="modal-header">
+                <h2 id="modalTitel">Nieuwe reservering toevoegen</h2>
+                <button class="modal-close" id="sluitModal" aria-label="Sluiten">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <?php if (!empty($modalFouten['db'])): ?>
+            <div class="modal-db-error">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+                <?= htmlspecialchars($modalFouten['db']) ?>
+            </div>
+            <?php endif; ?>
+
+            <form method="POST" action="Reservering_Registratie.php" novalidate>
+                <input type="hidden" name="nieuweReservering" value="1" />
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="voornaam">Voornaam <span class="required">*</span></label>
+                        <input type="text" id="voornaam" name="voornaam" maxlength="50" placeholder="Bijv. Laura"
+                            value="<?= htmlspecialchars($_POST['voornaam'] ?? '') ?>"
+                            class="<?= isset($modalFouten['voornaam']) ? 'invalid' : '' ?>" />
+                        <?php if (isset($modalFouten['voornaam'])): ?>
+                        <span class="field-error"><?= htmlspecialchars($modalFouten['voornaam']) ?></span>
+                        <?php endif; ?>
+                    </div>
+                    <div class="form-group">
+                        <label for="tussenvoegsel">Tussenvoegsel</label>
+                        <input type="text" id="tussenvoegsel" name="tussenvoegsel" maxlength="10" placeholder="Bijv. de"
+                            value="<?= htmlspecialchars($_POST['tussenvoegsel'] ?? '') ?>" />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="achternaam">Achternaam <span class="required">*</span></label>
+                    <input type="text" id="achternaam" name="achternaam" maxlength="50" placeholder="Bijv. Klein"
+                        value="<?= htmlspecialchars($_POST['achternaam'] ?? '') ?>"
+                        class="<?= isset($modalFouten['achternaam']) ? 'invalid' : '' ?>" />
+                    <?php if (isset($modalFouten['achternaam'])): ?>
+                    <span class="field-error"><?= htmlspecialchars($modalFouten['achternaam']) ?></span>
+                    <?php endif; ?>
+                </div>
+
+                <div class="form-group">
+                    <label for="nummer">Nummer <span class="required">*</span></label>
+                    <input type="number" id="nummer" name="nummer" min="1" placeholder="Bijv. 201"
+                        value="<?= htmlspecialchars($_POST['nummer'] ?? '') ?>"
+                        class="<?= isset($modalFouten['nummer']) ? 'invalid' : '' ?>" />
+                    <?php if (isset($modalFouten['nummer'])): ?>
+                    <span class="field-error"><?= htmlspecialchars($modalFouten['nummer']) ?></span>
+                    <?php endif; ?>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="datum">Datum <span class="required">*</span></label>
+                        <input type="date" id="datum" name="datum"
+                            value="<?= htmlspecialchars($_POST['datum'] ?? '') ?>"
+                            class="<?= isset($modalFouten['datum']) ? 'invalid' : '' ?>" />
+                        <?php if (isset($modalFouten['datum'])): ?>
+                        <span class="field-error"><?= htmlspecialchars($modalFouten['datum']) ?></span>
+                        <?php endif; ?>
+                    </div>
+                    <div class="form-group">
+                        <label for="tijd">Tijd <span class="required">*</span></label>
+                        <input type="time" id="tijd" name="tijd" value="<?= htmlspecialchars($_POST['tijd'] ?? '') ?>"
+                            class="<?= isset($modalFouten['tijd']) ? 'invalid' : '' ?>" />
+                        <?php if (isset($modalFouten['tijd'])): ?>
+                        <span class="field-error"><?= htmlspecialchars($modalFouten['tijd']) ?></span>
+                        <?php endif; ?>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="reserveringstatus">Status</label>
+                    <select id="reserveringstatus" name="reserveringstatus">
+                        <?php foreach (['Gereserveerd', 'Vrij'] as $opt): ?>
+                        <option value="<?= $opt ?>"
+                            <?= (($_POST['reserveringstatus'] ?? 'Gereserveerd') === $opt) ? 'selected' : '' ?>>
+                            <?= $opt ?>
+                        </option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="submit" class="btn-primary">
+                        <i class="fa-solid fa-floppy-disk"></i> Opslaan
+                    </button>
+                    <button type="button" class="btn-secondary" id="annuleerModal">Annuleren</button>
+                </div>
+            </form>
+
+        </div>
     </div>
+    <!-- ================================================= -->
 
-    <?php if (!empty($modalFouten['db'])): ?>
-      <div class="modal-db-error">
-        <i class="fa-solid fa-triangle-exclamation"></i>
-        <?= htmlspecialchars($modalFouten['db']) ?>
-      </div>
-    <?php endif; ?>
-
-    <form method="POST" action="Reservering_Registratie.php" novalidate>
-      <input type="hidden" name="nieuweReservering" value="1"/>
-
-      <div class="form-row">
-        <div class="form-group">
-          <label for="voornaam">Voornaam <span class="required">*</span></label>
-          <input type="text" id="voornaam" name="voornaam" maxlength="50"
-                 placeholder="Bijv. Laura"
-                 value="<?= htmlspecialchars($_POST['voornaam'] ?? '') ?>"
-                 class="<?= isset($modalFouten['voornaam']) ? 'invalid' : '' ?>"/>
-          <?php if (isset($modalFouten['voornaam'])): ?>
-            <span class="field-error"><?= htmlspecialchars($modalFouten['voornaam']) ?></span>
-          <?php endif; ?>
-        </div>
-        <div class="form-group">
-          <label for="tussenvoegsel">Tussenvoegsel</label>
-          <input type="text" id="tussenvoegsel" name="tussenvoegsel" maxlength="10"
-                 placeholder="Bijv. de"
-                 value="<?= htmlspecialchars($_POST['tussenvoegsel'] ?? '') ?>"/>
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label for="achternaam">Achternaam <span class="required">*</span></label>
-        <input type="text" id="achternaam" name="achternaam" maxlength="50"
-               placeholder="Bijv. Klein"
-               value="<?= htmlspecialchars($_POST['achternaam'] ?? '') ?>"
-               class="<?= isset($modalFouten['achternaam']) ? 'invalid' : '' ?>"/>
-        <?php if (isset($modalFouten['achternaam'])): ?>
-          <span class="field-error"><?= htmlspecialchars($modalFouten['achternaam']) ?></span>
-        <?php endif; ?>
-      </div>
-
-      <div class="form-group">
-        <label for="nummer">Nummer <span class="required">*</span></label>
-        <input type="number" id="nummer" name="nummer" min="1"
-               placeholder="Bijv. 201"
-               value="<?= htmlspecialchars($_POST['nummer'] ?? '') ?>"
-               class="<?= isset($modalFouten['nummer']) ? 'invalid' : '' ?>"/>
-        <?php if (isset($modalFouten['nummer'])): ?>
-          <span class="field-error"><?= htmlspecialchars($modalFouten['nummer']) ?></span>
-        <?php endif; ?>
-      </div>
-
-      <div class="form-row">
-        <div class="form-group">
-          <label for="datum">Datum <span class="required">*</span></label>
-          <input type="date" id="datum" name="datum"
-                 value="<?= htmlspecialchars($_POST['datum'] ?? '') ?>"
-                 class="<?= isset($modalFouten['datum']) ? 'invalid' : '' ?>"/>
-          <?php if (isset($modalFouten['datum'])): ?>
-            <span class="field-error"><?= htmlspecialchars($modalFouten['datum']) ?></span>
-          <?php endif; ?>
-        </div>
-        <div class="form-group">
-          <label for="tijd">Tijd <span class="required">*</span></label>
-          <input type="time" id="tijd" name="tijd"
-                 value="<?= htmlspecialchars($_POST['tijd'] ?? '') ?>"
-                 class="<?= isset($modalFouten['tijd']) ? 'invalid' : '' ?>"/>
-          <?php if (isset($modalFouten['tijd'])): ?>
-            <span class="field-error"><?= htmlspecialchars($modalFouten['tijd']) ?></span>
-          <?php endif; ?>
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label for="reserveringstatus">Status</label>
-        <select id="reserveringstatus" name="reserveringstatus">
-          <?php foreach (['Gereserveerd', 'Vrij'] as $opt): ?>
-            <option value="<?= $opt ?>"
-              <?= (($_POST['reserveringstatus'] ?? 'Gereserveerd') === $opt) ? 'selected' : '' ?>>
-              <?= $opt ?>
-            </option>
-          <?php endforeach; ?>
-        </select>
-      </div>
-
-      <div class="modal-footer">
-        <button type="submit" class="btn-primary">
-          <i class="fa-solid fa-floppy-disk"></i> Opslaan
-        </button>
-        <button type="button" class="btn-secondary" id="annuleerModal">Annuleren</button>
-      </div>
-    </form>
-
-  </div>
-</div>
-<!-- ================================================= -->
-
-<script>
-  const totaal           = <?= $aantalReserveringen ?>;
-  const modalOpenBijLaad = <?= !empty($modalFouten) ? 'true' : 'false' ?>;
-</script>
-<script src="Reservering_Registratie.js"></script>
+    <script>
+    const totaal = <?= $aantalReserveringen ?>;
+    const modalOpenBijLaad = <?= !empty($modalFouten) ? 'true' : 'false' ?>;
+    </script>
+    <script src="Reservering_Registratie.js"></script>
 
 </body>
 
