@@ -1,4 +1,5 @@
 <?php
+session_start();
 require_once '../config.php';
 
 // --- Verwerk formulier POST ---
@@ -58,14 +59,16 @@ $aantalReserveringen = count($reserveringen);
 ?>
 <!DOCTYPE html>
 <html lang="nl">
+
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Reservering Beheren</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
-  <link rel="stylesheet" href="Reservering_Registratie.css"/>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Reservering Beheren</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+    <link rel="stylesheet" href="Reservering_Registratie.css" />
 </head>
+
 <body>
 
 <header class="header">
@@ -136,19 +139,19 @@ $aantalReserveringen = count($reserveringen);
         $status      = $res['Reserveringstatus'];
         $statusClass = 'status-' . strtolower(str_replace(' ', '', $status));
       ?>
-        <tr data-naam="<?= htmlspecialchars(strtolower($naam)) ?>"
-            data-status="<?= htmlspecialchars($status) ?>">
-          <td><?= htmlspecialchars($naam) ?></td>
-          <td><?= htmlspecialchars(date('d-m-Y', strtotime($res['Datum']))) ?></td>
-          <td><?= htmlspecialchars(substr($res['Tijd'], 0, 5)) ?></td>
-          <td><span class="status <?= $statusClass ?>"><?= htmlspecialchars($status) ?></span></td>
-        </tr>
-      <?php endforeach; ?>
-    </tbody>
-  </table>
+                <tr data-naam="<?= htmlspecialchars(strtolower($naam)) ?>"
+                    data-status="<?= htmlspecialchars($status) ?>">
+                    <td><?= htmlspecialchars($naam) ?></td>
+                    <td><?= htmlspecialchars(date('d-m-Y', strtotime($res['Datum']))) ?></td>
+                    <td><?= htmlspecialchars(substr($res['Tijd'], 0, 5)) ?></td>
+                    <td><span class="status <?= $statusClass ?>"><?= htmlspecialchars($status) ?></span></td>
+                </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
 
-  <div id="cardContainer">
-    <?php foreach ($reserveringen as $res):
+        <div id="cardContainer">
+            <?php foreach ($reserveringen as $res):
       $naam = $res['Voornaam'];
       if (!empty(trim($res['Tussenvoegsel']))) {
         $naam .= ' ' . $res['Tussenvoegsel'];
@@ -158,32 +161,31 @@ $aantalReserveringen = count($reserveringen);
       $status      = $res['Reserveringstatus'];
       $statusClass = 'status-' . strtolower(str_replace(' ', '', $status));
     ?>
-      <div class="res-card"
-           data-naam="<?= htmlspecialchars(strtolower($naam)) ?>"
-           data-status="<?= htmlspecialchars($status) ?>">
-        <h3><?= htmlspecialchars($naam) ?></h3>
-        <div class="card-row">
-          <span class="card-label">Datum</span>
-          <span><?= htmlspecialchars(date('d-m-Y', strtotime($res['Datum']))) ?></span>
+            <div class="res-card" data-naam="<?= htmlspecialchars(strtolower($naam)) ?>"
+                data-status="<?= htmlspecialchars($status) ?>">
+                <h3><?= htmlspecialchars($naam) ?></h3>
+                <div class="card-row">
+                    <span class="card-label">Datum</span>
+                    <span><?= htmlspecialchars(date('d-m-Y', strtotime($res['Datum']))) ?></span>
+                </div>
+                <div class="card-row">
+                    <span class="card-label">Tijd</span>
+                    <span><?= htmlspecialchars(substr($res['Tijd'], 0, 5)) ?></span>
+                </div>
+                <div class="card-row">
+                    <span class="card-label">Status</span>
+                    <span class="status <?= $statusClass ?>"><?= htmlspecialchars($status) ?></span>
+                </div>
+            </div>
+            <?php endforeach; ?>
         </div>
-        <div class="card-row">
-          <span class="card-label">Tijd</span>
-          <span><?= htmlspecialchars(substr($res['Tijd'], 0, 5)) ?></span>
-        </div>
-        <div class="card-row">
-          <span class="card-label">Status</span>
-          <span class="status <?= $statusClass ?>"><?= htmlspecialchars($status) ?></span>
-        </div>
-      </div>
-    <?php endforeach; ?>
-  </div>
 
-  <div id="emptyState" class="empty" style="display:none">
-    Geen resultaten. Probeer een andere zoekterm.
-  </div>
-</div>
+        <div id="emptyState" class="empty" style="display:none">
+            Geen resultaten. Probeer een andere zoekterm.
+        </div>
+    </div>
 
-<footer class="footer">© 2026 FitForFun — Alle rechten voorbehouden</footer>
+    <footer class="footer">© 2026 FitForFun — Alle rechten voorbehouden</footer>
 
 <!-- ===================== MODAL ===================== -->
 <div class="modal-backdrop <?= !empty($modalFouten) ? 'open' : '' ?>" id="modalBackdrop">
@@ -299,4 +301,5 @@ $aantalReserveringen = count($reserveringen);
 <script src="Reservering_Registratie.js"></script>
 
 </body>
+
 </html>

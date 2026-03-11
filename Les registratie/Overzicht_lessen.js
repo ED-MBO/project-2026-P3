@@ -47,9 +47,9 @@ function filterLessen() {
   });
 
   cards.forEach((card) => {
-    const naamOk   = !zoek   || card.dataset.naam.includes(zoek);
-    const statusOk = !status || card.dataset.status === status;
-    card.style.display = (naamOk && statusOk) ? '' : 'none';
+    const achternaamOk = !zoek || (card.dataset.achternaam && card.dataset.achternaam.includes(zoek));
+    const statusOk    = !status || card.dataset.status === status;
+    card.style.display = (achternaamOk && statusOk) ? '' : 'none';
   });
 
   countLine.textContent = `${zichtbaar} van ${totaal} lessen zichtbaar`;

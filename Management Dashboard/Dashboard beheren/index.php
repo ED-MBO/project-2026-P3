@@ -1,0 +1,193 @@
+<?php
+session_start();
+require_once __DIR__ . '/../../config.php';
+if (empty($_SESSION['ingelogd']) || empty($_SESSION['gebruiker_id'])) {
+    header('Location: ../../login.php');
+    exit();
+}
+?>
+<!doctype html>
+<html lang="nl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard — FitForFun</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="aan-leden-per-periode.css" />
+  </head>
+  <body>
+    <header class="header">
+      <div class="navbar-container">
+        <a href="../../Informatie/home.php" class="logo">FitForFun</a>
+
+        <div class="hamburger" id="hamburger">
+          <i class="fa-solid fa-bars"></i>
+        </div>
+
+        <nav class="navbar" id="navbar">
+          <span class="close-menu" id="closeMenu">&times;</span>
+          <ul class="navbar-nav">
+            <li>
+              <a class="nav-link" href="../../Informatie/home.php">Home</a>
+            </li>
+            <li>
+              <a
+                class="nav-link"
+                href="../../Account registratie/Account beheren/index.php"
+                >Account beheren</a
+              >
+            </li>
+            <li>
+              <a
+                class="nav-link"
+                href="../../Medewerker registratie/Medewerker beheren/index.php"
+                >Medewerker beheren</a
+              >
+            </li>
+            <li>
+              <a class="nav-link" href="../../Lid registratie/index.php"
+                >Lid beheren</a
+              >
+            </li>
+            <li>
+              <a
+                class="nav-link"
+                href="../../Les registratie/Overzicht_lessen.php"
+                >Les beheren</a
+              >
+            </li>
+            <li>
+              <a
+                class="nav-link"
+                href="../../Reservering registratie/Reservering_Registratie.php"
+                >Reservering beheren</a
+              >
+            </li>
+            <li><a class="nav-link" href="index.php">Dashboard beheren</a></li>
+          </ul>
+        </nav>
+
+        <div class="overlay" id="overlay"></div>
+      </div>
+    </header>
+
+    <main class="wrapper">
+      <!-- lessen -->
+      <h1>Geplande Lessen</h1>
+      <div class="sub" id="countLine"></div>
+
+      <div class="topbar">
+        <input id="search" type="text" placeholder="Zoek op lesnaam..." />
+        <select id="statusFilter">
+          <option value="">Alle statussen</option>
+          <option value="Ingepland">Ingepland</option>
+          <option value="Niet gestart">Niet gestart</option>
+          <option value="Gestart">Gestart</option>
+          <option value="Geannuleerd">Geannuleerd</option>
+        </select>
+      </div>
+
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Les</th>
+              <th>Datum</th>
+              <th>Tijd</th>
+              <th>Prijs</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="lessenBody"></tbody>
+        </table>
+      </div>
+
+      <div class="card-container" id="cardContainer"></div>
+      <div id="emptyState" class="empty" style="display: none">
+        Geen lessen gevonden.
+      </div>
+
+      <hr class="divider" />
+
+      <!-- leden -->
+      <h1>Aantal Leden per Periode</h1>
+      <p class="sub">
+        Inzicht in de ontwikkeling van het ledenaantal over tijd.
+      </p>
+
+      <div id="alertEl" class="alert">
+        <i class="fa-solid fa-circle-exclamation"></i>
+        <span id="alertMsg">Het overzicht kon niet geladen worden.</span>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card blue">
+          <div class="stat-title">Totaal leden</div>
+          <div class="stat-number" id="sTotaal">—</div>
+          <div class="stat-sub blue" id="cTotaal">Laden...</div>
+        </div>
+        <div class="stat-card green">
+          <div class="stat-title">Nieuwe leden</div>
+          <div class="stat-number" id="sNieuw">—</div>
+          <div class="stat-sub green" id="cNieuw">Laden...</div>
+        </div>
+        <div class="stat-card yellow">
+          <div class="stat-title">Actieve leden</div>
+          <div class="stat-number" id="sActief">—</div>
+          <div class="stat-sub yellow">Met reservering</div>
+        </div>
+        <div class="stat-card red">
+          <div class="stat-title">Inactieve leden</div>
+          <div class="stat-number" id="sInactief">—</div>
+          <div class="stat-sub red">Geen reservering</div>
+        </div>
+      </div>
+
+      <div class="controls">
+        <label for="periodeType">Periode:</label>
+        <select id="periodeType">
+          <option value="maand">Per maand</option>
+          <option value="jaar">Per jaar</option>
+        </select>
+        <label for="jaarSelect">Jaar:</label>
+        <select id="jaarSelect"></select>
+      </div>
+
+      <div class="chart-card">
+        <div class="chart-title" id="chartTitle">Ledenaantal per maand</div>
+        <div class="chart-sub">Totaal actieve leden per periode</div>
+        <div class="chart-wrapper">
+          <canvas id="ledenChart" height="260"></canvas>
+        </div>
+      </div>
+
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Periode</th>
+              <th>Totaal leden</th>
+              <th>Nieuw</th>
+              <th>Groei</th>
+            </tr>
+          </thead>
+          <tbody id="tabelBody"></tbody>
+        </table>
+      </div>
+    </main>
+
+    <footer class="footer">© 2026 FitForFun — Alle rechten voorbehouden</footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+    <script src="script.js"></script>
+    <script src="leden.js"></script>
+  </body>
+</html>
