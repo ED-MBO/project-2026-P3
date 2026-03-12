@@ -3,7 +3,7 @@ const hamburger = document.querySelector(".hamburger");
 const nav = document.querySelector(".navbar");
 const sluitNav = document.querySelector(".close-menu");
 const overlay = document.querySelector(".overlay");
- 
+
 hamburger.addEventListener("click", () => {
   nav.classList.add("active");
   overlay.style.display = "block";
@@ -22,28 +22,32 @@ overlay.addEventListener("click", closeNav);
 /* Modal */
 const modal = document.getElementById("modalBackdrop");
 
-function openModal() {
-  modal.classList.add("open");
-  document.body.style.overflow = "hidden";
+if (modal) {
+  function openModal() {
+    modal.classList.add("open");
+    document.body.style.overflow = "hidden";
+  }
+
+  function closeModal() {
+    modal.classList.remove("open");
+    document.body.style.overflow = "";
+  }
+
+  document.getElementById("openModal").addEventListener("click", openModal);
+  document.getElementById("sluitModal").addEventListener("click", closeModal);
+  document
+    .getElementById("annuleerModal")
+    .addEventListener("click", closeModal);
+  modal.addEventListener("click", (e) => {
+    if (e.target === modal) closeModal();
+  });
 }
 
-function closeModal() {
-  modal.classList.remove("open");
-  document.body.style.overflow = "";
-}
-
-document.getElementById("openModal").addEventListener("click", openModal);
-document.getElementById("sluitModal").addEventListener("click", closeModal);
-document.getElementById("annuleerModal").addEventListener("click", closeModal);
-modal.addEventListener("click", (e) => {
-  if (e.target === modal) closeModal();
+/* Flash meldingen auto-hide na 5 seconden */
+["successAlert", "errorAlert"].forEach((id) => {
+  const el = document.getElementById(id);
+  if (el) setTimeout(() => (el.style.display = "none"), 3000);
 });
-
-/* Success melding */
-const params = new URLSearchParams(window.location.search);
-if (params.get("succes")) {
-  document.getElementById("successAlert").style.display = "flex";
-}
 
 /* Data */
 let medewerkers = [];
@@ -60,7 +64,11 @@ async function laadMedewerkers() {
   try {
     const res = await fetch("get_medewerkers.php");
     if (!res.ok) throw new Error("Server fout");
-    medewerkers = await res.json();
+    const data = await res.json();
+
+    if (!Array.isArray(data)) throw new Error("Onverwacht formaat");
+    medewerkers = data;
+
     vulAfdelingen();
     update();
   } catch (err) {
@@ -72,11 +80,13 @@ async function laadMedewerkers() {
 
 function vulAfdelingen() {
   afdelingSelect.innerHTML = '<option value="">Alle afdelingen</option>';
-  [...new Set(medewerkers.map((m) => m.afdeling))].forEach((a) => {
-    const opt = document.createElement("option");
-    opt.value = opt.textContent = a;
-    afdelingSelect.appendChild(opt);
-  });
+  [...new Set(medewerkers.map((m) => m.afdeling).filter(Boolean))].forEach(
+    (a) => {
+      const opt = document.createElement("option");
+      opt.value = opt.textContent = a;
+      afdelingSelect.appendChild(opt);
+    },
+  );
 }
 
 function filterMedewerkers() {
@@ -85,14 +95,14 @@ function filterMedewerkers() {
   const stat = statusSelect.value;
   return medewerkers.filter(
     (m) =>
-      (!zoek || m.naam.toLowerCase().includes(zoek)) &&
+      (!zoek || (m.naam ?? "").toLowerCase().includes(zoek)) &&
       (!afd || m.afdeling === afd) &&
       (!stat || m.status === stat),
   );
 }
 
 function statusClass(s) {
-  return "status-" + s.toLowerCase().replace(/\s/g, "");
+  return "status-" + (s ?? "").toLowerCase().replace(/\s/g, "");
 }
 
 function renderTabel(lijst) {
@@ -105,9 +115,9 @@ function renderTabel(lijst) {
   lijst.forEach((m) => {
     const tr = document.createElement("tr");
     tr.innerHTML = `
-      <td>${m.naam}</td>
-      <td><span class="badge">${m.afdeling}</span></td>
-      <td><span class="status ${statusClass(m.status)}">${m.status}</span></td>
+      <td>${m.naam ?? "—"}</td>
+      <td><span class="badge">${m.afdeling ?? "—"}</span></td>
+      <td><span class="status ${statusClass(m.status)}">${m.status ?? "—"}</span></td>
     `;
     tabelBody.appendChild(tr);
   });
@@ -119,14 +129,14 @@ function renderCards(lijst) {
     const card = document.createElement("div");
     card.className = "team-card";
     card.innerHTML = `
-      <h3>${m.naam}</h3>
+      <h3>${m.naam ?? "—"}</h3>
       <div class="card-row">
         <span class="card-label">Afdeling</span>
-        <span class="badge">${m.afdeling}</span>
+        <span class="badge">${m.afdeling ?? "—"}</span>
       </div>
       <div class="card-row">
         <span class="card-label">Status</span>
-        <span class="status ${statusClass(m.status)}">${m.status}</span>
+        <span class="status ${statusClass(m.status)}">${m.status ?? "—"}</span>
       </div>
     `;
     cardContainer.appendChild(card);

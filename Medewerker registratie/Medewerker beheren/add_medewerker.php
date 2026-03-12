@@ -1,11 +1,25 @@
 <?php
 session_start();
+
+// Niet ingelogd → terug naar login
 if (empty($_SESSION['ingelogd']) || empty($_SESSION['gebruiker_id'])) {
     header('Location: ../../login.php');
     exit();
 }
+
 require "../../config.php";
- 
+
+// Unhappy path: controleer of de ingelogde gebruiker de rol Administrator heeft
+$stmtRol = $pdo->prepare("SELECT Naam FROM rol WHERE GebruikerId = :id AND IsActief = 1");
+$stmtRol->execute([":id" => $_SESSION['gebruiker_id']]);
+$rolGebruiker = $stmtRol->fetchColumn();
+
+if ($rolGebruiker !== "Administrator") {
+    $_SESSION['flash_fout'] = "Toegang geweigerd — u heeft geen rechten om een medewerker toe te voegen.";
+    header("Location: index.php");
+    exit();
+}
+
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     $voornaam   = trim($_POST["voornaam"]);
@@ -61,7 +75,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
         $pdo->commit();
 
-        header("Location: index.php?succes=1");
+        $_SESSION['flash_succes'] = "Medewerker is succesvol aangemaakt en toegevoegd.";
+        session_write_close();
+        header("Location: index.php");
         exit;
 
     } catch (PDOException $e) {

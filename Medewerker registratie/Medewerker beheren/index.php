@@ -5,6 +5,16 @@ if (empty($_SESSION['ingelogd']) || empty($_SESSION['gebruiker_id'])) {
     header('Location: ../../login.php');
     exit();
 }
+
+// Flash berichten uitlezen én direct wissen zodat refresh ze niet toont
+$flashSucces = $_SESSION['flash_succes'] ?? null;
+$flashFout   = $_SESSION['flash_fout']   ?? null;
+unset($_SESSION['flash_succes'], $_SESSION['flash_fout']);
+
+// Rolcontrole — alleen Administrator mag medewerkers toevoegen
+$stmtRol = $pdo->prepare("SELECT Naam FROM rol WHERE GebruikerId = :id AND IsActief = 1");
+$stmtRol->execute([":id" => $_SESSION['gebruiker_id']]);
+$isAdmin = $stmtRol->fetchColumn() === "Administrator";
 ?>
 <!doctype html>
 <html lang="nl">
@@ -48,15 +58,32 @@ if (empty($_SESSION['ingelogd']) || empty($_SESSION['gebruiker_id'])) {
                 <h1>Team</h1>
                 <div class="sub" id="countLine"></div>
             </div>
+
+            <?php if ($isAdmin): ?>
             <button class="btn-primary" id="openModal">
                 <i class="fa-solid fa-plus"></i> Nieuwe medewerker
             </button>
+            <?php else: ?>
+            <button class="btn-primary btn-disabled" disabled
+                title="U heeft geen rechten om een medewerker toe te voegen">
+                <i class="fa-solid fa-lock"></i> Geen toegang
+            </button>
+            <?php endif; ?>
         </div>
 
-        <div class="alert-success" id="successAlert" style="display: none">
+        <?php if ($flashSucces): ?>
+        <div class="alert-success" id="successAlert">
             <i class="fa-solid fa-circle-check"></i>
-            Medewerker is succesvol aangemaakt en toegevoegd.
+            <?= htmlspecialchars($flashSucces) ?>
         </div>
+        <?php endif; ?>
+
+        <?php if ($flashFout): ?>
+        <div class="alert-error" id="errorAlert">
+            <i class="fa-solid fa-circle-xmark"></i>
+            <?= htmlspecialchars($flashFout) ?>
+        </div>
+        <?php endif; ?>
 
         <div class="topbar">
             <input id="search" placeholder="Zoek op naam..." />
@@ -91,7 +118,7 @@ if (empty($_SESSION['ingelogd']) || empty($_SESSION['gebruiker_id'])) {
 
     <footer class="footer">© 2026 FitForFun — Alle rechten voorbehouden</footer>
 
-    <!-- Modal -->
+    <?php if ($isAdmin): ?>
     <div class="modal-backdrop" id="modalBackdrop">
         <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitel">
             <div class="modal-header">
@@ -124,8 +151,9 @@ if (empty($_SESSION['ingelogd']) || empty($_SESSION['gebruiker_id'])) {
             </form>
         </div>
     </div>
+    <?php endif; ?>
 
-    <script src="/Medewerker registratie/Medewerker beheren/medewerker-beheren.js"></script>
+    <script src="/Medewerker registratie/Medewerker beheren/medewerker-beheren.js?v=<?= time() ?>"></script>
 </body>
 
-</html> 
+</html>
