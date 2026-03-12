@@ -36,7 +36,7 @@ function filterLessen() {
   const rijen = document.querySelectorAll('#tabelBody tr');
   const cards = document.querySelectorAll('#cardContainer .les-card');
 
-  let zichtbaar = 0;
+  let zichtbaar = 0; 
 
   rijen.forEach((rij) => {
     const naamOk   = !zoek   || rij.dataset.naam.includes(zoek);

@@ -9,7 +9,7 @@ let jarenGeladen = false;
   option.value = huidigJaar;
   option.textContent = huidigJaar;
   select.appendChild(option);
-})();
+})(); 
 
 function toonFout(msg) {
   const el = document.getElementById("alertEl");

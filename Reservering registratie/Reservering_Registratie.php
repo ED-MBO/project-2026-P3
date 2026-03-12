@@ -1,7 +1,7 @@
 <?php
 session_start();
 require_once '../config.php';
-
+ 
 // --- Verwerk formulier POST ---
 $modalFouten = [];
 $modalSucces = false;

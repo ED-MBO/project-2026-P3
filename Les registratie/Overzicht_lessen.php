@@ -267,7 +267,7 @@ $aantalLessen = count($lessen);
                         <?php if (isset($modalFouten['min_personen'])): ?>
                         <span class="field-error"><?= htmlspecialchars($modalFouten['min_personen']) ?></span>
                         <?php endif; ?>
-                    </div>
+                    </div> 
                     <div class="form-group">
                         <label for="max_personen">Max. personen <span class="required">*</span></label>
                         <input type="number" id="max_personen" name="max_personen" min="1" max="127" placeholder="9"

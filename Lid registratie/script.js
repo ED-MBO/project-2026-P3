@@ -5,7 +5,7 @@ async function laadLeden() {
     const response = await fetch("get_leden.php");
     if (!response.ok) throw new Error("Server fout");
     leden = await response.json();
-    update();
+    update(); 
   } catch {
     const emptyState = document.getElementById("emptyState");
     emptyState.classList.add("is-visible");

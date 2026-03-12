@@ -5,7 +5,7 @@ if (empty($_SESSION['ingelogd']) || empty($_SESSION['gebruiker_id'])) {
     exit();
 }
 require "../../config.php";
-
+ 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     $voornaam   = trim($_POST["voornaam"]);

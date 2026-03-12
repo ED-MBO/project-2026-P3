@@ -4,7 +4,7 @@ require_once __DIR__ . '/../../config.php';
 if (empty($_SESSION['ingelogd']) || empty($_SESSION['gebruiker_id'])) {
     header('Location: ../../login.php');
     exit();
-}
+} 
 ?>
 <!doctype html>
 <html lang="nl">

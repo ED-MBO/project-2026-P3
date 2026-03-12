@@ -5,7 +5,7 @@ header('Content-Type: application/json');
 
 $type = $_GET['type'] ?? 'maand';
 $jaar = (int)($_GET['jaar'] ?? date('Y'));
-
+ 
 try {
 
 $jarenStmt = $pdo->query("

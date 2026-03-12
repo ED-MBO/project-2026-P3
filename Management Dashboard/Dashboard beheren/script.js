@@ -7,7 +7,7 @@ async function laadLessen() {
     lessen = await res.json();
     if (lessen.error) throw new Error(lessen.error);
     update();
-  } catch {
+  } catch { 
     const empty = document.getElementById("emptyState");
     if (empty) {
       empty.style.display = "block";

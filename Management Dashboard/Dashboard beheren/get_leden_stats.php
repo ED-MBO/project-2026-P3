@@ -3,7 +3,7 @@
 require '../../config.php';
 
 header('Content-Type: application/json');
-
+ 
 try {
 
 $stmt = $pdo->query("SELECT COUNT(*) FROM lid WHERE IsActief = 1");

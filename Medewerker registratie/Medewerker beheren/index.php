@@ -149,4 +149,4 @@ if (empty($_SESSION['ingelogd']) || empty($_SESSION['gebruiker_id'])) {
     <script src="/Medewerker registratie/Medewerker beheren/medewerker-beheren.js"></script>
 </body>
 
-</html>
+</html> 

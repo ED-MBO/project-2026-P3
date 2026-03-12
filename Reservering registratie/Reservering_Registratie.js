@@ -5,7 +5,7 @@ const hamburger = document.querySelector('.hamburger');
 const navbar    = document.querySelector('.navbar');
 const sluit     = document.querySelector('.close-menu');
 const overlay   = document.querySelector('.overlay');
-
+ 
 hamburger.addEventListener('click', () => {
   navbar.classList.add('active');
   overlay.style.display = 'block';

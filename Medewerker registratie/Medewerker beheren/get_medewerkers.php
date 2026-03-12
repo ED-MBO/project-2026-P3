@@ -5,7 +5,7 @@ if (empty($_SESSION['ingelogd']) || empty($_SESSION['gebruiker_id'])) {
     exit();
 }
 require "../../config.php";
-
+ 
 try {
     $sql = "SELECT 
                  Voornaam

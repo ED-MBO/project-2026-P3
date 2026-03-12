@@ -9,7 +9,7 @@ function openNavigatie() {
   navigatieMenu.classList.add("active");
   overlayElement.style.display = "block";
   document.body.style.overflow = "hidden";
-}
+} 
 
 function sluitNavigatie() {
   navigatieMenu.classList.remove("active");

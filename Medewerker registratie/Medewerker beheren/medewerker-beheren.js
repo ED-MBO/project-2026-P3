@@ -3,7 +3,7 @@ const hamburger = document.querySelector(".hamburger");
 const nav = document.querySelector(".navbar");
 const sluitNav = document.querySelector(".close-menu");
 const overlay = document.querySelector(".overlay");
-
+ 
 hamburger.addEventListener("click", () => {
   nav.classList.add("active");
   overlay.style.display = "block";

@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const navigatieMenu = document.querySelector(".navbar");
     const sluitKnop = document.querySelector(".close-menu");
     const overlayElement = document.querySelector(".overlay");
-
+ 
     function openNavigatie() {
         navigatieMenu.classList.add("active");
         overlayElement.style.display = "block";

@@ -7,7 +7,7 @@ if (empty($_SESSION['ingelogd']) || empty($_SESSION['gebruiker_id'])) {
 require_once __DIR__ . '/../config.php';
 
 header('Content-Type: application/json; charset=utf-8');
-
+ 
 try {
     $stmt = $pdo->query("
         SELECT
