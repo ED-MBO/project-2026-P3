@@ -2,59 +2,21 @@
 session_start();
 require_once '../config.php';
 
-// --- Verwerk formulier POST ---
-$modalFouten = [];
-$modalSucces = false;
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nieuweLes'])) {
-  $naam        = trim($_POST['naam'] ?? '');
-  $prijs       = trim($_POST['prijs'] ?? '');
-  $datum       = trim($_POST['datum'] ?? '');
-  $tijd        = trim($_POST['tijd'] ?? '');
-  $minPersonen = trim($_POST['min_personen'] ?? '');
-  $maxPersonen = trim($_POST['max_personen'] ?? '');
-  $beschikbaar = $_POST['beschikbaarheid'] ?? 'Ingepland';
-
-  if ($naam === '')                                                                     $modalFouten['naam']         = 'Lesnaam is verplicht.';
-  elseif (strlen($naam) > 50)                                                          $modalFouten['naam']         = 'Maximaal 50 tekens.';
-  if ($prijs === '' || !is_numeric($prijs) || $prijs < 0)                              $modalFouten['prijs']        = 'Voer een geldige prijs in.';
-  if ($datum === '')                                                                    $modalFouten['datum']        = 'Datum is verplicht.';
-  if ($tijd === '')                                                                     $modalFouten['tijd']         = 'Tijd is verplicht.';
-  if ($minPersonen === '' || !ctype_digit($minPersonen) || (int)$minPersonen < 1)      $modalFouten['min_personen'] = 'Min. personen ongeldig.';
-  if ($maxPersonen === '' || !ctype_digit($maxPersonen) || (int)$maxPersonen < 1)      $modalFouten['max_personen'] = 'Max. personen ongeldig.';
-  elseif (empty($modalFouten['min_personen']) && (int)$maxPersonen < (int)$minPersonen)$modalFouten['max_personen'] = 'Max moet ≥ min zijn.';
-  if (!in_array($beschikbaar, ['Ingepland','Niet gestart','Gestart','Geannuleerd']))   $modalFouten['beschikbaar']  = 'Ongeldige status.';
-
-  if (empty($modalFouten)) {
-    try {
-      $stmt = $pdo->prepare(
-        "INSERT INTO les (Naam, Prijs, Datum, Tijd, MinAantalPersonen, MaxAantalPersonen, Beschikbaarheid, IsActief)
-         VALUES (:naam, :prijs, :datum, :tijd, :min, :max, :beschikbaar, 1)"
-      );
-      $stmt->execute([
-        ':naam'        => $naam,
-        ':prijs'       => number_format((float)$prijs, 2, '.', ''),
-        ':datum'       => $datum,
-        ':tijd'        => $tijd,
-        ':min'         => (int)$minPersonen,
-        ':max'         => (int)$maxPersonen,
-        ':beschikbaar' => $beschikbaar,
-      ]);
-      $modalSucces = true;
-    } catch (PDOException $e) {
-      $modalFouten['db'] = 'Databasefout. Probeer opnieuw.';
-    }
-  }
+if (empty($_SESSION['ingelogd']) || empty($_SESSION['gebruiker_id'])) {
+    header('Location: ../login.php');
+    exit();
 }
 
-// --- Haal lessen op (opnieuw zodat nieuwe les direct zichtbaar is) ---
-$sql = "SELECT Naam, Prijs, Datum, Tijd, Beschikbaarheid
-        FROM les
-        WHERE IsActief = 1
-        ORDER BY Datum, Tijd";
+$sql = "SELECT r.Voornaam, r.Tussenvoegsel, r.Achternaam, r.Datum, r.Tijd, r.Reserveringstatus, l.Naam AS LesNaam, l.Prijs, l.Beschikbaarheid
+        FROM reservering r
+        LEFT JOIN les l ON l.Datum = r.Datum AND l.Tijd = r.Tijd AND l.IsActief = 1
+        WHERE r.IsActief = 1
+        ORDER BY r.Datum, r.Tijd";
+
 $stmt = $pdo->prepare($sql);
 $stmt->execute();
-$lessen       = $stmt->fetchAll(PDO::FETCH_ASSOC);
+$lessen = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
 $aantalLessen = count($lessen);
 ?>
 <!DOCTYPE html>
