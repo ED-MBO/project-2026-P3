@@ -10,11 +10,6 @@ if (empty($_SESSION['ingelogd']) || empty($_SESSION['gebruiker_id'])) {
 $flashSucces = $_SESSION['flash_succes'] ?? null;
 $flashFout   = $_SESSION['flash_fout']   ?? null;
 unset($_SESSION['flash_succes'], $_SESSION['flash_fout']);
-
-// Rolcontrole — alleen Administrator mag medewerkers toevoegen
-$stmtRol = $pdo->prepare("SELECT Naam FROM rol WHERE GebruikerId = :id AND IsActief = 1");
-$stmtRol->execute([":id" => $_SESSION['gebruiker_id']]);
-$isAdmin = $stmtRol->fetchColumn() === "Administrator";
 ?>
 <!doctype html>
 <html lang="nl">
@@ -59,16 +54,9 @@ $isAdmin = $stmtRol->fetchColumn() === "Administrator";
                 <div class="sub" id="countLine"></div>
             </div>
 
-            <?php if ($isAdmin): ?>
             <button class="btn-primary" id="openModal">
                 <i class="fa-solid fa-plus"></i> Nieuwe medewerker
             </button>
-            <?php else: ?>
-            <button class="btn-primary btn-disabled" disabled
-                title="U heeft geen rechten om een medewerker toe te voegen">
-                <i class="fa-solid fa-lock"></i> Geen toegang
-            </button>
-            <?php endif; ?>
         </div>
 
         <?php if ($flashSucces): ?>
@@ -118,7 +106,6 @@ $isAdmin = $stmtRol->fetchColumn() === "Administrator";
 
     <footer class="footer">© 2026 FitForFun — Alle rechten voorbehouden</footer>
 
-    <?php if ($isAdmin): ?>
     <div class="modal-backdrop" id="modalBackdrop">
         <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitel">
             <div class="modal-header">
@@ -151,7 +138,6 @@ $isAdmin = $stmtRol->fetchColumn() === "Administrator";
             </form>
         </div>
     </div>
-    <?php endif; ?>
 
     <script src="/Medewerker registratie/Medewerker beheren/medewerker-beheren.js?v=<?= time() ?>"></script>
 </body>

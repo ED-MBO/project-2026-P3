@@ -1,7 +1,6 @@
 <?php
 session_start();
 
-// Niet ingelogd → terug naar login
 if (empty($_SESSION['ingelogd']) || empty($_SESSION['gebruiker_id'])) {
     header('Location: ../../login.php');
     exit();
@@ -9,23 +8,22 @@ if (empty($_SESSION['ingelogd']) || empty($_SESSION['gebruiker_id'])) {
 
 require "../../config.php";
 
-// Unhappy path: controleer of de ingelogde gebruiker de rol Administrator heeft
-$stmtRol = $pdo->prepare("SELECT Naam FROM rol WHERE GebruikerId = :id AND IsActief = 1");
-$stmtRol->execute([":id" => $_SESSION['gebruiker_id']]);
-$rolGebruiker = $stmtRol->fetchColumn();
-
-if ($rolGebruiker !== "Administrator") {
-    $_SESSION['flash_fout'] = "Toegang geweigerd — u heeft geen rechten om een medewerker toe te voegen.";
-    header("Location: index.php");
-    exit();
-}
-
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
+
+    // Rolcontrole — alleen Administrator en Medewerker mogen een medewerker toevoegen
+    $stmtRol = $pdo->prepare("SELECT Naam FROM rol WHERE GebruikerId = :id AND IsActief = 1");
+    $stmtRol->execute([":id" => $_SESSION['gebruiker_id']]);
+    $rol = $stmtRol->fetchColumn();
+
+    if (!in_array($rol, ["Administrator", "Medewerker"])) {
+        $_SESSION['flash_fout'] = "U heeft niet voldoende rechten om een medewerker toe te voegen.";
+        header("Location: index.php");
+        exit();
+    }
 
     $voornaam   = trim($_POST["voornaam"]);
     $tussen     = trim($_POST["tussenvoegsel"] ?? "");
     $achternaam = trim($_POST["achternaam"]);
-    $rolNaam    = "Medewerker";
 
     try {
         $pdo->beginTransaction();
@@ -54,16 +52,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             ":w" => password_hash("welkom123", PASSWORD_DEFAULT)
         ]);
 
-        $gebruikerId = (int) $pdo->lastInsertId();
-
-        // Stap 3: rol koppelen
-        $stmtR = $pdo->prepare("INSERT INTO rol (GebruikerId, Naam, IsActief) VALUES (:g, :n, 1)");
-        $stmtR->execute([
-            ":g" => $gebruikerId,
-            ":n" => $rolNaam
-        ]);
-
-        // Stap 4: medewerker aanmaken
+        // Stap 3: medewerker aanmaken
         $stmtM = $pdo->prepare("INSERT INTO medewerker 
                                     (Voornaam, Tussenvoegsel, Achternaam, IsActief)
                                  VALUES (:v, :t, :a, 1)");
