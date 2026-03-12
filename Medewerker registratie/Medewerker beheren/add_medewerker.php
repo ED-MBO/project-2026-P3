@@ -11,12 +11,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $voornaam   = trim($_POST["voornaam"]);
     $tussen     = trim($_POST["tussenvoegsel"] ?? "");
     $achternaam = trim($_POST["achternaam"]);
-    $rolNaam    = trim($_POST["rol"]);
-
-    $toegestaneRollen = ["Lid", "Medewerker", "Administrator", "Gastgebruiker"];
-    if (!in_array($rolNaam, $toegestaneRollen)) {
-        die("Ongeldige rol opgegeven.");
-    }
+    $rolNaam    = "Medewerker";
 
     try {
         $pdo->beginTransaction();
@@ -47,25 +42,21 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
         $gebruikerId = (int) $pdo->lastInsertId();
 
-        // Stap 3: rol koppelen aan gebruiker.Id
+        // Stap 3: rol koppelen
         $stmtR = $pdo->prepare("INSERT INTO rol (GebruikerId, Naam, IsActief) VALUES (:g, :n, 1)");
         $stmtR->execute([
             ":g" => $gebruikerId,
             ":n" => $rolNaam
         ]);
 
-        // Stap 4: medewerker aanmaken — zonder GebruikerId want kolom bestaat nog niet
-        $nummer = (int) $pdo->query("SELECT COALESCE(MAX(Nummer), 0) + 1 FROM medewerker")->fetchColumn();
-
+        // Stap 4: medewerker aanmaken
         $stmtM = $pdo->prepare("INSERT INTO medewerker 
-                                    (Voornaam, Tussenvoegsel, Achternaam, Nummer, Medewerkersoort, IsActief)
-                                 VALUES (:v, :t, :a, :n, :s, 1)");
+                                    (Voornaam, Tussenvoegsel, Achternaam, IsActief)
+                                 VALUES (:v, :t, :a, 1)");
         $stmtM->execute([
             ":v" => $voornaam,
             ":t" => $tussen ?: null,
-            ":a" => $achternaam,
-            ":n" => $nummer,
-            ":s" => $rolNaam
+            ":a" => $achternaam
         ]);
 
         $pdo->commit();

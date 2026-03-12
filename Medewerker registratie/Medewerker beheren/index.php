@@ -26,24 +26,14 @@ if (empty($_SESSION['ingelogd']) || empty($_SESSION['gebruiker_id'])) {
             <nav class="navbar">
                 <div class="close-menu"><i class="fa-solid fa-xmark"></i></div>
                 <ul class="navbar-nav">
-                    <li>
-                        <a class="nav-link" href="../../Informatie/home.php">Home</a>
-                    </li>
-                    <li>
-                        <a class="nav-link" href="../../Account registratie/Account beheren/index.php">Account
-                            beheren</a>
-                    </li>
+                    <li><a class="nav-link" href="../../Informatie/home.php">Home</a></li>
+                    <li><a class="nav-link" href="../../Account registratie/Account beheren/index.php">Account
+                            beheren</a></li>
                     <li><a class="nav-link" href="index.php">Medewerker beheren</a></li>
-                    <li>
-                        <a class="nav-link" href="../../Lid registratie/index.php">Lid beheren</a>
-                    </li>
-                    <li>
-                        <a class="nav-link" href="../../Les registratie/Overzicht_lessen.php">Les beheren</a>
-                    </li>
-                    <li>
-                        <a class="nav-link" href="../../Reservering registratie/Reservering_Registratie.php">Reservering
-                            beheren</a>
-                    </li>
+                    <li><a class="nav-link" href="../../Lid registratie/index.php">Lid beheren</a></li>
+                    <li><a class="nav-link" href="../../Les registratie/Overzicht_lessen.php">Les beheren</a></li>
+                    <li><a class="nav-link" href="../../Reservering registratie/Reservering_Registratie.php">Reservering
+                            beheren</a></li>
                     <li><a class="nav-link" href="../../Management Dashboard/Dashboard beheren/index.php">Dashboard
                             beheren</a></li>
                 </ul>
@@ -69,7 +59,7 @@ if (empty($_SESSION['ingelogd']) || empty($_SESSION['gebruiker_id'])) {
         </div>
 
         <div class="topbar">
-            <input id="search" placeholder="Zoek op naam of functie..." />
+            <input id="search" placeholder="Zoek op naam..." />
             <select id="afdeling">
                 <option value="">Alle afdelingen</option>
             </select>
@@ -86,7 +76,6 @@ if (empty($_SESSION['ingelogd']) || empty($_SESSION['gebruiker_id'])) {
             <thead>
                 <tr>
                     <th>Naam</th>
-                    <th>Functie</th>
                     <th>Afdeling</th>
                     <th>Status</th>
                 </tr>
@@ -123,16 +112,6 @@ if (empty($_SESSION['ingelogd']) || empty($_SESSION['gebruiker_id'])) {
                 <div class="form-group">
                     <label for="achternaam">Achternaam <span class="required">*</span></label>
                     <input type="text" id="achternaam" name="achternaam" placeholder="Bijv. Smit" required />
-                </div>
-                <div class="form-group">
-                    <label for="rol">Rol <span class="required">*</span></label>
-                    <select id="rol" name="rol" required>
-                        <option value="" disabled selected>Kies een rol...</option>
-                        <option value="Lid">Lid</option>
-                        <option value="Medewerker">Medewerker</option>
-                        <option value="Administrator">Administrator</option>
-                        <option value="Gastgebruiker">Gastgebruiker</option>
-                    </select>
                 </div>
                 <div class="modal-footer">
                     <button type="submit" class="btn-primary">

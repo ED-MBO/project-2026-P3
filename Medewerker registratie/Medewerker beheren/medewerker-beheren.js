@@ -85,9 +85,7 @@ function filterMedewerkers() {
   const stat = statusSelect.value;
   return medewerkers.filter(
     (m) =>
-      (!zoek ||
-        m.naam.toLowerCase().includes(zoek) ||
-        m.functie.toLowerCase().includes(zoek)) &&
+      (!zoek || m.naam.toLowerCase().includes(zoek)) &&
       (!afd || m.afdeling === afd) &&
       (!stat || m.status === stat),
   );
@@ -107,11 +105,10 @@ function renderTabel(lijst) {
   lijst.forEach((m) => {
     const tr = document.createElement("tr");
     tr.innerHTML = `
-            <td>${m.naam}</td>
-            <td>${m.functie}</td>
-            <td><span class="badge">${m.afdeling}</span></td>
-            <td><span class="status ${statusClass(m.status)}">${m.status}</span></td>
-          `;
+      <td>${m.naam}</td>
+      <td><span class="badge">${m.afdeling}</span></td>
+      <td><span class="status ${statusClass(m.status)}">${m.status}</span></td>
+    `;
     tabelBody.appendChild(tr);
   });
 }
@@ -122,17 +119,16 @@ function renderCards(lijst) {
     const card = document.createElement("div");
     card.className = "team-card";
     card.innerHTML = `
-            <h3>${m.naam}</h3>
-            <div class="functie">${m.functie}</div>
-            <div class="card-row">
-              <span class="card-label">Afdeling</span>
-              <span class="badge">${m.afdeling}</span>
-            </div>
-            <div class="card-row">
-              <span class="card-label">Status</span>
-              <span class="status ${statusClass(m.status)}">${m.status}</span>
-            </div>
-          `;
+      <h3>${m.naam}</h3>
+      <div class="card-row">
+        <span class="card-label">Afdeling</span>
+        <span class="badge">${m.afdeling}</span>
+      </div>
+      <div class="card-row">
+        <span class="card-label">Status</span>
+        <span class="status ${statusClass(m.status)}">${m.status}</span>
+      </div>
+    `;
     cardContainer.appendChild(card);
   });
 }
