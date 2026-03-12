@@ -11,8 +11,6 @@ try {
                  Voornaam
                 ,Tussenvoegsel
                 ,Achternaam
-                ,Medewerkersoort
-                ,Nummer
             FROM medewerker
             WHERE IsActief = 1
             ORDER BY Voornaam";
@@ -29,11 +27,9 @@ try {
                 $row['Achternaam'];
 
         $medewerkers[] = [
-            "naam" => $naam
-            ,"functie" => $row['Medewerkersoort']
-            ,"afdeling" => "FitForFun"
-            ,"status" => "Beschikbaar"
-            ,"nummer" => $row['Nummer']
+            "naam"      => $naam,
+            "afdeling"  => "FitForFun",
+            "status"    => "Beschikbaar"
         ];
     }
 
