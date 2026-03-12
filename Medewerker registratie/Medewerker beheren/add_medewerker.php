@@ -15,7 +15,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $stmtRol->execute([":id" => $_SESSION['gebruiker_id']]);
     $rol = $stmtRol->fetchColumn();
 
-    if (!in_array($rol, ["Administrator", "Medewerker"])) {
+    if (!in_array($rol, ["Administrator"])) {
         $_SESSION['flash_fout'] = "U heeft niet voldoende rechten om een medewerker toe te voegen.";
         header("Location: index.php");
         exit();
