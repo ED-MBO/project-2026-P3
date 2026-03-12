@@ -256,8 +256,6 @@ $aantalLessen = count($lessen);
 
         </div>
     </div>
-    <!-- ================================================= -->
-<footer class="footer">© 2026 FitForFun — Alle rechten voorbehouden</footer>
 
 <script>
   const totaal = <?= $aantalLessen ?>;
