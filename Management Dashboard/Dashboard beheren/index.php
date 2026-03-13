@@ -22,7 +22,7 @@ if (empty($_SESSION['ingelogd']) || empty($_SESSION['gebruiker_id'])) {
 <body>
     <header class="header">
         <div class="navbar-container">
-            <a href="../../Informatie/home.php" class="logo">FitForFun</a>
+            <a href="../../Informatie/index.html" class="logo">FitForFun</a>
 
             <div class="hamburger" id="hamburger">
                 <i class="fa-solid fa-bars"></i>
@@ -32,7 +32,7 @@ if (empty($_SESSION['ingelogd']) || empty($_SESSION['gebruiker_id'])) {
                 <span class="close-menu" id="closeMenu">&times;</span>
                 <ul class="navbar-nav">
                     <li>
-                        <a class="nav-link" href="../../Informatie/home.php">Home</a>
+                        <a class="nav-link" href="../../Informatie/index.html">Home</a>
                     </li>
                     <li>
                         <a class="nav-link" href="../../Account registratie/Account beheren/index.php">Account
@@ -53,6 +53,7 @@ if (empty($_SESSION['ingelogd']) || empty($_SESSION['gebruiker_id'])) {
                             beheren</a>
                     </li>
                     <li><a class="nav-link" href="index.php">Dashboard beheren</a></li>
+                    <li><a class="nav-link nav-link-uitloggen" href="../../uitloggen.php">Uitloggen</a></li>
                 </ul>
             </nav>
 

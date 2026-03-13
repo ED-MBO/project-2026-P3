@@ -23,15 +23,15 @@ if (empty($_SESSION['ingelogd']) || empty($_SESSION['gebruiker_id'])) {
 
     <header class="header">
         <div class="navbar-container">
-            <a href="../Informatie/home.php" class="logo">FitForFun</a>
+            <a href="../Informatie/index.html" class="logo">FitForFun</a>
             <div class="hamburger" id="hamburger">
                 <i class="fa-solid fa-bars"></i>
             </div>
             <nav class="navbar" id="navbar">
                 <span class="close-menu" id="closeMenu">&times;</span>
                 <ul class="navbar-nav">
-                    <li><a class="nav-link" href="../Informatie/home.php">Home</a></li>
-                    <li><a class="nav-link" href="../Account registratie/Account beheren/index.html">Account beheren</a>
+                    <li><a class="nav-link" href="../Informatie/index.html">Home</a></li>
+                    <li><a class="nav-link" href="../Account registratie/Account beheren/index.php">Account beheren</a>
                     </li>
                     <li>
                         <a class="nav-link" href="../../Medewerker registratie/Medewerker beheren/index.php">Medewerker
@@ -43,6 +43,7 @@ if (empty($_SESSION['ingelogd']) || empty($_SESSION['gebruiker_id'])) {
                             beheren</a></li>
                     <li><a class="nav-link" href="../Management Dashboard/Dashboard beheren/index.php">Dashboard
                             beheren</a></li>
+                    <li><a class="nav-link nav-link-uitloggen" href="../uitloggen.php">Uitloggen</a></li>
                 </ul>
             </nav>
             <div class="overlay" id="overlay"></div>

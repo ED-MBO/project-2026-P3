@@ -26,12 +26,12 @@ unset($_SESSION['flash_succes'], $_SESSION['flash_fout']);
 <body>
     <header class="header">
         <div class="navbar-container">
-            <a href="../../Informatie/home.php" class="logo">FitForFun</a>
+            <a href="../../Informatie/index.html" class="logo">FitForFun</a>
             <div class="hamburger"><i class="fa-solid fa-bars"></i></div>
             <nav class="navbar">
                 <div class="close-menu"><i class="fa-solid fa-xmark"></i></div>
                 <ul class="navbar-nav">
-                    <li><a class="nav-link" href="../../Informatie/home.php">Home</a></li>
+                    <li><a class="nav-link" href="../../Informatie/index.html">Home</a></li>
                     <li><a class="nav-link" href="../../Account registratie/Account beheren/index.php">Account
                             beheren</a></li>
                     <li><a class="nav-link" href="index.php">Medewerker beheren</a></li>
@@ -41,6 +41,7 @@ unset($_SESSION['flash_succes'], $_SESSION['flash_fout']);
                             beheren</a></li>
                     <li><a class="nav-link" href="../../Management Dashboard/Dashboard beheren/index.php">Dashboard
                             beheren</a></li>
+                    <li><a class="nav-link nav-link-uitloggen" href="../../uitloggen.php">Uitloggen</a></li>
                 </ul>
             </nav>
             <div class="overlay"></div>
