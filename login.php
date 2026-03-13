@@ -4,7 +4,7 @@ require_once __DIR__ . '/config.php';
 
 // Al ingelogd → doorsturen naar home
 if (!empty($_SESSION['ingelogd']) && !empty($_SESSION['gebruiker_id'])) {
-    header('Location: Informatie/home.php');
+    header('Location: Informatie/index.html');
     exit();
 }
 
@@ -50,7 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $update = $pdo->prepare("UPDATE gebruiker SET IsIngelogd = 1, Ingelogd = CURRENT_TIMESTAMP WHERE Id = ?");
                     $update->execute([$gebruiker['Id']]);
 
-                    header('Location: Informatie/home.php');
+                    header('Location: Informatie/index.html');
                     exit();
                 }
             }
@@ -121,7 +121,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             <button type="submit">Inloggen</button>
         </form>
-        <a href="Informatie/home.php" class="login-terug">Terug naar home</a>
+        <a href="Informatie/index.html" class="login-terug">Terug naar home</a>
     </div>
 </div>
 
