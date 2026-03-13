@@ -130,4 +130,31 @@ zoekInput.addEventListener("input", update);
 rolFilter.addEventListener("change", update);
 statusFilter.addEventListener("change", update);
 
+/* Modal Account aanmaken */
+const modalBackdrop = document.getElementById("modalBackdrop");
+const openBtn = document.getElementById("openAccountModal");
+const sluitModal = document.getElementById("sluitModal");
+const annuleerModal = document.getElementById("annuleerModal");
+
+if (openBtn) {
+  openBtn.addEventListener("click", () => {
+    if (modalBackdrop) modalBackdrop.classList.add("open");
+  });
+}
+if (sluitModal) {
+  sluitModal.addEventListener("click", () => {
+    if (modalBackdrop) modalBackdrop.classList.remove("open");
+  });
+}
+if (annuleerModal) {
+  annuleerModal.addEventListener("click", () => {
+    if (modalBackdrop) modalBackdrop.classList.remove("open");
+  });
+}
+if (modalBackdrop) {
+  modalBackdrop.addEventListener("click", (e) => {
+    if (e.target === modalBackdrop) modalBackdrop.classList.remove("open");
+  });
+}
+
 laadAccounts();

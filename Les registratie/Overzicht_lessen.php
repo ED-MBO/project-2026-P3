@@ -6,6 +6,12 @@ if (empty($_SESSION['ingelogd']) || empty($_SESSION['gebruiker_id'])) {
     header('Location: ../login.php');
     exit();
 }
+if (empty($_SESSION['rol'])) {
+    $stmtRol = $pdo->prepare("SELECT Naam FROM rol WHERE GebruikerId = ? AND IsActief = 1 LIMIT 1");
+    $stmtRol->execute([$_SESSION['gebruiker_id']]);
+    $_SESSION['rol'] = $stmtRol->fetchColumn() ?: 'Lid';
+}
+$toonAccountBeheren = in_array($_SESSION['rol'] ?? '', ['Medewerker', 'Administrator']);
 
 $sql = "SELECT r.Voornaam, r.Tussenvoegsel, r.Achternaam, r.Datum, r.Tijd, r.Reserveringstatus, l.Naam AS LesNaam, l.Prijs, l.Beschikbaarheid
         FROM reservering r
@@ -35,18 +41,20 @@ $aantalLessen = count($lessen);
 
     <header class="header">
         <div class="navbar-container">
-            <a href="../Informatie/home.php" class="logo">FitForFun</a>
+            <a href="../Informatie/index.html" class="logo">FitForFun</a>
             <div class="hamburger"><i class="fa-solid fa-bars"></i></div>
             <nav class="navbar">
                 <div class="close-menu"><i class="fa-solid fa-xmark"></i></div>
                 <ul class="navbar-nav">
                     <li>
-                        <a class="nav-link" href="../../Informatie/home.php">Home</a>
+                        <a class="nav-link" href="../Informatie/index.html">Home</a>
                     </li>
+                    <?php if ($toonAccountBeheren): ?>
                     <li>
-                        <a class="nav-link" href="../../Account registratie/Account beheren/index.php">Account
+                        <a class="nav-link" href="../Account registratie/Account beheren/index.php">Account
                             beheren</a>
                     </li>
+                    <?php endif; ?>
                     <li><a class="nav-link" href="../Medewerker registratie/Medewerker beheren/index.php">Medewerker
                             beheren</a>
                     </li>

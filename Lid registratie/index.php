@@ -6,6 +6,12 @@ if (empty($_SESSION['ingelogd']) || empty($_SESSION['gebruiker_id'])) {
     header('Location: ../login.php');
     exit();
 }
+if (empty($_SESSION['rol'])) {
+    $stmtRol = $pdo->prepare("SELECT Naam FROM rol WHERE GebruikerId = ? AND IsActief = 1 LIMIT 1");
+    $stmtRol->execute([$_SESSION['gebruiker_id']]);
+    $_SESSION['rol'] = $stmtRol->fetchColumn() ?: 'Lid';
+}
+$toonAccountBeheren = in_array($_SESSION['rol'] ?? '', ['Medewerker', 'Administrator']);
 ?> 
 <!DOCTYPE html>
 <html lang="nl">
@@ -30,9 +36,10 @@ if (empty($_SESSION['ingelogd']) || empty($_SESSION['gebruiker_id'])) {
             <nav class="navbar" id="navbar">
                 <span class="close-menu" id="closeMenu">&times;</span>
                 <ul class="navbar-nav">
-                    <li><a class="nav-link" href="../Informatie/home.php">Home</a></li>
-                    <li><a class="nav-link" href="../Account registratie/Account beheren/index.html">Account beheren</a>
-                    </li>
+                    <li><a class="nav-link" href="../Informatie/index.html">Home</a></li>
+                    <?php if ($toonAccountBeheren): ?>
+                    <li><a class="nav-link" href="../Account registratie/Account beheren/index.php">Account beheren</a></li>
+                    <?php endif; ?>
                     <li>
                         <a class="nav-link" href="../../Medewerker registratie/Medewerker beheren/index.php">Medewerker
                             beheren</a>
