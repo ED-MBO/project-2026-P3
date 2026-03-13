@@ -5,6 +5,12 @@ if (empty($_SESSION['ingelogd']) || empty($_SESSION['gebruiker_id'])) {
     header('Location: ../../login.php');
     exit();
 }
+if (empty($_SESSION['rol'])) {
+    $stmtRol = $pdo->prepare("SELECT Naam FROM rol WHERE GebruikerId = ? AND IsActief = 1 LIMIT 1");
+    $stmtRol->execute([$_SESSION['gebruiker_id']]);
+    $_SESSION['rol'] = $stmtRol->fetchColumn() ?: 'Lid';
+}
+$toonAccountBeheren = in_array($_SESSION['rol'] ?? '', ['Medewerker', 'Administrator']);
 
 // Flash berichten uitlezen én direct wissen zodat refresh ze niet toont
 $flashSucces = $_SESSION['flash_succes'] ?? null;
@@ -32,8 +38,10 @@ unset($_SESSION['flash_succes'], $_SESSION['flash_fout']);
                 <div class="close-menu"><i class="fa-solid fa-xmark"></i></div>
                 <ul class="navbar-nav">
                     <li><a class="nav-link" href="../../Informatie/index.html">Home</a></li>
+                    <?php if ($toonAccountBeheren): ?>
                     <li><a class="nav-link" href="../../Account registratie/Account beheren/index.php">Account
                             beheren</a></li>
+                    <?php endif; ?>
                     <li><a class="nav-link" href="index.php">Medewerker beheren</a></li>
                     <li><a class="nav-link" href="../../Lid registratie/index.php">Lid beheren</a></li>
                     <li><a class="nav-link" href="../../Les registratie/Overzicht_lessen.php">Les beheren</a></li>

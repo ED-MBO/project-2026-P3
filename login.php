@@ -46,6 +46,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $_SESSION['gebruiker_id'] = (int) $gebruiker['Id'];
                     $_SESSION['gebruikersnaam'] = $gebruiker['Gebruikersnaam'];
                     $_SESSION['naam'] = trim($gebruiker['Voornaam'] . ' ' . ($gebruiker['Tussenvoegsel'] ?? '') . ' ' . $gebruiker['Achternaam']);
+                    $rolStmt = $pdo->prepare("SELECT Naam FROM rol WHERE GebruikerId = ? AND IsActief = 1 LIMIT 1");
+                    $rolStmt->execute([$gebruiker['Id']]);
+                    $_SESSION['rol'] = $rolStmt->fetchColumn() ?: 'Lid';
 
                     $update = $pdo->prepare("UPDATE gebruiker SET IsIngelogd = 1, Ingelogd = CURRENT_TIMESTAMP WHERE Id = ?");
                     $update->execute([$gebruiker['Id']]);
