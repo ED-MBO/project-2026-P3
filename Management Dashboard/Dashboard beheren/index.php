@@ -61,6 +61,7 @@ $toonAccountBeheren = in_array($_SESSION['rol'] ?? '', ['Medewerker', 'Administr
                             beheren</a>
                     </li>
                     <li><a class="nav-link" href="index.php">Dashboard beheren</a></li>
+                    <li><a class="nav-link nav-link-uitloggen" href="../../uitloggen.php">Uitloggen</a></li>
                 </ul>
             </nav>
 

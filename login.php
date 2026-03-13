@@ -124,7 +124,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             <button type="submit">Inloggen</button>
         </form>
-        <a href="Informatie/home.php" class="login-terug">Terug naar home</a>
+        <a href="Informatie/index.html" class="login-terug">Terug naar home</a>
     </div>
 </div>
 

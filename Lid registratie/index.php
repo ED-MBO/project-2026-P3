@@ -29,7 +29,7 @@ $toonAccountBeheren = in_array($_SESSION['rol'] ?? '', ['Medewerker', 'Administr
 
     <header class="header">
         <div class="navbar-container">
-            <a href="../Informatie/home.php" class="logo">FitForFun</a>
+            <a href="../Informatie/index.html" class="logo">FitForFun</a>
             <div class="hamburger" id="hamburger">
                 <i class="fa-solid fa-bars"></i>
             </div>
@@ -50,6 +50,7 @@ $toonAccountBeheren = in_array($_SESSION['rol'] ?? '', ['Medewerker', 'Administr
                             beheren</a></li>
                     <li><a class="nav-link" href="../Management Dashboard/Dashboard beheren/index.php">Dashboard
                             beheren</a></li>
+                    <li><a class="nav-link nav-link-uitloggen" href="../uitloggen.php">Uitloggen</a></li>
                 </ul>
             </nav>
             <div class="overlay" id="overlay"></div>

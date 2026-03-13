@@ -113,6 +113,7 @@ $aantalReserveringen = count($reserveringen);
                     </li>
                     <li><a class="nav-link" href="../../Management Dashboard/Dashboard beheren/index.php">Dashboard
                             beheren</a></li>
+                    <li><a class="nav-link nav-link-uitloggen" href="../uitloggen.php">Uitloggen</a></li>
                 </ul>
             </nav>
             <div class="overlay"></div>
