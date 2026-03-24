@@ -28,7 +28,7 @@
                         <a class="nav-link" href="../../Account registratie/Account beheren/index.php">Account
                             beheren</a>
                     </li>
-                    <li><a class="nav-link" href="index.php">Medewerker beheren</a></li>
+                    <li><a class="nav-link" href="../Medewerker registratie/Medewerker beheren/index.php">Medewerker beheren</a></li>
                     <li>
                         <a class="nav-link" href="../../Lid registratie/index.php">Lid beheren</a>
                     </li>
