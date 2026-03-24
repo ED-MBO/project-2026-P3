@@ -69,7 +69,7 @@ if (!$magAccountBeheren) {
     <div class="container">
         <h1>403 – Geen toegang</h1>
         <p>U heeft geen rechten om accounts te beheren.</p>
-        <a href="../../Informatie/index.html">Terug naar home</a>
+        <a href="../../informatie/home.php">Terug naar home</a>
     </div>
 </body>
 </html>
@@ -96,7 +96,7 @@ unset($_SESSION['flash_succes_account'], $_SESSION['flash_fout_account']);
 <body>
     <header class="header">
         <div class="navbar-container">
-            <a href="../../Informatie/index.html" class="logo">FitForFun</a>
+            <a href="../../informatie/home.php" class="logo">FitForFun</a>
             <div class="hamburger">
                 <i class="fa-solid fa-bars"></i>
             </div>
@@ -106,7 +106,7 @@ unset($_SESSION['flash_succes_account'], $_SESSION['flash_fout_account']);
                 </div>
                 <ul class="navbar-nav">
                     <li>
-                        <a class="nav-link" href="../../Informatie/index.html">Home</a>
+                        <a class="nav-link" href="../../informatie/home.php">Home</a>
                     </li>
                     <li>
                         <a class="nav-link" href="index.php">Account

@@ -29,14 +29,14 @@ $toonAccountBeheren = in_array($_SESSION['rol'] ?? '', ['Medewerker', 'Administr
 
     <header class="header">
         <div class="navbar-container">
-            <a href="../Informatie/index.html" class="logo">FitForFun</a>
+            <a href="../informatie/home.php" class="logo">FitForFun</a>
             <div class="hamburger" id="hamburger">
                 <i class="fa-solid fa-bars"></i>
             </div>
             <nav class="navbar" id="navbar">
                 <span class="close-menu" id="closeMenu">&times;</span>
                 <ul class="navbar-nav">
-                    <li><a class="nav-link" href="../Informatie/index.html">Home</a></li>
+                    <li><a class="nav-link" href="../informatie/home.php">Home</a></li>
                     <?php if ($toonAccountBeheren): ?>
                     <li><a class="nav-link" href="../Account registratie/Account beheren/index.php">Account beheren</a></li>
                     <?php endif; ?>

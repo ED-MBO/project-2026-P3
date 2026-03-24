@@ -84,13 +84,13 @@ $aantalReserveringen = count($reserveringen);
 
     <header class="header">
         <div class="navbar-container">
-            <a href="../Informatie/index.html" class="logo">FitForFun</a>
+            <a href="../informatie/home.php" class="logo">FitForFun</a>
             <div class="hamburger"><i class="fa-solid fa-bars"></i></div>
             <nav class="navbar">
                 <div class="close-menu"><i class="fa-solid fa-xmark"></i></div>
                 <ul class="navbar-nav">
                     <li>
-                        <a class="nav-link" href="../Informatie/index.html">Home</a>
+                        <a class="nav-link" href="../informatie/home.php">Home</a>
                     </li>
                     <?php if ($toonAccountBeheren): ?>
                     <li>
