@@ -29,17 +29,13 @@ body {
   overflow-x: hidden;
 }
 
-/* 
-   NAVBAR
- */
+/* NAVBAR */
 .header {
   background: var(--color-background);
   border-bottom: 1px solid var(--color-border);
-  position: fixed;
+  position: sticky;
   top: 0;
-  left: 0;
-  right: 0;
-  z-index: 100;
+  z-index: 50;
 }
 
 .navbar-container {
@@ -71,7 +67,6 @@ body {
 .nav-link {
   text-decoration: none;
   font-size: 14px;
-  font-weight: 300;
   color: var(--color-text-muted);
   transition: 0.2s ease;
 }
@@ -84,7 +79,6 @@ body {
   display: none;
   font-size: 22px;
   cursor: pointer;
-  color: var(--color-text-primary);
 }
 
 .close-menu {
@@ -92,7 +86,6 @@ body {
   font-size: 22px;
   cursor: pointer;
   align-self: flex-end;
-  color: var(--color-text-primary);
 }
 
 .overlay {
@@ -103,9 +96,7 @@ body {
   z-index: 40;
 }
 
-/* 
-   HERO
- */
+/* HERO */
 .hero {
   min-height: 100vh;
   display: grid;
@@ -270,9 +261,7 @@ body {
   text-align: right;
 }
 
-/* 
-   HOURS STRIP
- */
+/* HOURS STRIP */
 .hours-strip {
   background: var(--color-card-bg);
   border-top: 1px solid var(--color-border);
@@ -334,22 +323,18 @@ body {
 }
 
 @keyframes pulse {
-
   0%,
   100% {
     opacity: 1;
     transform: scale(1);
   }
-
   50% {
     opacity: 0.5;
     transform: scale(0.7);
   }
 }
 
-/* 
-   SECTIONS — SHARED
- */
+/* SECTIONS — SHARED */
 section {
   padding: 80px 28px;
 }
@@ -394,9 +379,7 @@ h2 {
   max-width: 480px;
 }
 
-/* 
-   LESSEN
- */
+/* LESSEN */
 #lessen {
   background: var(--color-card-bg);
 }
@@ -465,9 +448,7 @@ h2 {
   color: var(--dim);
 }
 
-/* 
-   ABONNEMENTEN
- */
+/* ABONNEMENTEN */
 #abonnementen {
   background: var(--color-background);
 }
@@ -563,9 +544,7 @@ h2 {
   flex-shrink: 0;
 }
 
-/* 
-   TRAINERS
- */
+/* TRAINERS */
 #trainers {
   background: var(--color-card-bg);
 }
@@ -623,9 +602,7 @@ h2 {
   line-height: 1.6;
 }
 
-/* 
-   CTA BAND
- */
+/* CTA BAND */
 .cta-band {
   padding: 80px 28px;
   text-align: center;
@@ -645,9 +622,7 @@ h2 {
   justify-content: center;
 }
 
-/* 
-   BUTTONS
- */
+/* BUTTONS */
 .btn-primary {
   background: var(--color-accent);
   color: #fff;
@@ -724,9 +699,7 @@ h2 {
   opacity: 0.85;
 }
 
-/* 
-   REVEAL ANIMATION
- */
+/* REVEAL ANIMATION */
 .reveal {
   opacity: 0;
   transform: translateY(20px);
@@ -740,9 +713,7 @@ h2 {
   transform: translateY(0);
 }
 
-/* 
-   FOOTER
- */
+/* FOOTER */
 .footer {
   padding: 20px;
   text-align: center;
@@ -752,9 +723,7 @@ h2 {
   background: var(--color-card-bg);
 }
 
-/* 
-   RESPONSIVE
- */
+/* RESPONSIVE */
 @media (max-width: 768px) {
   .hamburger {
     display: block;
@@ -772,7 +741,6 @@ h2 {
     padding: 24px;
     transition: right 0.3s ease;
     z-index: 50;
-    overflow-y: auto;
   }
 
   .navbar.active {

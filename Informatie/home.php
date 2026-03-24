@@ -5,9 +5,6 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>FitForFun</title>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;1,300&display=swap"
-        rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
     <link rel="stylesheet" href="style.css" />
 </head>
@@ -21,32 +18,17 @@
             <nav class="navbar">
                 <div class="close-menu"><i class="fa-solid fa-xmark"></i></div>
                 <ul class="navbar-nav">
-                    <li>
-                        <a class="nav-link" href="../../Informatie/home.php">Home</a>
-                    </li>
-                    <li>
-                        <a class="nav-link" href="../../Account registratie/Account beheren/index.php">Account
-                            beheren</a>
-                    </li>
-                    <li><a class="nav-link" href="../Medewerker registratie/Medewerker beheren/index.php">Medewerker beheren</a></li>
-                    <li>
-                        <a class="nav-link" href="../../Lid registratie/index.php">Lid beheren</a>
-                    </li>
-                    <li>
-                        <a class="nav-link" href="../../Les registratie/Overzicht_lessen.php">Les beheren</a>
-                    </li>
-                    <li>
-                        <a class="nav-link" href="../../Reservering registratie/Reservering_Registratie.php">Reservering
-                            beheren</a>
-                    </li>
-                    <li>
-                        <a class="nav-link" href="../../Management Dashboard/Dashboard beheren/index.php">Dashboard
-                            beheren</a>
-                    </li>
-                    <li>
-                        <a class="nav-link" href="../../login.php">Inlog
-                            beheren</a>
-                    </li>
+                    <li><a class="nav-link" href="../../Informatie/home.php">Home</a></li>
+                    <li><a class="nav-link" href="../../Account registratie/Account beheren/index.php">Account
+                            beheren</a></li>
+                    <li><a class="nav-link" href="index.php">Medewerker beheren</a></li>
+                    <li><a class="nav-link" href="../../Lid registratie/index.php">Lid beheren</a></li>
+                    <li><a class="nav-link" href="../../Les registratie/Overzicht_lessen.php">Les beheren</a></li>
+                    <li><a class="nav-link" href="../../Reservering registratie/Reservering_Registratie.php">Reservering
+                            beheren</a></li>
+                    <li><a class="nav-link" href="../../Management Dashboard/Dashboard beheren/index.php">Dashboard
+                            beheren</a></li>
+                    <li><a class="nav-link" href="../../login.php">Inlog beheren</a></li>
                 </ul>
             </nav>
             <div class="overlay"></div>
@@ -156,196 +138,174 @@
 
     <!-- LESSEN-->
     <section id="lessen">
-        <div class="reveal">
-            <div class="section-label">Groepslessen</div>
-            <h2>KIES JOUW<br />TRAINING</h2>
-            <p class="section-sub">
-                Van rustige yoga tot intense bootcamp — voor elk niveau en doel hebben
-                wij een passende les.
-            </p>
-        </div>
+        <div class="section-inner">
+            <div class="reveal">
+                <div class="section-label">Groepslessen</div>
+                <h2>KIES JOUW TRAINING</h2>
+                <p class="section-sub">
+                    Van rustige yoga tot intense bootcamp — voor elk niveau en doel hebben
+                    wij een passende les.
+                </p>
+            </div>
 
-        <div class="classes-grid">
-            <div class="class-card reveal" style="--card-color: #6b8cff">
-                <div class="class-icon">⚡</div>
-                <h3>HIIT Power</h3>
-                <p class="class-desc">
-                    High-intensity interval training die je metabolisme op volle toeren
-                    brengt. Verbrand vet, bouw kracht op.
-                </p>
-                <div class="class-meta">
-                    <span>⏱ 45 min</span><span>🔥 Intensief</span>
+            <div class="classes-grid">
+                <div class="class-card reveal" style="--card-color: #6b8cff">
+                    <h3>HIIT Power</h3>
+                    <p class="class-desc">High-intensity interval training die je metabolisme op volle toeren brengt.
+                        Verbrand vet, bouw kracht op.</p>
+                    <div class="class-meta">
+                        <span>45 min</span><span>Intensief</span>
+                    </div>
                 </div>
-            </div>
-            <div class="class-card reveal" style="--card-color: #34d399">
-                <div class="class-icon">🧘</div>
-                <h3>Yoga Flow</h3>
-                <p class="class-desc">
-                    Verbeter je flexibiliteit, balans en mentale rust. Geschikt voor
-                    beginners én gevorderden.
-                </p>
-                <div class="class-meta">
-                    <span>⏱ 60 min</span><span>🌿 Rustig</span>
+                <div class="class-card reveal" style="--card-color: #34d399">
+                    <h3>Yoga Flow</h3>
+                    <p class="class-desc">Verbeter je flexibiliteit, balans en mentale rust. Geschikt voor beginners en
+                        gevorderden.</p>
+                    <div class="class-meta">
+                        <span>60 min</span><span>Rustig</span>
+                    </div>
                 </div>
-            </div>
-            <div class="class-card reveal" style="--card-color: #fbbf24">
-                <div class="class-icon">🚴</div>
-                <h3>Spinning</h3>
-                <p class="class-desc">
-                    Cardio op de fiets op de beat van energieke muziek. Geweldig voor
-                    conditie en uithoudingsvermogen.
-                </p>
-                <div class="class-meta">
-                    <span>⏱ 50 min</span><span>🎵 Cardio</span>
+                <div class="class-card reveal" style="--card-color: #fbbf24">
+                    <h3>Spinning</h3>
+                    <p class="class-desc">Cardio op de fiets op de beat van energieke muziek. Geweldig voor conditie en
+                        uithoudingsvermogen.</p>
+                    <div class="class-meta">
+                        <span>50 min</span><span>Cardio</span>
+                    </div>
                 </div>
-            </div>
-            <div class="class-card reveal" style="--card-color: #f87171">
-                <div class="class-icon">💪</div>
-                <h3>Bootcamp</h3>
-                <p class="class-desc">
-                    Buiten of binnen, altijd een challenge. Volledig lichaam, teamgeest
-                    en resultaat gegarandeerd.
-                </p>
-                <div class="class-meta">
-                    <span>⏱ 60 min</span><span>🏆 Gevorderd</span>
+                <div class="class-card reveal" style="--card-color: #f87171">
+                    <h3>Bootcamp</h3>
+                    <p class="class-desc">Buiten of binnen, altijd een uitdaging. Volledig lichaam, teamgeest en
+                        resultaat gegarandeerd.</p>
+                    <div class="class-meta">
+                        <span>60 min</span><span>Gevorderd</span>
+                    </div>
                 </div>
-            </div>
-            <div class="class-card reveal" style="--card-color: #34d399">
-                <div class="class-icon">🤸</div>
-                <h3>Pilates</h3>
-                <p class="class-desc">
-                    Verstevig je core, verbeter je houding en herstel effectief van
-                    blessures of vermoeidheid.
-                </p>
-                <div class="class-meta">
-                    <span>⏱ 60 min</span><span>🌊 Kalm</span>
+                <div class="class-card reveal" style="--card-color: #34d399">
+                    <h3>Pilates</h3>
+                    <p class="class-desc">Verstevig je core, verbeter je houding en herstel effectief van blessures of
+                        vermoeidheid.</p>
+                    <div class="class-meta">
+                        <span>60 min</span><span>Kalm</span>
+                    </div>
                 </div>
-            </div>
-            <div class="class-card reveal" style="--card-color: #6b8cff">
-                <div class="class-icon">🥊</div>
-                <h3>Kickboks Cardio</h3>
-                <p class="class-desc">
-                    Gebaseerd op vechtsporten maar volledig gericht op conditie.
-                    Agressief trainingsformat, groot plezier.
-                </p>
-                <div class="class-meta">
-                    <span>⏱ 45 min</span><span>🔥 Intensief</span>
+                <div class="class-card reveal" style="--card-color: #6b8cff">
+                    <h3>Kickboks Cardio</h3>
+                    <p class="class-desc">Gebaseerd op vechtsporten maar volledig gericht op conditie. Zwaar
+                        trainingsformat, groot plezier.</p>
+                    <div class="class-meta">
+                        <span>45 min</span><span>Intensief</span>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!--
-     ABONNEMENTEN-->
+    <!--ABONNEMENTEN-->
     <section id="abonnementen">
-        <div class="reveal">
-            <div class="section-label">Lidmaatschap</div>
-            <h2>EERLIJKE<br />PRIJZEN</h2>
-            <p class="section-sub">
-                Geen verborgen kosten. Geen gedoe. Gewoon sporten op jouw manier.
-            </p>
-        </div>
-
-        <div class="pricing-grid">
-            <div class="price-card reveal">
-                <div class="price-name">Starter</div>
-                <div class="price-amount"><sup>€</sup>22</div>
-                <div class="price-period">per maand · geen contract</div>
-                <ul class="price-features">
-                    <li>Vrij gebruik fitness</li>
-                    <li>2 groepslessen per week</li>
-                    <li>Kleedkamers &amp; lockers</li>
-                    <li>App-toegang</li>
-                </ul>
-                <a href="#" class="btn-card">Kies Starter</a>
+        <div class="section-inner">
+            <div class="reveal">
+                <div class="section-label">Lidmaatschap</div>
+                <h2>EERLIJKE PRIJZEN</h2>
+                <p class="section-sub">
+                    Geen verborgen kosten. Geen gedoe. Gewoon sporten op jouw manier.
+                </p>
             </div>
 
-            <div class="price-card featured reveal">
-                <div class="price-tag">Populairst</div>
-                <div class="price-name">All-in</div>
-                <div class="price-amount"><sup>€</sup>39</div>
-                <div class="price-period">per maand · geen contract</div>
-                <ul class="price-features">
-                    <li>Vrij gebruik fitness</li>
-                    <li>Onbeperkte groepslessen</li>
-                    <li>1× PT sessie per maand</li>
-                    <li>Voedingsadvies basis</li>
-                    <li>App + rooster-reservering</li>
-                    <li>Gastdagpas voor vriend</li>
-                </ul>
-                <a href="#" class="btn-card featured-btn">Kies All-in</a>
-            </div>
+            <div class="pricing-grid">
+                <div class="price-card reveal">
+                    <div class="price-name">Starter</div>
+                    <div class="price-amount"><sup>€</sup>22</div>
+                    <div class="price-period">per maand · geen contract</div>
+                    <ul class="price-features">
+                        <li>Vrij gebruik fitness</li>
+                        <li>2 groepslessen per week</li>
+                        <li>Kleedkamers &amp; lockers</li>
+                        <li>App-toegang</li>
+                    </ul>
+                    <a href="#" class="btn-card">Kies Starter</a>
+                </div>
 
-            <div class="price-card reveal">
-                <div class="price-name">Flex</div>
-                <div class="price-amount"><sup>€</sup>9</div>
-                <div class="price-period">per bezoek · pay as you go</div>
-                <ul class="price-features">
-                    <li>Vrij gebruik fitness op dag</li>
-                    <li>1 groepsles inbegrepen</li>
-                    <li>Kleedkamers &amp; lockers</li>
-                    <li>Geen abonnement nodig</li>
-                </ul>
-                <a href="#" class="btn-card">Kies Flex</a>
+                <div class="price-card featured reveal">
+                    <div class="price-tag">Populairst</div>
+                    <div class="price-name">All-in</div>
+                    <div class="price-amount"><sup>€</sup>39</div>
+                    <div class="price-period">per maand · geen contract</div>
+                    <ul class="price-features">
+                        <li>Vrij gebruik fitness</li>
+                        <li>Onbeperkte groepslessen</li>
+                        <li>1x PT sessie per maand</li>
+                        <li>Voedingsadvies basis</li>
+                        <li>App + rooster-reservering</li>
+                        <li>Gastdagpas voor vriend</li>
+                    </ul>
+                    <a href="#" class="btn-card featured-btn">Kies All-in</a>
+                </div>
+
+                <div class="price-card reveal">
+                    <div class="price-name">Flex</div>
+                    <div class="price-amount"><sup>€</sup>9</div>
+                    <div class="price-period">per bezoek · pay as you go</div>
+                    <ul class="price-features">
+                        <li>Vrij gebruik fitness op dag</li>
+                        <li>1 groepsles inbegrepen</li>
+                        <li>Kleedkamers &amp; lockers</li>
+                        <li>Geen abonnement nodig</li>
+                    </ul>
+                    <a href="#" class="btn-card">Kies Flex</a>
+                </div>
             </div>
         </div>
     </section>
 
-    <!--
-     TRAINERS-->
+    <!--TRAINERS-->
     <section id="trainers">
-        <div class="reveal">
-            <div class="section-label">Ons team</div>
-            <h2>JOUW<br />COACHES</h2>
-            <p class="section-sub">
-                Professionele trainers die je motiveren, corrigeren en uitdagen om het
-                beste uit jezelf te halen.
-            </p>
-        </div>
+        <div class="section-inner">
+            <div class="reveal">
+                <div class="section-label">Ons team</div>
+                <h2>JOUW COACHES</h2>
+                <p class="section-sub">
+                    Professionele trainers die je motiveren, corrigeren en uitdagen om het
+                    beste uit jezelf te halen.
+                </p>
+            </div>
 
-        <div class="trainers-grid">
-            <div class="trainer-card reveal">
-                <div class="trainer-avatar">🧑‍🦱</div>
-                <div class="trainer-info">
-                    <div class="trainer-name">Sander Brouwer</div>
-                    <div class="trainer-spec">HIIT &amp; Bootcamp</div>
-                    <p class="trainer-bio">
-                        8 jaar ervaring in functionele training. Houdt van energie,
-                        groepsgevoel en echte resultaten.
-                    </p>
+            <div class="trainers-grid">
+                <div class="trainer-card reveal">
+                    <div class="trainer-avatar"></div>
+                    <div class="trainer-info">
+                        <div class="trainer-name">Hussein Kadhim</div>
+                        <div class="trainer-spec">HIIT &amp; Bootcamp</div>
+                        <p class="trainer-bio">8 jaar ervaring in functionele training. Houdt van energie, groepsgevoel
+                            en echte resultaten.</p>
+                    </div>
                 </div>
-            </div>
-            <div class="trainer-card reveal">
-                <div class="trainer-avatar">👩</div>
-                <div class="trainer-info">
-                    <div class="trainer-name">Lisa van Dijk</div>
-                    <div class="trainer-spec">Yoga &amp; Pilates</div>
-                    <p class="trainer-bio">
-                        Gecertificeerd Hatha-docent. Helpt jou om balans te vinden tussen
-                        kracht en rust.
-                    </p>
+                <div class="trainer-card reveal">
+                    <div class="trainer-avatar"></div>
+                    <div class="trainer-info">
+                        <div class="trainer-name">Eray Demirci</div>
+                        <div class="trainer-spec">Yoga &amp; Pilates</div>
+                        <p class="trainer-bio">Gecertificeerd Hatha-docent. Helpt jou om balans te vinden tussen kracht
+                            en rust.</p>
+                    </div>
                 </div>
-            </div>
-            <div class="trainer-card reveal">
-                <div class="trainer-avatar">🧔</div>
-                <div class="trainer-info">
-                    <div class="trainer-name">Milo Jansen</div>
-                    <div class="trainer-spec">Spinning &amp; Cardio</div>
-                    <p class="trainer-bio">
-                        Ex-wielrenner die zijn passie omzette naar motiverende spinning
-                        sessies. Geen excuses, wel resultaat.
-                    </p>
+                <div class="trainer-card reveal">
+                    <div class="trainer-avatar"></div>
+                    <div class="trainer-info">
+                        <div class="trainer-name">Kenne John</div>
+                        <div class="trainer-spec">Spinning &amp; Cardio</div>
+                        <p class="trainer-bio">Ex-wielrenner die zijn passie omzette naar motiverende spinning sessies.
+                            Geen excuses, wel resultaat.</p>
+                    </div>
                 </div>
-            </div>
-            <div class="trainer-card reveal">
-                <div class="trainer-avatar">👩‍🦰</div>
-                <div class="trainer-info">
-                    <div class="trainer-name">Fatima El-Bouni</div>
-                    <div class="trainer-spec">Personal Training</div>
-                    <p class="trainer-bio">
-                        Voedingsdeskundige en krachtsport-coach. Begeleidt jou van A tot Z
-                        richting jouw doelen.
-                    </p>
+                <div class="trainer-card reveal">
+                    <div class="trainer-avatar"></div>
+                    <div class="trainer-info">
+                        <div class="trainer-name">Efe Dilekci</div>
+                        <div class="trainer-spec">Personal Training</div>
+                        <p class="trainer-bio">Voedingsdeskundige en krachtsport-coach. Begeleidt jou van A tot Z
+                            richting jouw doelen.</p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -354,7 +314,7 @@
     <!-- CTA band -->
     <div class="cta-band">
         <div class="section-label" style="justify-content: center">Begin nu</div>
-        <h2>EERSTE LES<br />GRATIS</h2>
+        <h2>EERSTE LES GRATIS</h2>
         <p>
             Kom vrijblijvend langs voor een gratis proefles en ontdek waarom meer
             dan 1.200 leden kiezen voor FitForFun.
