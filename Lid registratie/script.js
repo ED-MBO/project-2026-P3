@@ -124,4 +124,34 @@ document.getElementById("hamburger").addEventListener("click", openMenu);
 document.getElementById("closeMenu").addEventListener("click", closeMenu);
 overlay.addEventListener("click", closeMenu);
 
+/* Modal Nieuw lid */
+const modalBackdrop = document.getElementById("modalBackdrop");
+const openBtn = document.getElementById("openLidModal");
+const sluitModal = document.getElementById("sluitModal");
+const annuleerModal = document.getElementById("annuleerModal");
+
+function openModal() {
+  if (modalBackdrop) modalBackdrop.classList.add("open");
+}
+
+function closeModal() {
+  if (modalBackdrop) modalBackdrop.classList.remove("open");
+}
+
+if (openBtn) openBtn.addEventListener("click", openModal);
+if (sluitModal) sluitModal.addEventListener("click", closeModal);
+if (annuleerModal) annuleerModal.addEventListener("click", closeModal);
+
+if (modalBackdrop) {
+  modalBackdrop.addEventListener("click", (e) => {
+    if (e.target === modalBackdrop) closeModal();
+  });
+}
+
+/* Flash meldingen auto-hide na 3 seconden */
+["successAlert", "errorAlert"].forEach((id) => {
+  const el = document.getElementById(id);
+  if (el) setTimeout(() => (el.style.display = "none"), 3000);
+});
+
 laadLeden();
