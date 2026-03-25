@@ -141,7 +141,7 @@ if (!$isMedewerkerOfAdmin) {
         </div>
     </main>
 
-    <footer class="footer">© 2026 FitForFun — Alle rechten voorbehouden</footer>
+    <?php require_once __DIR__ . '/../../includes/footer.php'; ?>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
     <script src="script.js"></script>

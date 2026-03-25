@@ -152,7 +152,7 @@ unset($_SESSION['flash_succes_account'], $_SESSION['flash_fout_account']);
         </div>
     </div>
 
-    <footer class="footer">© 2026 FitForFun — Alle rechten voorbehouden</footer>
+    <?php require_once __DIR__ . '/../../includes/footer.php'; ?>
 
     <div class="modal-backdrop" id="modalBackdrop">
         <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitel">

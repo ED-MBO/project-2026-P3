@@ -302,7 +302,7 @@
         </div>
     </div>
 
-    <footer class="footer">© 2026 FitForFun — Alle rechten voorbehouden</footer>
+    <?php require_once __DIR__ . '/../includes/footer.php'; ?>
 
     <script src="main.js"></script>
 </body>
