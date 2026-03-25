@@ -10,31 +10,7 @@
 </head>
 
 <body>
-    <!--NAVBAR-->
-    <header class="header">
-        <div class="navbar-container">
-            <a href="home.php" class="logo">FitForFun</a>
-            <div class="hamburger"><i class="fa-solid fa-bars"></i></div>
-            <nav class="navbar">
-                <div class="close-menu"><i class="fa-solid fa-xmark"></i></div>
-                <ul class="navbar-nav">
-                    <li><a class="nav-link" href="home.php">Home</a></li>
-                    <li><a class="nav-link" href="../Account registratie/Account beheren/index.php">Account
-                            beheren</a></li>
-                    <li><a class="nav-link" href="../Medewerker registratie/Medewerker beheren/index.php">Medewerker
-                            beheren</a></li>
-                    <li><a class="nav-link" href="../Lid registratie/index.php">Lid beheren</a></li>
-                    <li><a class="nav-link" href="../Les registratie/Overzicht_lessen.php">Les beheren</a></li>
-                    <li><a class="nav-link" href="../Reservering registratie/Reservering_Registratie.php">Reservering
-                            beheren</a></li>
-                    <li><a class="nav-link" href="../Management Dashboard/Dashboard beheren/index.php">Dashboard
-                            beheren</a></li>
-                    <li><a class="nav-link" href="../login.php">Inlog beheren</a></li>
-                </ul>
-            </nav>
-            <div class="overlay"></div>
-        </div>
-    </header>
+    <?php require_once __DIR__ . '/../includes/navbar.php'; ?>
 
     <!--HERO-->
     <section class="hero">
