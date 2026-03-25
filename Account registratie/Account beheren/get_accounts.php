@@ -3,8 +3,18 @@ session_start();
 if (empty($_SESSION['ingelogd']) || empty($_SESSION['gebruiker_id'])) {
     header('Location: ../../login.php');
     exit();
-} 
+}
 require "../../config.php";
+
+$stmtRol = $pdo->prepare("SELECT Naam FROM rol WHERE GebruikerId = ? AND IsActief = 1 LIMIT 1");
+$stmtRol->execute([$_SESSION['gebruiker_id']]);
+$mijnRol = $stmtRol->fetchColumn() ?: 'Lid';
+if (!in_array($mijnRol, ['Medewerker', 'Administrator'])) {
+    http_response_code(403);
+    header('Content-Type: application/json');
+    echo json_encode(["error" => "Geen toegang"]);
+    exit();
+}
 
 try {
     $sql = "SELECT 

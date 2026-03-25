@@ -11,6 +11,16 @@ if (empty($_SESSION['rol'])) {
     $_SESSION['rol'] = $stmtRol->fetchColumn() ?: 'Lid';
 }
 $magAccountBeheren = in_array($_SESSION['rol'] ?? '', ['Medewerker', 'Administrator']);
+$rol = $_SESSION['rol'] ?? 'Lid';
+$isAdministrator = $rol === 'Administrator';
+$isMedewerkerOfAdmin = in_array($rol, ['Medewerker', 'Administrator']);
+
+$toonAccountBeheren = $isMedewerkerOfAdmin;
+$toonMedewerkerBeheren = $isAdministrator;
+$toonLidBeheren = $isMedewerkerOfAdmin;
+$toonLesBeheren = $isMedewerkerOfAdmin;
+$toonReserveringBeheren = $isMedewerkerOfAdmin;
+$toonDashboard = $isMedewerkerOfAdmin;
 if (!$magAccountBeheren) {
     http_response_code(403);
     header('Content-Type: text/html; charset=utf-8');
@@ -69,14 +79,13 @@ if (!$magAccountBeheren) {
     <div class="container">
         <h1>403 – Geen toegang</h1>
         <p>U heeft geen rechten om accounts te beheren.</p>
-        <a href="../../informatie/home.php">Terug naar home</a>
+        <a href="../../Informatie/home.php">Terug naar home</a>
     </div>
 </body>
 </html>
 <?php
     exit();
 }
-$isAdministrator = ($_SESSION['rol'] ?? '') === 'Administrator';
 $flashSucces = $_SESSION['flash_succes_account'] ?? null;
 $flashFout   = $_SESSION['flash_fout_account'] ?? null;
 unset($_SESSION['flash_succes_account'], $_SESSION['flash_fout_account']);
@@ -96,7 +105,7 @@ unset($_SESSION['flash_succes_account'], $_SESSION['flash_fout_account']);
 <body>
     <header class="header">
         <div class="navbar-container">
-            <a href="../../informatie/home.php" class="logo">FitForFun</a>
+            <a href="../../Informatie/home.php" class="logo">FitForFun</a>
             <div class="hamburger">
                 <i class="fa-solid fa-bars"></i>
             </div>
@@ -106,26 +115,38 @@ unset($_SESSION['flash_succes_account'], $_SESSION['flash_fout_account']);
                 </div>
                 <ul class="navbar-nav">
                     <li>
-                        <a class="nav-link" href="../../informatie/home.php">Home</a>
+                        <a class="nav-link" href="../../Informatie/home.php">Home</a>
                     </li>
+                    <?php if ($toonAccountBeheren): ?>
                     <li>
                         <a class="nav-link" href="index.php">Account
                             beheren</a>
                     </li>
+                    <?php endif; ?>
+                    <?php if ($toonMedewerkerBeheren): ?>
                     <li><a class="nav-link" href="../../Medewerker registratie/Medewerker beheren/index.php">Medewerker
                             beheren</a></li>
+                    <?php endif; ?>
+                    <?php if ($toonLidBeheren): ?>
                     <li>
                         <a class="nav-link" href="../../Lid registratie/index.php">Lid beheren</a>
                     </li>
+                    <?php endif; ?>
+                    <?php if ($toonLesBeheren): ?>
                     <li>
                         <a class="nav-link" href="../../Les registratie/Overzicht_lessen.php">Les beheren</a>
                     </li>
+                    <?php endif; ?>
+                    <?php if ($toonReserveringBeheren): ?>
                     <li>
                         <a class="nav-link" href="../../Reservering registratie/Reservering_Registratie.php">Reservering
                             beheren</a>
                     </li>
+                    <?php endif; ?>
+                    <?php if ($toonDashboard): ?>
                     <li><a class="nav-link" href="../../Management Dashboard/Dashboard beheren/index.php">Dashboard
                             beheren</a></li>
+                    <?php endif; ?>
                     <li><a class="nav-link nav-link-uitloggen" href="../../uitloggen.php">Uitloggen</a></li>
                 </ul>
             </nav>

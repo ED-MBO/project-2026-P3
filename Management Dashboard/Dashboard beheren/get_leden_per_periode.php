@@ -1,7 +1,23 @@
 <?php
+session_start();
+if (empty($_SESSION['ingelogd']) || empty($_SESSION['gebruiker_id'])) {
+    http_response_code(401);
+    header('Content-Type: application/json');
+    echo json_encode(["error" => "Niet ingelogd"]);
+    exit();
+}
 require '../../config.php';
 
 header('Content-Type: application/json');
+
+$stmtRol = $pdo->prepare("SELECT Naam FROM rol WHERE GebruikerId = ? AND IsActief = 1 LIMIT 1");
+$stmtRol->execute([$_SESSION['gebruiker_id']]);
+$mijnRol = $stmtRol->fetchColumn() ?: 'Lid';
+if (!in_array($mijnRol, ['Medewerker', 'Administrator'])) {
+    http_response_code(403);
+    echo json_encode(["error" => "Geen toegang"]);
+    exit();
+}
 
 $type = $_GET['type'] ?? 'maand';
 $jaar = (int)($_GET['jaar'] ?? date('Y'));

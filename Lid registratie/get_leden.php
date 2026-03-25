@@ -6,6 +6,15 @@ if (empty($_SESSION['ingelogd']) || empty($_SESSION['gebruiker_id'])) {
 }
 require_once __DIR__ . '/../config.php';
 
+$stmtRol = $pdo->prepare("SELECT Naam FROM rol WHERE GebruikerId = ? AND IsActief = 1 LIMIT 1");
+$stmtRol->execute([$_SESSION['gebruiker_id']]);
+$mijnRol = $stmtRol->fetchColumn() ?: 'Lid';
+if (!in_array($mijnRol, ['Medewerker', 'Administrator'])) {
+    http_response_code(403);
+    echo json_encode(['error' => 'Geen toegang']);
+    exit();
+}
+
 header('Content-Type: application/json; charset=utf-8');
  
 try {
