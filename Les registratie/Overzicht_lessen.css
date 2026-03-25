@@ -159,7 +159,8 @@ tr:hover { background: #202330; }
   border-radius: 4px;
   display: inline-block;
 }
-
+.status-vrij         { background: #1e3328; color: #4ade80; }
+.status-gereserveerd { background: #1e2733; color: #60a5fa; }
 .status-ingepland   { background: #1e3328; color: #4ade80; }
 .status-nietgestart { background: #332e1e; color: #facc15; }
 .status-gestart     { background: #1e2733; color: #60a5fa; }
