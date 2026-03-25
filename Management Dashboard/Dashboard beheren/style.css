@@ -213,7 +213,13 @@ tr:hover {
   border-top: 1px solid var(--color-border);
   background: var(--color-card-bg);
 }
+.nav-link-uitloggen {
+  color: var(--color-accent);
+}
 
+.nav-link-uitloggen:hover {
+  color: #8ba3ff;
+}
 @media (max-width: 768px) {
   .hamburger {
     display: block;
