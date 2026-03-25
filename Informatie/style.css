@@ -75,6 +75,14 @@ body {
   color: var(--color-text-primary);
 }
 
+.nav-link-uitloggen {
+  color: var(--color-accent);
+}
+
+.nav-link-uitloggen:hover {
+  color: #8ba3ff;
+}
+
 .hamburger {
   display: none;
   font-size: 22px;
@@ -759,6 +767,10 @@ h2 {
   }
 
   .nav-link:hover {
+    color: var(--color-accent);
+  }
+
+  .nav-link-uitloggen {
     color: var(--color-accent);
   }
 
