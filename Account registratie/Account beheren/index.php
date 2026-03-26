@@ -203,7 +203,7 @@ unset($_SESSION['flash_succes_account'], $_SESSION['flash_fout_account']);
         </div>
     </div>
 
-    <script src="script.js?v=<?= time() ?>"></script>
+    <script src="script.js"></script>
 </body>
 
 </html>
