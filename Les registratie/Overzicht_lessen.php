@@ -22,8 +22,39 @@ if (!$isMedewerkerOfAdmin) {
 }
 
 $modalFouten = [];
+$ledenVoorSelectie = [];
+
+try {
+    $ledenStmt = $pdo->query("
+        SELECT Id, Voornaam, Tussenvoegsel, Achternaam, IsActief
+        FROM lid
+        ORDER BY Achternaam, Voornaam
+    ");
+    $ledenRows = $ledenStmt->fetchAll(PDO::FETCH_ASSOC);
+    foreach ($ledenRows as $lid) {
+        $volledigeNaam = trim(implode(' ', array_filter([
+            $lid['Voornaam'] ?? '',
+            $lid['Tussenvoegsel'] ?? '',
+            $lid['Achternaam'] ?? '',
+        ])));
+        if ((int)($lid['IsActief'] ?? 0) !== 1) {
+            $volledigeNaam .= ' (inactief)';
+        }
+        $ledenVoorSelectie[] = [
+            'id' => (int) ($lid['Id'] ?? 0),
+            'naam' => $volledigeNaam,
+            'voornaam' => $lid['Voornaam'] ?? '',
+            'achternaam' => $lid['Achternaam'] ?? '',
+        ];
+    }
+} catch (PDOException $e) {
+    $modalFouten['db'] = "Leden konden niet geladen worden.";
+}
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['nieuweLes'])) {
+    $lidId = (int) ($_POST['lid_id'] ?? 0);
+    $voornaam = trim($_POST['voornaam'] ?? '');
+    $achternaam = trim($_POST['achternaam'] ?? '');
     $naam = trim($_POST['naam'] ?? '');
     $prijs = trim($_POST['prijs'] ?? '');
     $datum = trim($_POST['datum'] ?? '');
@@ -32,6 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['nieuweLes'])) {
     $max_personen = trim($_POST['max_personen'] ?? '');
     $beschikbaarheid = trim($_POST['beschikbaarheid'] ?? 'Ingepland');
 
+    if ($lidId < 1) $modalFouten['lid_zoek'] = "Kies een bestaand lid uit de lijst.";
     if (empty($naam)) $modalFouten['naam'] = "Lesnaam is verplicht.";
     if ($prijs === '' || !is_numeric($prijs)) $modalFouten['prijs'] = "Geldige prijs is verplicht.";
     if (empty($datum)) $modalFouten['datum'] = "Datum is verplicht.";
@@ -43,9 +75,35 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['nieuweLes'])) {
     }
 
     if (empty($modalFouten)) {
+        $lidNaamStmt = $pdo->prepare("SELECT Voornaam, Achternaam FROM lid WHERE Id = ? LIMIT 1");
+        $lidNaamStmt->execute([$lidId]);
+        $gekozenLid = $lidNaamStmt->fetch(PDO::FETCH_ASSOC);
+        if (!$gekozenLid) {
+            $modalFouten['lid_zoek'] = "Geselecteerd lid bestaat niet (meer).";
+        } else {
+            $voornaam = trim((string) ($gekozenLid['Voornaam'] ?? ''));
+            $achternaam = trim((string) ($gekozenLid['Achternaam'] ?? ''));
+        }
+    }
+
+    if (empty($modalFouten)) {
         try {
             $insert = $pdo->prepare("INSERT INTO les (Naam, Prijs, Datum, Tijd, MinAantalPersonen, MaxAantalPersonen, Beschikbaarheid, IsActief) VALUES (?, ?, ?, ?, ?, ?, ?, 1)");
             $insert->execute([$naam, $prijs, $datum, $tijd, $min_personen, $max_personen, $beschikbaarheid]);
+
+            // Sla naam ook op in reservering, zodat deze in het lesoverzicht zichtbaar is.
+            $nummerStmt = $pdo->query("SELECT COALESCE(MAX(Nummer), 0) + 1 FROM reservering");
+            $volgendNummer = (int) $nummerStmt->fetchColumn();
+            $statusReservering = in_array($beschikbaarheid, ['Ingepland', 'Niet gestart', 'Gestart', 'Geannuleerd'], true)
+                ? $beschikbaarheid
+                : 'Ingepland';
+
+            $insertRes = $pdo->prepare(
+                "INSERT INTO reservering (Voornaam, Tussenvoegsel, Achternaam, Nummer, Datum, Tijd, Reserveringstatus, IsActief)
+                 VALUES (?, '', ?, ?, ?, ?, ?, 1)"
+            );
+            $insertRes->execute([$voornaam, $achternaam, $volgendNummer, $datum, $tijd, $statusReservering]);
+
             // Redirect om een dubbele stuur on refresh te voorkomen
             header('Location: Overzicht_lessen.php');
             exit();
@@ -85,8 +143,15 @@ $aantalLessen = count($lessen);
     <?php require_once __DIR__ . '/../includes/navbar.php'; ?>
 
     <div class="wrapper">
-  <h1>Lessen</h1>
-  <p class="sub" id="countLine"><?= $aantalLessen ?> van <?= $aantalLessen ?> lessen zichtbaar</p>
+  <div class="heading-row">
+    <div>
+      <h1>Lessen</h1>
+      <p class="sub" id="countLine"><?= $aantalLessen ?> van <?= $aantalLessen ?> lessen zichtbaar</p>
+    </div>
+    <button type="button" class="btn-primary" id="openLesModal">
+      <i class="fa-solid fa-plus"></i> Les aanmaken
+    </button>
+  </div>
 
   <div class="topbar">
     <input type="text" id="search" placeholder="Zoek op achternaam..."/>
@@ -188,6 +253,23 @@ $aantalLessen = count($lessen);
 
             <form method="POST" action="Overzicht_lessen.php" novalidate>
                 <input type="hidden" name="nieuweLes" value="1" />
+                <input type="hidden" id="lid_id" name="lid_id" value="<?= htmlspecialchars($_POST['lid_id'] ?? '') ?>" />
+
+                <div class="form-group">
+                    <label for="lid_zoek">Lid kiezen <span class="required">*</span></label>
+                    <div class="lid-dropdown">
+                        <input type="text" id="lid_zoek" name="lid_zoek" placeholder="Begin met typen..."
+                            value="<?= htmlspecialchars($_POST['lid_zoek'] ?? '') ?>"
+                            class="<?= isset($modalFouten['lid_zoek']) ? 'invalid' : '' ?>" autocomplete="off" />
+                        <button type="button" id="lidDropdownToggle" class="lid-dropdown-toggle" aria-label="Toon leden">
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </button>
+                        <div id="lidSuggesties" class="lid-suggesties" role="listbox" aria-label="Leden"></div>
+                    </div>
+                    <?php if (isset($modalFouten['lid_zoek'])): ?>
+                    <span class="field-error"><?= htmlspecialchars($modalFouten['lid_zoek']) ?></span>
+                    <?php endif; ?>
+                </div>
 
                 <div class="form-group">
                     <label for="naam">Lesnaam <span class="required">*</span></label>
@@ -275,8 +357,9 @@ $aantalLessen = count($lessen);
 
 <script>
   const totaal = <?= $aantalLessen ?>;
+  window.bestaandeLeden = <?= json_encode($ledenVoorSelectie, JSON_UNESCAPED_UNICODE) ?>;
 </script>
-<script src="Overzicht_lessen.js"></script>
+<script src="Overzicht_lessen.js?v=<?= time() ?>"></script>
 
 </body>
 </html>

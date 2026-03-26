@@ -327,6 +327,64 @@ tr:hover { background: #202330; }
 
 .required { color: #f87171; }
 
+.lid-dropdown {
+  position: relative;
+}
+
+.lid-dropdown input {
+  padding-right: 36px;
+}
+
+.lid-dropdown-toggle {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  border: none;
+  background: transparent;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.lid-suggesties {
+  display: none;
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  z-index: 120;
+  background: var(--color-card-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  max-height: 220px;
+  overflow-y: auto;
+}
+
+.lid-suggesties.open {
+  display: block;
+}
+
+.lid-optie {
+  width: 100%;
+  text-align: left;
+  border: none;
+  background: transparent;
+  color: var(--color-text-primary);
+  padding: 10px 12px;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.lid-optie:hover {
+  background: #202330;
+}
+
+.lid-optie.leeg {
+  color: var(--color-text-muted);
+  cursor: default;
+}
+
 .form-row { display: flex; gap: 12px; }
 .form-row .form-group { flex: 1; }
 
