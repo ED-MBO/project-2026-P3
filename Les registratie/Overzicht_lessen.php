@@ -131,7 +131,7 @@ $aantalLessen = count($lessen);
   </div>
 </div>
 
-    <footer class="footer">© 2026 FitForFun — Alle rechten voorbehouden</footer>
+    <?php require_once __DIR__ . '/../includes/footer.php'; ?>
 
     <!-- ===================== MODAL ===================== -->
     <div class="modal-backdrop <?= !empty($modalFouten) ? 'open' : '' ?>" id="modalBackdrop">
