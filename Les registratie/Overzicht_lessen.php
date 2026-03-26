@@ -21,11 +21,46 @@ if (!$isMedewerkerOfAdmin) {
     exit();
 }
 
-$sql = "SELECT r.Voornaam, r.Tussenvoegsel, r.Achternaam, r.Datum, r.Tijd, r.Reserveringstatus, l.Naam AS LesNaam, l.Prijs, l.Beschikbaarheid
-        FROM reservering r
-        LEFT JOIN les l ON l.Datum = r.Datum AND l.Tijd = r.Tijd AND l.IsActief = 1
-        WHERE r.IsActief = 1
-        ORDER BY r.Datum, r.Tijd";
+$modalFouten = [];
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['nieuweLes'])) {
+    $naam = trim($_POST['naam'] ?? '');
+    $prijs = trim($_POST['prijs'] ?? '');
+    $datum = trim($_POST['datum'] ?? '');
+    $tijd = trim($_POST['tijd'] ?? '');
+    $min_personen = trim($_POST['min_personen'] ?? '');
+    $max_personen = trim($_POST['max_personen'] ?? '');
+    $beschikbaarheid = trim($_POST['beschikbaarheid'] ?? 'Ingepland');
+
+    if (empty($naam)) $modalFouten['naam'] = "Lesnaam is verplicht.";
+    if ($prijs === '' || !is_numeric($prijs)) $modalFouten['prijs'] = "Geldige prijs is verplicht.";
+    if (empty($datum)) $modalFouten['datum'] = "Datum is verplicht.";
+    if (empty($tijd)) $modalFouten['tijd'] = "Tijd is verplicht.";
+    if (empty($min_personen) || !is_numeric($min_personen)) $modalFouten['min_personen'] = "Min. personen verplicht.";
+    if (empty($max_personen) || !is_numeric($max_personen)) $modalFouten['max_personen'] = "Max. personen verplicht.";
+    if (!empty($min_personen) && !empty($max_personen) && $min_personen > $max_personen) {
+        $modalFouten['min_personen'] = "Minimum mag niet groter zijn dan maximum.";
+    }
+
+    if (empty($modalFouten)) {
+        try {
+            $insert = $pdo->prepare("INSERT INTO les (Naam, Prijs, Datum, Tijd, MinAantalPersonen, MaxAantalPersonen, Beschikbaarheid, IsActief) VALUES (?, ?, ?, ?, ?, ?, ?, 1)");
+            $insert->execute([$naam, $prijs, $datum, $tijd, $min_personen, $max_personen, $beschikbaarheid]);
+            // Redirect om een dubbele stuur on refresh te voorkomen
+            header('Location: Overzicht_lessen.php');
+            exit();
+        } catch (PDOException $e) {
+            $modalFouten['db'] = "Database fout: " . $e->getMessage();
+        }
+    }
+}
+
+$sql = "SELECT l.Naam AS LesNaam, l.Prijs, l.Beschikbaarheid, l.Datum, l.Tijd, 
+               r.Voornaam, r.Tussenvoegsel, r.Achternaam, r.Reserveringstatus
+        FROM les l
+        LEFT JOIN reservering r ON l.Datum = r.Datum AND l.Tijd = r.Tijd AND r.IsActief = 1
+        WHERE l.IsActief = 1
+        ORDER BY l.Datum, l.Tijd";
 
 $stmt = $pdo->prepare($sql);
 $stmt->execute();

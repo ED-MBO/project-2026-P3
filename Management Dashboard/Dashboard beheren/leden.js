@@ -14,14 +14,18 @@ let jarenGeladen = false;
 function toonFout(msg) {
   const el = document.getElementById("alertEl");
   const tekst = document.getElementById("alertMsg");
+  const overzicht = document.getElementById("ledenOverzicht");
   if (!el || !tekst) return;
   tekst.textContent = msg;
   el.style.display = "flex";
+  if (overzicht) overzicht.style.display = "none";
 }
 
 function verbergFout() {
   const el = document.getElementById("alertEl");
+  const overzicht = document.getElementById("ledenOverzicht");
   if (el) el.style.display = "none";
+  if (overzicht) overzicht.style.display = "block";
 }
 
 function vulKaarten(data) {
@@ -55,19 +59,23 @@ function maakGroeiBadge(delta, percentage) {
     badge.style.background = "#1e3328";
     badge.style.color = "#4ade80";
     icon.className = "fa-solid fa-arrow-up";
-    waarde.textContent = percentage !== null ? `${percentage}%` : "";
+    if (percentage !== null) waarde.textContent = `${percentage}%`;
   } else if (delta < 0) {
     badge.style.background = "#331e22";
     badge.style.color = "#f87171";
     icon.className = "fa-solid fa-arrow-down";
-    waarde.textContent = percentage !== null ? `${percentage}%` : "";
+    if (percentage !== null) waarde.textContent = `${percentage}%`;
   } else {
     badge.style.background = "#232734";
     badge.style.color = "#8b90a7";
     icon.className = "fa-solid fa-minus";
-    waarde.textContent = "—";
   }
-  badge.append(icon, waarde);
+
+  badge.appendChild(icon);
+  if (waarde.textContent !== "") {
+    badge.appendChild(waarde);
+  }
+
   return badge;
 }
 

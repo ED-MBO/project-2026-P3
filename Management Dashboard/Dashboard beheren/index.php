@@ -85,59 +85,61 @@ if (!$isMedewerkerOfAdmin) {
             <span id="alertMsg">Het overzicht kon niet geladen worden.</span>
         </div>
 
-        <div class="stats-grid">
-            <div class="stat-card blue">
-                <div class="stat-title">Totaal leden</div>
-                <div class="stat-number" id="sTotaal">—</div>
-                <div class="stat-sub blue" id="cTotaal">Laden...</div>
+        <div id="ledenOverzicht">
+            <div class="stats-grid">
+                <div class="stat-card blue">
+                    <div class="stat-title">Totaal leden</div>
+                    <div class="stat-number" id="sTotaal">—</div>
+                    <div class="stat-sub blue" id="cTotaal">Laden...</div>
+                </div>
+                <div class="stat-card green">
+                    <div class="stat-title">Nieuwe leden</div>
+                    <div class="stat-number" id="sNieuw">—</div>
+                    <div class="stat-sub green" id="cNieuw">Laden...</div>
+                </div>
+                <div class="stat-card yellow">
+                    <div class="stat-title">Actieve leden</div>
+                    <div class="stat-number" id="sActief">—</div>
+                    <div class="stat-sub yellow">Met reservering</div>
+                </div>
+                <div class="stat-card red">
+                    <div class="stat-title">Inactieve leden</div>
+                    <div class="stat-number" id="sInactief">—</div>
+                    <div class="stat-sub red">Geen reservering</div>
+                </div>
             </div>
-            <div class="stat-card green">
-                <div class="stat-title">Nieuwe leden</div>
-                <div class="stat-number" id="sNieuw">—</div>
-                <div class="stat-sub green" id="cNieuw">Laden...</div>
-            </div>
-            <div class="stat-card yellow">
-                <div class="stat-title">Actieve leden</div>
-                <div class="stat-number" id="sActief">—</div>
-                <div class="stat-sub yellow">Met reservering</div>
-            </div>
-            <div class="stat-card red">
-                <div class="stat-title">Inactieve leden</div>
-                <div class="stat-number" id="sInactief">—</div>
-                <div class="stat-sub red">Geen reservering</div>
-            </div>
-        </div>
 
-        <div class="controls">
-            <label for="periodeType">Periode:</label>
-            <select id="periodeType">
-                <option value="maand">Per maand</option>
-                <option value="jaar">Per jaar</option>
-            </select>
-            <label for="jaarSelect">Jaar:</label>
-            <select id="jaarSelect"></select>
-        </div>
-
-        <div class="chart-card">
-            <div class="chart-title" id="chartTitle">Ledenaantal per maand</div>
-            <div class="chart-sub">Totaal actieve leden per periode</div>
-            <div class="chart-wrapper">
-                <canvas id="ledenChart" height="260"></canvas>
+            <div class="controls">
+                <label for="periodeType">Periode:</label>
+                <select id="periodeType">
+                    <option value="maand">Per maand</option>
+                    <option value="jaar">Per jaar</option>
+                </select>
+                <label for="jaarSelect">Jaar:</label>
+                <select id="jaarSelect"></select>
             </div>
-        </div>
 
-        <div class="table-wrapper">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Periode</th>
-                        <th>Totaal leden</th>
-                        <th>Nieuw</th>
-                        <th>Groei</th>
-                    </tr>
-                </thead>
-                <tbody id="tabelBody"></tbody>
-            </table>
+            <div class="chart-card">
+                <div class="chart-title" id="chartTitle">Ledenaantal per maand</div>
+                <div class="chart-sub">Totaal actieve leden per periode</div>
+                <div class="chart-wrapper">
+                    <canvas id="ledenChart" height="260"></canvas>
+                </div>
+            </div>
+
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Periode</th>
+                            <th>Totaal leden</th>
+                            <th>Nieuw</th>
+                            <th>Groei</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabelBody"></tbody>
+                </table>
+            </div>
         </div>
     </main>
 
