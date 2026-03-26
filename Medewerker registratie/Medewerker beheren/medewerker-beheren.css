@@ -370,6 +370,14 @@ tr:hover {
   color: #f87171;
 }
 
+.nav-link-uitloggen {
+  color: var(--color-accent);
+}
+
+.nav-link-uitloggen:hover {
+  color: #8ba3ff;
+}
+
 /* Mobile */
 @media (max-width: 768px) {
   .hamburger {
