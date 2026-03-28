@@ -23,6 +23,11 @@ overlayElement.addEventListener("click", sluitNavigatie);
 
 /* Data uit de database */
 
+const cfg = window.accountBeheerConfig || {
+  isAdministrator: false,
+  huidigeGebruikerId: 0,
+};
+
 let accounts = [];
 
 async function laadAccounts() {
@@ -92,12 +97,19 @@ function renderTabel(lijst) {
     const row = document.createElement("tr");
     const statusClass =
       "status-" + a.status.toLowerCase().replace(/\s/g, "");
+    const eigenAccount =
+      String(a.id) === String(cfg.huidigeGebruikerId);
+    const verwijderKnop = eigenAccount
+      ? ""
+      : `<button type="button" class="btn-verwijder" data-actie="verwijder" data-id="${a.id}">Verwijderen</button>`;
     row.innerHTML = `
       <td>${escapeHtml(a.naam)}</td>
       <td>${escapeHtml(a.gebruikersnaam)}</td>
       <td><span class="badge">${escapeHtml(a.rol)}</span></td>
       <td><span class="status ${statusClass}">${escapeHtml(a.status)}</span></td>
-      <td><button type="button" class="btn-wijzig" data-actie="wijzig" data-id="${a.id}">Wijzigen</button></td>
+      <td class="acties-cel">
+        <button type="button" class="btn-wijzig" data-actie="wijzig" data-id="${a.id}">Wijzigen</button></td>
+        <td>${verwijderKnop}</td>
     `;
     tabelBody.appendChild(row);
   });
@@ -110,6 +122,11 @@ function renderCards(lijst) {
     card.classList.add("account-card");
     const statusClass =
       "status-" + a.status.toLowerCase().replace(/\s/g, "");
+    const eigenAccount =
+      String(a.id) === String(cfg.huidigeGebruikerId);
+    const verwijderKnop = eigenAccount
+      ? ""
+      : `<button type="button" class="btn-verwijder" data-actie="verwijder" data-id="${a.id}">Verwijderen</button>`;
     card.innerHTML = `
       <h3>${escapeHtml(a.naam)}</h3>
       <div class="gebruikersnaam">${escapeHtml(a.gebruikersnaam)}</div>
@@ -121,7 +138,10 @@ function renderCards(lijst) {
         <span class="card-label">Status</span>
         <span class="status ${statusClass}">${escapeHtml(a.status)}</span>
       </div>
-      <button type="button" class="btn-wijzig btn-wijzig-card" data-actie="wijzig" data-id="${a.id}">Wijzigen</button>
+      <div class="card-acties">
+        <button type="button" class="btn-wijzig" data-actie="wijzig" data-id="${a.id}">Wijzigen</button>
+        ${verwijderKnop}
+      </div>
     `;
     cardContainer.appendChild(card);
   });
@@ -166,7 +186,6 @@ if (modalBackdrop) {
 }
 
 /* Modal Account wijzigen */
-const cfg = window.accountBeheerConfig || { isAdministrator: false };
 const editModalBackdrop = document.getElementById("editModalBackdrop");
 const sluitEditModal = document.getElementById("sluitEditModal");
 const annuleerEditModal = document.getElementById("annuleerEditModal");
@@ -227,12 +246,60 @@ function vindAccount(id) {
 }
 
 document.body.addEventListener("click", (e) => {
-  const btn = e.target.closest("[data-actie=wijzig]");
-  if (!btn) return;
-  const id = btn.getAttribute("data-id");
-  const acc = vindAccount(id);
-  if (acc) openWijzigModal(acc);
+  const wijzig = e.target.closest("[data-actie=wijzig]");
+  if (wijzig) {
+    const id = wijzig.getAttribute("data-id");
+    const acc = vindAccount(id);
+    if (acc) openWijzigModal(acc);
+    return;
+  }
+  const verwijder = e.target.closest("[data-actie=verwijder]");
+  if (verwijder) {
+    const id = verwijder.getAttribute("data-id");
+    const acc = vindAccount(id);
+    openVerwijderBevestiging(id, acc ? acc.naam : "dit account");
+  }
 });
+
+const deleteModalBackdrop = document.getElementById("deleteModalBackdrop");
+const deleteModalBericht = document.getElementById("deleteModalBericht");
+const deleteGebruikerId = document.getElementById("delete_gebruiker_id");
+const deleteAccountForm = document.getElementById("deleteAccountForm");
+const sluitDeleteModal = document.getElementById("sluitDeleteModal");
+const annuleerVerwijder = document.getElementById("annuleerVerwijder");
+const bevestigVerwijder = document.getElementById("bevestigVerwijder");
+
+function sluitVerwijderModal() {
+  if (deleteModalBackdrop) deleteModalBackdrop.classList.remove("open");
+  if (deleteGebruikerId) deleteGebruikerId.value = "";
+}
+
+function openVerwijderBevestiging(id, naam) {
+  if (!deleteModalBackdrop || !deleteModalBericht || !deleteGebruikerId) return;
+  deleteModalBericht.textContent =
+    `Weet u zeker dat u het account van ${naam} wilt verwijderen? Dit kan niet ongedaan worden gemaakt.`;
+  deleteGebruikerId.value = id;
+  deleteModalBackdrop.classList.add("open");
+}
+
+if (bevestigVerwijder && deleteAccountForm) {
+  bevestigVerwijder.addEventListener("click", () => {
+    if (deleteGebruikerId && deleteGebruikerId.value) {
+      deleteAccountForm.submit();
+    }
+  });
+}
+if (sluitDeleteModal) {
+  sluitDeleteModal.addEventListener("click", sluitVerwijderModal);
+}
+if (annuleerVerwijder) {
+  annuleerVerwijder.addEventListener("click", sluitVerwijderModal);
+}
+if (deleteModalBackdrop) {
+  deleteModalBackdrop.addEventListener("click", (e) => {
+    if (e.target === deleteModalBackdrop) sluitVerwijderModal();
+  });
+}
 
 if (sluitEditModal) {
   sluitEditModal.addEventListener("click", sluitEditVenster);

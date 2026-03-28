@@ -380,6 +380,66 @@ tr:hover {
   border-color: var(--color-accent);
   color: #8ba3ff;
 }
+
+.acties-cel {
+  white-space: nowrap;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.card-acties {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.btn-verwijder {
+  background: transparent;
+  color: #f87171;
+  border: 1px solid rgba(248, 113, 113, 0.45);
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  font-family: Inter, system-ui, sans-serif;
+}
+
+.btn-verwijder:hover {
+  border-color: #f87171;
+  background: rgba(248, 113, 113, 0.12);
+}
+
+.btn-danger {
+  background: #b91c1c;
+  color: #fff;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  font-family: Inter, system-ui, sans-serif;
+}
+
+.btn-danger:hover {
+  filter: brightness(1.08);
+}
+
+.modal-confirm .modal-confirm-text {
+  font-size: 14px;
+  color: var(--color-text-muted);
+  line-height: 1.5;
+  margin-bottom: 0;
+}
+
+.modal-footer-confirm {
+  justify-content: flex-end;
+  flex-wrap: wrap;
+}
 .nav-link-uitloggen {
   color: var(--color-accent);
 }
