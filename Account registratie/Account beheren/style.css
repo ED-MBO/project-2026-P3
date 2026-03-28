@@ -353,6 +353,33 @@ tr:hover {
 .required {
   color: #f87171;
 }
+
+.edit-rol-readonly {
+  font-size: 13px;
+  color: var(--color-text-primary);
+  margin: 0;
+  padding: 8px 10px;
+  background: var(--color-background);
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+}
+
+.btn-wijzig {
+  background: transparent;
+  color: var(--color-accent);
+  border: 1px solid var(--color-border);
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  font-family: Inter, system-ui, sans-serif;
+}
+
+.btn-wijzig:hover {
+  border-color: var(--color-accent);
+  color: #8ba3ff;
+}
 .nav-link-uitloggen {
   color: var(--color-accent);
 }
@@ -444,5 +471,10 @@ tr:hover {
   .badge,
   .status {
     margin-top: 4px;
+  }
+
+  .btn-wijzig-card {
+    margin-top: 8px;
+    align-self: flex-start;
   }
 }

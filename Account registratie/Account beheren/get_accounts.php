@@ -40,11 +40,14 @@ try {
                 $row['Achternaam'];
 
         $status = $row['IsIngelogd'] ? 'Ingelogd' : 'Uitgelogd';
-        $rol = $row['Rol'] ?? '—';
+        $rol = $row['Rol'] ? (string) $row['Rol'] : 'Lid';
 
         $accounts[] = [
             "id" => $row['Id'],
             "naam" => $naam,
+            "voornaam" => $row['Voornaam'],
+            "tussenvoegsel" => $row['Tussenvoegsel'] ?? '',
+            "achternaam" => $row['Achternaam'],
             "gebruikersnaam" => $row['Gebruikersnaam'],
             "rol" => $rol,
             "status" => $status
