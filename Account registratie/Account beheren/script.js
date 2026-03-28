@@ -74,6 +74,12 @@ function filterAccounts() {
   );
 }
 
+function escapeHtml(str) {
+  const div = document.createElement("div");
+  div.textContent = str == null ? "" : String(str);
+  return div.innerHTML;
+}
+
 function renderTabel(lijst) {
   tabelBody.innerHTML = "";
 
@@ -87,10 +93,11 @@ function renderTabel(lijst) {
     const statusClass =
       "status-" + a.status.toLowerCase().replace(/\s/g, "");
     row.innerHTML = `
-      <td>${a.naam}</td>
-      <td>${a.gebruikersnaam}</td>
-      <td><span class="badge">${a.rol}</span></td>
-      <td><span class="status ${statusClass}">${a.status}</span></td>
+      <td>${escapeHtml(a.naam)}</td>
+      <td>${escapeHtml(a.gebruikersnaam)}</td>
+      <td><span class="badge">${escapeHtml(a.rol)}</span></td>
+      <td><span class="status ${statusClass}">${escapeHtml(a.status)}</span></td>
+      <td><button type="button" class="btn-wijzig" data-actie="wijzig" data-id="${a.id}">Wijzigen</button></td>
     `;
     tabelBody.appendChild(row);
   });
@@ -104,16 +111,17 @@ function renderCards(lijst) {
     const statusClass =
       "status-" + a.status.toLowerCase().replace(/\s/g, "");
     card.innerHTML = `
-      <h3>${a.naam}</h3>
-      <div class="gebruikersnaam">${a.gebruikersnaam}</div>
+      <h3>${escapeHtml(a.naam)}</h3>
+      <div class="gebruikersnaam">${escapeHtml(a.gebruikersnaam)}</div>
       <div class="card-row">
         <span class="card-label">Rol</span>
-        <span class="badge">${a.rol}</span>
+        <span class="badge">${escapeHtml(a.rol)}</span>
       </div>
       <div class="card-row">
         <span class="card-label">Status</span>
-        <span class="status ${statusClass}">${a.status}</span>
+        <span class="status ${statusClass}">${escapeHtml(a.status)}</span>
       </div>
+      <button type="button" class="btn-wijzig btn-wijzig-card" data-actie="wijzig" data-id="${a.id}">Wijzigen</button>
     `;
     cardContainer.appendChild(card);
   });
@@ -154,6 +162,87 @@ if (annuleerModal) {
 if (modalBackdrop) {
   modalBackdrop.addEventListener("click", (e) => {
     if (e.target === modalBackdrop) modalBackdrop.classList.remove("open");
+  });
+}
+
+/* Modal Account wijzigen */
+const cfg = window.accountBeheerConfig || { isAdministrator: false };
+const editModalBackdrop = document.getElementById("editModalBackdrop");
+const sluitEditModal = document.getElementById("sluitEditModal");
+const annuleerEditModal = document.getElementById("annuleerEditModal");
+const editRolGroepSelect = document.getElementById("editRolGroepSelect");
+const editRolGroepReadonly = document.getElementById("editRolGroepReadonly");
+const editRolSelect = document.getElementById("edit_rol");
+const editRolReadonlyText = document.getElementById("edit_rol_readonly_text");
+
+function sluitEditVenster() {
+  if (editModalBackdrop) editModalBackdrop.classList.remove("open");
+}
+
+function openWijzigModal(account) {
+  if (!editModalBackdrop || !account) return;
+
+  document.getElementById("edit_gebruiker_id").value = account.id;
+  document.getElementById("edit_voornaam").value = account.voornaam || "";
+  document.getElementById("edit_tussenvoegsel").value =
+    account.tussenvoegsel || "";
+  document.getElementById("edit_achternaam").value = account.achternaam || "";
+  document.getElementById("edit_gebruikersnaam").value =
+    account.gebruikersnaam || "";
+  document.getElementById("edit_wachtwoord").value = "";
+
+  const staffRollen = ["Medewerker", "Administrator"];
+  const isStaff = staffRollen.includes(account.rol);
+  const alleenLidSelect = !cfg.isAdministrator;
+
+  if (alleenLidSelect && isStaff) {
+    editRolGroepSelect.style.display = "none";
+    editRolSelect.disabled = true;
+    editRolSelect.removeAttribute("required");
+    editRolGroepReadonly.style.display = "";
+    editRolReadonlyText.textContent =
+      account.rol +
+      " — alleen een administrator kan deze rol wijzigen. Overige gegevens kunt u wel aanpassen.";
+  } else {
+    editRolGroepSelect.style.display = "";
+    editRolGroepReadonly.style.display = "none";
+    editRolSelect.disabled = false;
+    editRolSelect.setAttribute("required", "required");
+    const allowed = cfg.isAdministrator
+      ? ["Lid", "Medewerker", "Administrator"]
+      : ["Lid"];
+    const r = account.rol;
+    if (allowed.includes(r)) {
+      editRolSelect.value = r;
+    } else {
+      editRolSelect.value = "Lid";
+    }
+  }
+
+  editModalBackdrop.classList.add("open");
+}
+
+function vindAccount(id) {
+  return accounts.find((x) => String(x.id) === String(id));
+}
+
+document.body.addEventListener("click", (e) => {
+  const btn = e.target.closest("[data-actie=wijzig]");
+  if (!btn) return;
+  const id = btn.getAttribute("data-id");
+  const acc = vindAccount(id);
+  if (acc) openWijzigModal(acc);
+});
+
+if (sluitEditModal) {
+  sluitEditModal.addEventListener("click", sluitEditVenster);
+}
+if (annuleerEditModal) {
+  annuleerEditModal.addEventListener("click", sluitEditVenster);
+}
+if (editModalBackdrop) {
+  editModalBackdrop.addEventListener("click", (e) => {
+    if (e.target === editModalBackdrop) sluitEditVenster();
   });
 }
 

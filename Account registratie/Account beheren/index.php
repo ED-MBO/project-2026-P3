@@ -140,6 +140,7 @@ unset($_SESSION['flash_succes_account'], $_SESSION['flash_fout_account']);
                     <th>Gebruikersnaam</th>
                     <th>Rol</th>
                     <th>Status</th>
+                    <th>Wijzigen</th>
                 </tr>
             </thead>
             <tbody id="body"></tbody>
@@ -203,6 +204,65 @@ unset($_SESSION['flash_succes_account'], $_SESSION['flash_fout_account']);
         </div>
     </div>
 
+    <div class="modal-backdrop" id="editModalBackdrop">
+        <div class="modal" role="dialog" aria-modal="true" aria-labelledby="editModalTitel">
+            <div class="modal-header">
+                <h2 id="editModalTitel">Account wijzigen</h2>
+                <button type="button" class="modal-close" id="sluitEditModal" aria-label="Sluiten">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <form method="POST" action="update_account.php" id="editAccountForm">
+                <input type="hidden" name="gebruiker_id" id="edit_gebruiker_id" value="" />
+                <div class="form-group">
+                    <label for="edit_voornaam">Voornaam <span class="required">*</span></label>
+                    <input type="text" id="edit_voornaam" name="voornaam" required />
+                </div>
+                <div class="form-group">
+                    <label for="edit_tussenvoegsel">Tussenvoegsel</label>
+                    <input type="text" id="edit_tussenvoegsel" name="tussenvoegsel" />
+                </div>
+                <div class="form-group">
+                    <label for="edit_achternaam">Achternaam <span class="required">*</span></label>
+                    <input type="text" id="edit_achternaam" name="achternaam" required />
+                </div>
+                <div class="form-group">
+                    <label for="edit_gebruikersnaam">Gebruikersnaam <span class="required">*</span></label>
+                    <input type="text" id="edit_gebruikersnaam" name="gebruikersnaam" required autocomplete="username" />
+                </div>
+                <div class="form-group">
+                    <label for="edit_wachtwoord">Nieuw wachtwoord</label>
+                    <input type="password" id="edit_wachtwoord" name="wachtwoord" placeholder="Leeg laten om niet te wijzigen" minlength="8" autocomplete="new-password" />
+                </div>
+                <div class="form-group" id="editRolGroepSelect">
+                    <label for="edit_rol">Rol <span class="required">*</span></label>
+                    <select id="edit_rol" name="rol" required>
+                        <option value="Lid">Lid</option>
+                        <?php if ($isAdministrator): ?>
+                        <option value="Medewerker">Medewerker</option>
+                        <option value="Administrator">Administrator</option>
+                        <?php endif; ?>
+                    </select>
+                </div>
+                <div class="form-group" id="editRolGroepReadonly" style="display: none">
+                    <label>Rol</label>
+                    <p id="edit_rol_readonly_text" class="edit-rol-readonly"></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn-primary">
+                        <i class="fa-solid fa-floppy-disk"></i> Opslaan
+                    </button>
+                    <button type="button" class="btn-secondary" id="annuleerEditModal">Annuleren</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        window.accountBeheerConfig = {
+            isAdministrator: <?= $isAdministrator ? 'true' : 'false' ?>
+        };
+    </script>
     <script src="script.js"></script>
 </body>
 
