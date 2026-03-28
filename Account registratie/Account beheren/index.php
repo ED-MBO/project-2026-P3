@@ -141,6 +141,7 @@ unset($_SESSION['flash_succes_account'], $_SESSION['flash_fout_account']);
                     <th>Rol</th>
                     <th>Status</th>
                     <th>Wijzigen</th>
+                    <th>Verwijderen</th>
                 </tr>
             </thead>
             <tbody id="body"></tbody>
@@ -258,9 +259,30 @@ unset($_SESSION['flash_succes_account'], $_SESSION['flash_fout_account']);
         </div>
     </div>
 
+    <div class="modal-backdrop" id="deleteModalBackdrop">
+        <div class="modal modal-confirm" role="dialog" aria-modal="true" aria-labelledby="deleteModalTitel">
+            <div class="modal-header">
+                <h2 id="deleteModalTitel">Account verwijderen</h2>
+                <button type="button" class="modal-close" id="sluitDeleteModal" aria-label="Sluiten">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <p class="modal-confirm-text" id="deleteModalBericht"></p>
+            <div class="modal-footer modal-footer-confirm">
+                <button type="button" class="btn-danger" id="bevestigVerwijder">Ja, verwijderen</button>
+                <button type="button" class="btn-secondary" id="annuleerVerwijder">Nee</button>
+            </div>
+        </div>
+    </div>
+
+    <form method="POST" action="delete_account.php" id="deleteAccountForm" hidden>
+        <input type="hidden" name="gebruiker_id" id="delete_gebruiker_id" value="" />
+    </form>
+
     <script>
         window.accountBeheerConfig = {
-            isAdministrator: <?= $isAdministrator ? 'true' : 'false' ?>
+            isAdministrator: <?= $isAdministrator ? 'true' : 'false' ?>,
+            huidigeGebruikerId: <?= (int) ($_SESSION['gebruiker_id'] ?? 0) ?>
         };
     </script>
     <script src="script.js"></script>
