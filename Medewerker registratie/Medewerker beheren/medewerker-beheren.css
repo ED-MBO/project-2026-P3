@@ -167,6 +167,12 @@ input {
 .btn-secondary:hover {
   color: var(--color-text-primary);
 }
+.btn-danger {
+  background: #f87171 !important;
+}
+.btn-danger:hover {
+  opacity: 0.8;
+}
 
 /* Alerts */
 .alert-success {
