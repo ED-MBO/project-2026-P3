@@ -155,21 +155,27 @@ input {
   opacity: 0.45;
   cursor: not-allowed;
 }
+
 .btn-secondary {
-  background: none;
-  border: none;
-  color: var(--color-text-muted);
-  cursor: pointer;
-  font-family: Inter, system-ui, sans-serif;
-  font-size: 13px;
-  transition: color 0.2s;
+background: var(--color-card-bg);
+    color: var(--color-text-muted);
+    border: 1px solid var(--color-border);
+    padding: 10px 16px;
+    border-radius: 6px;
+    font-size: 13px;
+    cursor: pointer;
 }
+
 .btn-secondary:hover {
   color: var(--color-text-primary);
 }
 .btn-danger {
   background: #f87171 !important;
 }
+.btn-danger:hover {
+  opacity: 0.8;
+}
+
 .btn-danger:hover {
   opacity: 0.8;
 }
@@ -243,10 +249,11 @@ tr:hover {
 
 .badge {
   font-size: 11px;
-  padding: 3px 8px;
+  padding: 4px 10px;
   border-radius: 4px;
-  background: #232734;
-  color: var(--color-text-muted);
+  background: #1e2129;
+  color: #8b90a7;
+  border: 1px solid #262a36;
 }
 .status {
   font-size: 11px;
@@ -255,20 +262,56 @@ tr:hover {
   display: inline-block;
 }
 .status-beschikbaar {
-  background: #1e3328;
-  color: #4ade80;
+  background: #142a1f;
+  color: #52a373;
 }
+
+/* Action Buttons in Table */
+button.btn-action-white.btn-edit {
+  background: transparent;
+  color: var(--color-accent);
+  border: 1px solid var(--color-border);
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  font-family: Inter, system-ui, sans-serif;
+  transition: all 0.2s ease;
+}
+button.btn-action-white.btn-edit:hover {
+  border-color: var(--color-accent);
+  color: #8ba3ff;
+}
+
+button.btn-action-white.btn-delete {
+  background: transparent;
+  color: #f87171;
+  border: 1px solid rgba(248, 113, 113, 0.45);
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  font-family: Inter, system-ui, sans-serif;
+  transition: all 0.2s ease;
+}
+button.btn-action-white.btn-delete:hover {
+    border-color: #f87171;
+  background: rgba(248, 113, 113, 0.12);
+}
+
 .status-bezet {
-  background: #332e1e;
-  color: #facc15;
+  background: #2a2514;
+  color: #ccaa33;
 }
 .status-afwezig {
-  background: #331e22;
-  color: #f87171;
+  background: #2a1418;
+  color: #a35252;
 }
 .status-oplocatie {
-  background: #1e2733;
-  color: #60a5fa;
+  background: #141a2a;
+  color: #5273a3;
 }
 
 .empty {

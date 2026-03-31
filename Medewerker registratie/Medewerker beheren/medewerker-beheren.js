@@ -108,6 +108,15 @@ if (deleteModal) {
         medewerkers = medewerkers.filter((x) => x.id != currentDeleteId);
         update();
         closeDeleteModal();
+        
+        // Show success message
+        const jsAlert = document.getElementById("jsSuccessAlert");
+        const jsMsg = document.getElementById("jsSuccessMessage");
+        if (jsAlert && jsMsg) {
+          jsMsg.textContent = "Medewerker succesvol verwijderd!";
+          jsAlert.style.display = "flex";
+          setTimeout(() => (jsAlert.style.display = "none"), 3000);
+        }
       } else {
         deleteError.textContent = data.message || "Er is een fout opgetreden.";
         deleteError.style.display = "block";
@@ -195,13 +204,11 @@ function renderTabel(lijst) {
       <td>${m.naam ?? "—"}</td>
       <td><span class="badge">${m.afdeling ?? "—"}</span></td>
       <td><span class="status ${statusClass(m.status)}">${m.status ?? "—"}</span></td>
-      <td style="text-align: right;">
-        <button class="btn-edit" data-id="${m.id}" title="Bewerk medewerker" style="border: none; background: transparent; cursor: pointer; color: #6b8cff; font-size: 16px; margin-right: 8px;">
-          <i class="fa-solid fa-pen"></i>
-        </button>
-        <button class="btn-delete" data-id="${m.id}" title="Verwijder medewerker" style="border: none; background: transparent; cursor: pointer; color: #ff6b6b; font-size: 16px;">
-          <i class="fa-solid fa-trash-can"></i>
-        </button>
+      <td>
+        <button class="btn-action-white btn-edit" data-id="${m.id}">Wijzigen</button>
+      </td>
+      <td>
+        <button class="btn-action-white btn-delete" data-id="${m.id}">Verwijderen</button>
       </td>
     `;
     tabelBody.appendChild(tr);

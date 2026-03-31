@@ -34,7 +34,7 @@ unset($_SESSION['flash_succes'], $_SESSION['flash_fout']);
     <title>Medewerker Beheren</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
-    <link rel="stylesheet" href="/Medewerker registratie/Medewerker beheren/medewerker-beheren.css" />
+    <link rel="stylesheet" href="/Medewerker registratie/Medewerker beheren/medewerker-beheren.css?v=<?= time() ?>" />
 </head>
 
 <body>
@@ -50,6 +50,11 @@ unset($_SESSION['flash_succes'], $_SESSION['flash_fout']);
             <button class="btn-primary" id="openModal">
                 <i class="fa-solid fa-plus"></i> Nieuwe medewerker
             </button>
+        </div>
+
+        <div class="alert-success" id="jsSuccessAlert" style="display: none; margin-top: 16px;">
+            <i class="fa-solid fa-circle-check"></i>
+            <span id="jsSuccessMessage"></span>
         </div>
 
         <?php if ($flashSucces): ?>
@@ -86,7 +91,8 @@ unset($_SESSION['flash_succes'], $_SESSION['flash_fout']);
                     <th>Naam</th>
                     <th>Afdeling</th>
                     <th>Status</th>
-                    <th>Acties</th>
+                    <th>Wijzigen</th>
+                    <th>Verwijderen</th>
                 </tr>
             </thead>
             <tbody id="body"></tbody>
