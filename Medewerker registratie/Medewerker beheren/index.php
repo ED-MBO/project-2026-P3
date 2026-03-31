@@ -86,6 +86,7 @@ unset($_SESSION['flash_succes'], $_SESSION['flash_fout']);
                     <th>Naam</th>
                     <th>Afdeling</th>
                     <th>Status</th>
+                    <th>Acties</th>
                 </tr>
             </thead>
             <tbody id="body"></tbody>
@@ -107,7 +108,8 @@ unset($_SESSION['flash_succes'], $_SESSION['flash_fout']);
                     <i class="fa-solid fa-xmark"></i>
                 </button>
             </div>
-            <form method="POST" action="add_medewerker.php">
+            <form method="POST" action="add_medewerker.php" id="medewerkerForm">
+                <input type="hidden" id="medewerkerId" name="medewerkerId" />
                 <div class="form-group">
                     <label for="voornaam">Voornaam <span class="required">*</span></label>
                     <input type="text" id="voornaam" name="voornaam" placeholder="Bijv. Jan" required />

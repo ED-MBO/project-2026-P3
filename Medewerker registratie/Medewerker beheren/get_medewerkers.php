@@ -18,7 +18,8 @@ if ($mijnRol !== 'Administrator') {
 
 try {
     $sql = "SELECT 
-                 Voornaam
+                 Id
+                ,Voornaam
                 ,Tussenvoegsel
                 ,Achternaam
             FROM medewerker
@@ -37,9 +38,13 @@ try {
                 $row['Achternaam'];
 
         $medewerkers[] = [
-            "naam"      => $naam,
-            "afdeling"  => "FitForFun",
-            "status"    => "Beschikbaar"
+            "id"            => $row['Id'],
+            "voornaam"      => $row['Voornaam'],
+            "tussenvoegsel" => $row['Tussenvoegsel'],
+            "achternaam"    => $row['Achternaam'],
+            "naam"          => $naam,
+            "afdeling"      => "FitForFun",
+            "status"        => "Beschikbaar"
         ];
     }
 
