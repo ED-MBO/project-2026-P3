@@ -33,7 +33,13 @@ if (modal) {
     document.body.style.overflow = "";
   }
 
-  document.getElementById("openModal").addEventListener("click", openModal);
+  document.getElementById("openModal").addEventListener("click", () => {
+    document.getElementById("modalTitel").textContent = "Nieuwe medewerker";
+    document.getElementById("medewerkerForm").action = "add_medewerker.php";
+    document.getElementById("medewerkerId").value = "";
+    document.getElementById("medewerkerForm").reset();
+    openModal();
+  });
   document.getElementById("sluitModal").addEventListener("click", closeModal);
   document
     .getElementById("annuleerModal")
@@ -118,6 +124,11 @@ function renderTabel(lijst) {
       <td>${m.naam ?? "—"}</td>
       <td><span class="badge">${m.afdeling ?? "—"}</span></td>
       <td><span class="status ${statusClass(m.status)}">${m.status ?? "—"}</span></td>
+      <td style="text-align: right;">
+        <button class="btn-edit" data-id="${m.id}" title="Bewerk medewerker" style="border: none; background: transparent; cursor: pointer; color: #6b8cff; font-size: 16px;">
+          <i class="fa-solid fa-pen"></i>
+        </button>
+      </td>
     `;
     tabelBody.appendChild(tr);
   });
@@ -129,7 +140,11 @@ function renderCards(lijst) {
     const card = document.createElement("div");
     card.className = "team-card";
     card.innerHTML = `
-      <h3>${m.naam ?? "—"}</h3>
+      <h3>${m.naam ?? "—"} 
+        <button class="btn-edit-card" data-id="${m.id}" title="Bewerk medewerker" style="float: right; border: none; background: transparent; cursor: pointer; color: #6b8cff; font-size: 16px;">
+          <i class="fa-solid fa-pen"></i>
+        </button>
+      </h3>
       <div class="card-row">
         <span class="card-label">Afdeling</span>
         <span class="badge">${m.afdeling ?? "—"}</span>
@@ -143,11 +158,30 @@ function renderCards(lijst) {
   });
 }
 
+function attachEditListeners() {
+  document.querySelectorAll(".btn-edit, .btn-edit-card").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const id = btn.getAttribute("data-id");
+      const m = medewerkers.find(x => x.id == id);
+      if (m) {
+        document.getElementById("modalTitel").textContent = "Bestaande medewerker wijzigen";
+        document.getElementById("medewerkerForm").action = "edit_medewerker.php";
+        document.getElementById("medewerkerId").value = m.id;
+        document.getElementById("voornaam").value = m.voornaam || "";
+        document.getElementById("tussenvoegsel").value = m.tussenvoegsel || "";
+        document.getElementById("achternaam").value = m.achternaam || "";
+        openModal();
+      }
+    });
+  });
+}
+
 function update() {
   const filtered = filterMedewerkers();
   countLine.textContent = `${filtered.length} van ${medewerkers.length} collega's zichtbaar`;
   renderTabel(filtered);
   renderCards(filtered);
+  attachEditListeners();
 }
 
 zoekInput.addEventListener("input", update);
