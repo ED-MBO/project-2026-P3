@@ -268,6 +268,11 @@ unset($_SESSION['flash_succes_account'], $_SESSION['flash_fout_account']);
                 </button>
             </div>
             <p class="modal-confirm-text" id="deleteModalBericht"></p>
+            <div class="form-group">
+                <label for="delete_achternaam_check">Vul de achternaam in ter bevestiging <span class="required">*</span></label>
+                <input type="text" id="delete_achternaam_check" placeholder="Achternaam" autocomplete="off" />
+            </div>
+            <p class="modal-confirm-fout" id="deleteModalFout" style="display: none;"></p>
             <div class="modal-footer modal-footer-confirm">
                 <button type="button" class="btn-danger" id="bevestigVerwijder">Ja, verwijderen</button>
                 <button type="button" class="btn-secondary" id="annuleerVerwijder">Nee</button>
@@ -277,6 +282,7 @@ unset($_SESSION['flash_succes_account'], $_SESSION['flash_fout_account']);
 
     <form method="POST" action="delete_account.php" id="deleteAccountForm" hidden>
         <input type="hidden" name="gebruiker_id" id="delete_gebruiker_id" value="" />
+        <input type="hidden" name="bevestig_achternaam" id="delete_bevestig_achternaam" value="" />
     </form>
 
     <script>
