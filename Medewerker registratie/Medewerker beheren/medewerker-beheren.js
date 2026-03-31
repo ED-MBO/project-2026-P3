@@ -49,6 +49,77 @@ if (modal) {
   });
 }
 
+/* Delete Modal */
+const deleteModal = document.getElementById("deleteModalBackdrop");
+const sluitDeleteModal = document.getElementById("sluitDeleteModal");
+const annuleerDeleteModal = document.getElementById("annuleerDeleteModal");
+const bevestigDeleteBtn = document.getElementById("bevestigDelete");
+const deleteModalTekst = document.getElementById("deleteModalTekst");
+const confirmAchternaamInput = document.getElementById("confirmAchternaam");
+const deleteError = document.getElementById("deleteError");
+
+let currentDeleteId = null;
+
+function openDeleteModal(m) {
+  currentDeleteId = m.id;
+  deleteModalTekst.innerHTML = `Bent u zeker dat u <strong>${m.naam}</strong> wilt verwijderen? Dit kan niet ongedaan worden gemaakt.`;
+  confirmAchternaamInput.value = "";
+  deleteError.style.display = "none";
+  deleteModal.classList.add("open");
+  document.body.style.overflow = "hidden";
+}
+
+function closeDeleteModal() {
+  deleteModal.classList.remove("open");
+  document.body.style.overflow = "";
+  currentDeleteId = null;
+}
+
+if (deleteModal) {
+  sluitDeleteModal.addEventListener("click", closeDeleteModal);
+  annuleerDeleteModal.addEventListener("click", closeDeleteModal);
+  deleteModal.addEventListener("click", (e) => {
+    if (e.target === deleteModal) closeDeleteModal();
+  });
+
+  bevestigDeleteBtn.addEventListener("click", async () => {
+    const m = medewerkers.find((x) => x.id == currentDeleteId);
+    if (!m) return;
+
+    const invoer = confirmAchternaamInput.value.trim();
+
+    if (invoer.toLowerCase() !== m.achternaam.toLowerCase()) {
+      deleteError.textContent =
+        "De ingevoerde achternaam komt niet overeen. De medewerker is NIET verwijderd.";
+      deleteError.style.display = "block";
+      return;
+    }
+
+    try {
+      const res = await fetch("delete_medewerker.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id: currentDeleteId, achternaam: invoer }),
+      });
+
+      const data = await res.json();
+
+      if (data.success) {
+        medewerkers = medewerkers.filter((x) => x.id != currentDeleteId);
+        update();
+        closeDeleteModal();
+      } else {
+        deleteError.textContent = data.message || "Er is een fout opgetreden.";
+        deleteError.style.display = "block";
+      }
+    } catch (err) {
+      console.error(err);
+      deleteError.textContent = "Server fout bij verwijderen.";
+      deleteError.style.display = "block";
+    }
+  });
+}
+
 /* Flash meldingen auto-hide na 5 seconden */
 ["successAlert", "errorAlert"].forEach((id) => {
   const el = document.getElementById(id);
@@ -125,8 +196,11 @@ function renderTabel(lijst) {
       <td><span class="badge">${m.afdeling ?? "—"}</span></td>
       <td><span class="status ${statusClass(m.status)}">${m.status ?? "—"}</span></td>
       <td style="text-align: right;">
-        <button class="btn-edit" data-id="${m.id}" title="Bewerk medewerker" style="border: none; background: transparent; cursor: pointer; color: #6b8cff; font-size: 16px;">
+        <button class="btn-edit" data-id="${m.id}" title="Bewerk medewerker" style="border: none; background: transparent; cursor: pointer; color: #6b8cff; font-size: 16px; margin-right: 8px;">
           <i class="fa-solid fa-pen"></i>
+        </button>
+        <button class="btn-delete" data-id="${m.id}" title="Verwijder medewerker" style="border: none; background: transparent; cursor: pointer; color: #ff6b6b; font-size: 16px;">
+          <i class="fa-solid fa-trash-can"></i>
         </button>
       </td>
     `;
@@ -141,9 +215,14 @@ function renderCards(lijst) {
     card.className = "team-card";
     card.innerHTML = `
       <h3>${m.naam ?? "—"} 
-        <button class="btn-edit-card" data-id="${m.id}" title="Bewerk medewerker" style="float: right; border: none; background: transparent; cursor: pointer; color: #6b8cff; font-size: 16px;">
-          <i class="fa-solid fa-pen"></i>
-        </button>
+        <div style="float: right;">
+          <button class="btn-edit-card" data-id="${m.id}" title="Bewerk medewerker" style="border: none; background: transparent; cursor: pointer; color: #6b8cff; font-size: 16px; margin-right: 4px;">
+            <i class="fa-solid fa-pen"></i>
+          </button>
+          <button class="btn-delete-card" data-id="${m.id}" title="Verwijder medewerker" style="border: none; background: transparent; cursor: pointer; color: #ff6b6b; font-size: 16px;">
+            <i class="fa-solid fa-trash-can"></i>
+          </button>
+        </div>
       </h3>
       <div class="card-row">
         <span class="card-label">Afdeling</span>
@@ -176,12 +255,28 @@ function attachEditListeners() {
   });
 }
 
+function attachDeleteListeners() {
+  document.querySelectorAll(".btn-delete, .btn-delete-card").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const id = btn.getAttribute("data-id");
+      verwijderMedewerker(id);
+    });
+  });
+}
+
+async function verwijderMedewerker(id) {
+  const m = medewerkers.find((x) => x.id == id);
+  if (!m) return;
+  openDeleteModal(m);
+}
+
 function update() {
   const filtered = filterMedewerkers();
   countLine.textContent = `${filtered.length} van ${medewerkers.length} collega's zichtbaar`;
   renderTabel(filtered);
   renderCards(filtered);
   attachEditListeners();
+  attachDeleteListeners();
 }
 
 zoekInput.addEventListener("input", update);

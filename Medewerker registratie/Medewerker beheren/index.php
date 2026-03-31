@@ -134,6 +134,34 @@ unset($_SESSION['flash_succes'], $_SESSION['flash_fout']);
         </div>
     </div>
 
+    <!-- Delete Confirmation Modal -->
+    <div class="modal-backdrop" id="deleteModalBackdrop">
+        <div class="modal" role="dialog" aria-modal="true" aria-labelledby="deleteModalTitel">
+            <div class="modal-header">
+                <h2 id="deleteModalTitel">Medewerker verwijderen</h2>
+                <button class="modal-close" id="sluitDeleteModal" aria-label="Sluiten">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p id="deleteModalTekst" style="font-size: 14px; margin-bottom: 20px; color: var(--color-text-primary);"></p>
+                <div class="form-group">
+                    <label for="confirmAchternaam">Typ de achternaam ter bevestiging <span class="required">*</span></label>
+                    <input type="text" id="confirmAchternaam" placeholder="Achternaam invullen..." required />
+                    <div id="deleteError" style="color: #f87171; font-size: 12px; margin-top: 5px; display: none;"></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn-primary btn-danger" id="bevestigDelete">
+                    <i class="fa-solid fa-trash-can"></i> Definitief verwijderen
+                </button>
+                <button type="button" class="btn-secondary" id="annuleerDeleteModal">
+                    Annuleren
+                </button>
+            </div>
+        </div>
+    </div>
+
     <script src="/Medewerker registratie/Medewerker beheren/medewerker-beheren.js?v=<?= time() ?>"></script>
 </body>
 
