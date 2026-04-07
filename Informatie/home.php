@@ -269,7 +269,7 @@
                 <div class="trainer-card reveal">
                     <div class="trainer-avatar"></div>
                     <div class="trainer-info">
-                        <div class="trainer-name">Kenne John</div>
+                        <div class="trainer-name">Kene John</div>
                         <div class="trainer-spec">Spinning &amp; Cardio</div>
                         <p class="trainer-bio">Ex-wielrenner die zijn passie omzette naar motiverende spinning sessies.
                             Geen excuses, wel resultaat.</p>

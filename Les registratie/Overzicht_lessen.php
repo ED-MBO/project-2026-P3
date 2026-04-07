@@ -21,6 +21,11 @@ if (!$isMedewerkerOfAdmin) {
     exit();
 }
 
+// Flash berichten uitlezen en direct wissen
+$flashSucces = $_SESSION['flash_succes'] ?? null;
+$flashFout   = $_SESSION['flash_fout']   ?? null;
+unset($_SESSION['flash_succes'], $_SESSION['flash_fout']);
+
 $modalFouten = [];
 $ledenVoorSelectie = [];
 
@@ -91,7 +96,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['nieuweLes'])) {
             $insert = $pdo->prepare("INSERT INTO les (Naam, Prijs, Datum, Tijd, MinAantalPersonen, MaxAantalPersonen, Beschikbaarheid, IsActief) VALUES (?, ?, ?, ?, ?, ?, ?, 1)");
             $insert->execute([$naam, $prijs, $datum, $tijd, $min_personen, $max_personen, $beschikbaarheid]);
 
-            // Sla naam ook op in reservering, zodat deze in het lesoverzicht zichtbaar is.
             $nummerStmt = $pdo->query("SELECT COALESCE(MAX(Nummer), 0) + 1 FROM reservering");
             $volgendNummer = (int) $nummerStmt->fetchColumn();
             $statusReservering = in_array($beschikbaarheid, ['Ingepland', 'Niet gestart', 'Gestart', 'Geannuleerd'], true)
@@ -104,7 +108,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['nieuweLes'])) {
             );
             $insertRes->execute([$voornaam, $achternaam, $volgendNummer, $datum, $tijd, $statusReservering]);
 
-            // Redirect om een dubbele stuur on refresh te voorkomen
             header('Location: Overzicht_lessen.php');
             exit();
         } catch (PDOException $e) {
@@ -113,7 +116,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['nieuweLes'])) {
     }
 }
 
-$sql = "SELECT l.Naam AS LesNaam, l.Prijs, l.Beschikbaarheid, l.Datum, l.Tijd, 
+$sql = "SELECT l.Id AS LesId, l.Naam AS LesNaam, l.Prijs, l.Beschikbaarheid, l.Datum, l.Tijd, 
+               l.MinAantalPersonen, l.MaxAantalPersonen,
                r.Voornaam, r.Tussenvoegsel, r.Achternaam, r.Reserveringstatus
         FROM les l
         LEFT JOIN reservering r ON l.Datum = r.Datum AND l.Tijd = r.Tijd AND r.IsActief = 1
@@ -153,6 +157,26 @@ $aantalLessen = count($lessen);
     </button>
   </div>
 
+  <!-- Flash berichten -->
+  <div class="alert-success" id="jsSuccessAlert" style="display: none; margin-top: 16px;">
+      <i class="fa-solid fa-circle-check"></i>
+      <span id="jsSuccessMessage"></span>
+  </div>
+
+  <?php if ($flashSucces): ?>
+  <div class="alert-success" id="successAlert">
+      <i class="fa-solid fa-circle-check"></i>
+      <?= htmlspecialchars($flashSucces) ?>
+  </div>
+  <?php endif; ?>
+
+  <?php if ($flashFout): ?>
+  <div class="alert-error" id="errorAlert">
+      <i class="fa-solid fa-circle-xmark"></i>
+      <?= htmlspecialchars($flashFout) ?>
+  </div>
+  <?php endif; ?>
+
   <div class="topbar">
     <input type="text" id="search" placeholder="Zoek op achternaam..."/>
     <select id="statusFilter">
@@ -174,6 +198,8 @@ $aantalLessen = count($lessen);
         <th>Datum</th>
         <th>Tijd</th>
         <th>Status</th>
+        <th>Wijzigen</th>
+        <th>Verwijderen</th>
       </tr>
     </thead>
     <tbody id="tabelBody">
@@ -185,7 +211,15 @@ $aantalLessen = count($lessen);
           $voornaam  = $les['Voornaam'] ?? '';
         ?>
         <tr data-achternaam="<?= htmlspecialchars(strtolower($achternaam)) ?>"
-            data-status="<?= htmlspecialchars($statusRaw) ?>">
+            data-status="<?= htmlspecialchars($statusRaw) ?>"
+            data-les-id="<?= (int)($les['LesId'] ?? 0) ?>"
+            data-les-naam="<?= htmlspecialchars($les['LesNaam'] ?? '') ?>"
+            data-les-prijs="<?= htmlspecialchars($les['Prijs'] ?? '') ?>"
+            data-les-datum="<?= htmlspecialchars($les['Datum'] ?? '') ?>"
+            data-les-tijd="<?= htmlspecialchars($les['Tijd'] ?? '') ?>"
+            data-les-min="<?= htmlspecialchars($les['MinAantalPersonen'] ?? '3') ?>"
+            data-les-max="<?= htmlspecialchars($les['MaxAantalPersonen'] ?? '9') ?>"
+            data-les-beschikbaarheid="<?= htmlspecialchars($les['Beschikbaarheid'] ?? 'Ingepland') ?>">
           <td><?= htmlspecialchars($voornaam) ?></td>
           <td><?= htmlspecialchars($achternaam) ?></td>
           <td><?= htmlspecialchars($les['LesNaam'] ?? '—') ?></td>
@@ -193,6 +227,14 @@ $aantalLessen = count($lessen);
           <td><?= htmlspecialchars(date('d-m-Y', strtotime($les['Datum']))) ?></td>
           <td><?= htmlspecialchars(substr($les['Tijd'], 0, 5)) ?></td>
           <td><span class="status <?= $statusClass ?>"><?= htmlspecialchars($statusRaw) ?></span></td>
+          <td>
+            <button class="btn-action-white btn-edit" 
+                    data-id="<?= (int)($les['LesId'] ?? 0) ?>">Wijzigen</button>
+          </td>
+          <td>
+            <button class="btn-action-white btn-delete" 
+                    data-id="<?= (int)($les['LesId'] ?? 0) ?>">Verwijderen</button>
+          </td>
         </tr>
       <?php endforeach; ?>
     </tbody>
@@ -207,8 +249,25 @@ $aantalLessen = count($lessen);
       ?>
       <div class="les-card"
            data-achternaam="<?= htmlspecialchars(strtolower($achternaam)) ?>"
-           data-status="<?= htmlspecialchars($statusRaw) ?>">
-        <h3><?= htmlspecialchars($achternaam) ?></h3>
+           data-status="<?= htmlspecialchars($statusRaw) ?>"
+           data-les-id="<?= (int)($les['LesId'] ?? 0) ?>"
+           data-les-naam="<?= htmlspecialchars($les['LesNaam'] ?? '') ?>"
+           data-les-prijs="<?= htmlspecialchars($les['Prijs'] ?? '') ?>"
+           data-les-datum="<?= htmlspecialchars($les['Datum'] ?? '') ?>"
+           data-les-tijd="<?= htmlspecialchars($les['Tijd'] ?? '') ?>"
+           data-les-min="<?= htmlspecialchars($les['MinAantalPersonen'] ?? '3') ?>"
+           data-les-max="<?= htmlspecialchars($les['MaxAantalPersonen'] ?? '9') ?>"
+           data-les-beschikbaarheid="<?= htmlspecialchars($les['Beschikbaarheid'] ?? 'Ingepland') ?>">
+        <h3><?= htmlspecialchars($achternaam) ?>
+          <div style="float: right;">
+            <button class="btn-edit-card" data-id="<?= (int)($les['LesId'] ?? 0) ?>" title="Les wijzigen" style="border: none; background: transparent; cursor: pointer; color: #6b8cff; font-size: 16px; margin-right: 4px;">
+              <i class="fa-solid fa-pen"></i>
+            </button>
+            <button class="btn-delete-card" data-id="<?= (int)($les['LesId'] ?? 0) ?>" title="Les verwijderen" style="border: none; background: transparent; cursor: pointer; color: #ff6b6b; font-size: 16px;">
+              <i class="fa-solid fa-trash-can"></i>
+            </button>
+          </div>
+        </h3>
         <div class="prijs"><?= htmlspecialchars($les['LesNaam'] ?? '—') ?> — €<?= number_format((float)($les['Prijs'] ?? 0), 2, ',', '.') ?></div>
         <div class="card-row">
           <span class="card-label">Datum</span>
@@ -233,7 +292,7 @@ $aantalLessen = count($lessen);
 
     <?php require_once __DIR__ . '/../includes/footer.php'; ?>
 
-    <!-- ===================== MODAL ===================== -->
+    <!-- ===================== MODAL: NIEUWE LES ===================== -->
     <div class="modal-backdrop <?= !empty($modalFouten) ? 'open' : '' ?>" id="modalBackdrop">
         <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitel">
 
@@ -352,6 +411,104 @@ $aantalLessen = count($lessen);
                 </div>
             </form>
 
+        </div>
+    </div>
+
+    <!-- ===================== MODAL: LES WIJZIGEN ===================== -->
+    <div class="modal-backdrop" id="editModalBackdrop">
+        <div class="modal" role="dialog" aria-modal="true" aria-labelledby="editModalTitel">
+            <div class="modal-header">
+                <h2 id="editModalTitel">Les wijzigen</h2>
+                <button class="modal-close" id="sluitEditModal" aria-label="Sluiten">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <form method="POST" action="edit_les.php" id="editLesForm" novalidate>
+                <input type="hidden" id="editLesId" name="lesId" />
+
+                <div class="form-group">
+                    <label for="editNaam">Lesnaam <span class="required">*</span></label>
+                    <input type="text" id="editNaam" name="naam" maxlength="50" placeholder="Bijv. Yoga, Spinning..." required />
+                    <span class="field-error" id="editNaamError" style="display:none"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="editPrijs">Prijs (€) <span class="required">*</span></label>
+                    <input type="number" id="editPrijs" name="prijs" min="0" step="0.01" placeholder="Bijv. 12.50" required />
+                    <span class="field-error" id="editPrijsError" style="display:none"></span>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="editDatum">Datum <span class="required">*</span></label>
+                        <input type="date" id="editDatum" name="datum" required />
+                        <span class="field-error" id="editDatumError" style="display:none"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="editTijd">Tijd <span class="required">*</span></label>
+                        <input type="time" id="editTijd" name="tijd" required />
+                        <span class="field-error" id="editTijdError" style="display:none"></span>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="editMinPersonen">Min. personen <span class="required">*</span></label>
+                        <input type="number" id="editMinPersonen" name="min_personen" min="1" max="127" placeholder="3" required />
+                        <span class="field-error" id="editMinError" style="display:none"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="editMaxPersonen">Max. personen <span class="required">*</span></label>
+                        <input type="number" id="editMaxPersonen" name="max_personen" min="1" max="127" placeholder="9" required />
+                        <span class="field-error" id="editMaxError" style="display:none"></span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="editBeschikbaarheid">Status</label>
+                    <select id="editBeschikbaarheid" name="beschikbaarheid">
+                        <option value="Ingepland">Ingepland</option>
+                        <option value="Niet gestart">Niet gestart</option>
+                        <option value="Gestart">Gestart</option>
+                        <option value="Geannuleerd">Geannuleerd</option>
+                    </select>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="submit" class="btn-primary">
+                        <i class="fa-solid fa-floppy-disk"></i> Wijzigingen opslaan
+                    </button>
+                    <button type="button" class="btn-secondary" id="annuleerEditModal">Annuleren</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ===================== MODAL: LES VERWIJDEREN ===================== -->
+    <div class="modal-backdrop" id="deleteModalBackdrop">
+        <div class="modal" role="dialog" aria-modal="true" aria-labelledby="deleteModalTitel">
+            <div class="modal-header">
+                <h2 id="deleteModalTitel">Les verwijderen</h2>
+                <button class="modal-close" id="sluitDeleteModal" aria-label="Sluiten">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p id="deleteModalTekst" style="font-size: 14px; margin-bottom: 20px; color: var(--color-text-primary);"></p>
+                <div class="form-group">
+                    <label for="confirmLesnaam">Typ de lesnaam ter bevestiging <span class="required">*</span></label>
+                    <input type="text" id="confirmLesnaam" placeholder="Lesnaam invullen..." required />
+                    <div id="deleteError" style="color: #f87171; font-size: 12px; margin-top: 5px; display: none;"></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn-primary btn-danger" id="bevestigDelete">
+                    <i class="fa-solid fa-trash-can"></i> Definitief verwijderen
+                </button>
+                <button type="button" class="btn-secondary" id="annuleerDeleteModal">
+                    Annuleren
+                </button>
+            </div>
         </div>
     </div>
 
