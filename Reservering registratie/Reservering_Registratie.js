@@ -209,17 +209,17 @@ const sluitDeleteModal     = document.getElementById('sluitDeleteModal');
 const annuleerDeleteModal  = document.getElementById('annuleerDeleteModal');
 const bevestigDeleteBtn    = document.getElementById('bevestigDelete');
 const deleteModalTekst     = document.getElementById('deleteModalTekst');
-const confirmNaamInput     = document.getElementById('confirmNaam');
+const confirmAchternaamInput     = document.getElementById('confirmAchternaam');
 const deleteError          = document.getElementById('deleteError');
 
 let currentDeleteId   = null;
-let currentDeleteNaam = null;
+let currentDeleteAchternaam = null;
 
-function openDeleteModal(id, naam) {
+function openDeleteModal(id, achternaam) {
   currentDeleteId   = id;
-  currentDeleteNaam = naam;
-  deleteModalTekst.innerHTML = `Bent u zeker dat u de reservering van <strong>${naam}</strong> wilt verwijderen? Dit kan niet ongedaan worden gemaakt.`;
-  confirmNaamInput.value = '';
+  currentDeleteAchternaam = achternaam;
+  deleteModalTekst.innerHTML = `Bent u zeker dat u de reservering wilt verwijderen? Typ ter bevestiging de achternaam <strong>${achternaam}</strong>. Dit kan niet ongedaan worden gemaakt.`;
+  confirmAchternaamInput.value = '';
   deleteError.style.display = 'none';
   if (deleteModalBackdrop) deleteModalBackdrop.classList.add('open');
   document.body.style.overflow = 'hidden';
@@ -229,7 +229,7 @@ function closeDeleteModal() {
   if (deleteModalBackdrop) deleteModalBackdrop.classList.remove('open');
   document.body.style.overflow = '';
   currentDeleteId   = null;
-  currentDeleteNaam = null;
+  currentDeleteAchternaam = null;
 }
 
 if (sluitDeleteModal) sluitDeleteModal.addEventListener('click', closeDeleteModal);
@@ -243,12 +243,12 @@ if (deleteModalBackdrop) {
 
 if (bevestigDeleteBtn) {
   bevestigDeleteBtn.addEventListener('click', async () => {
-    if (!currentDeleteId || !currentDeleteNaam) return;
+    if (!currentDeleteId || !currentDeleteAchternaam) return;
 
-    const invoer = confirmNaamInput.value.trim();
+    const invoer = confirmAchternaamInput.value.trim();
 
-    if (invoer.toLowerCase() !== currentDeleteNaam.toLowerCase()) {
-      deleteError.textContent = 'De ingevoerde naam komt niet overeen. De reservering is NIET verwijderd.';
+    if (invoer.toLowerCase() !== currentDeleteAchternaam.toLowerCase()) {
+      deleteError.textContent = 'De ingevoerde achternaam komt niet overeen. De reservering is NIET verwijderd.';
       deleteError.style.display = 'block';
       return;
     }
@@ -257,7 +257,7 @@ if (bevestigDeleteBtn) {
       const res = await fetch('delete_reservering.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ id: currentDeleteId, naam: invoer })
+        body: JSON.stringify({ id: currentDeleteId, achternaam: invoer })
       });
 
       const data = await res.json();
@@ -332,7 +332,7 @@ document.querySelectorAll('.btn-edit-card').forEach(btn => {
 document.querySelectorAll('.btn-delete').forEach(btn => {
   btn.addEventListener('click', () => {
     const row = btn.closest('tr');
-    if (row) openDeleteModal(row.dataset.resId, row.dataset.resNaam);
+    if (row) openDeleteModal(row.dataset.resId, row.dataset.resAchternaam);
   });
 });
 
@@ -340,7 +340,7 @@ document.querySelectorAll('.btn-delete').forEach(btn => {
 document.querySelectorAll('.btn-delete-card').forEach(btn => {
   btn.addEventListener('click', () => {
     const card = btn.closest('.res-card');
-    if (card) openDeleteModal(card.dataset.resId, card.dataset.resNaam);
+    if (card) openDeleteModal(card.dataset.resId, card.dataset.resAchternaam);
   });
 });
 

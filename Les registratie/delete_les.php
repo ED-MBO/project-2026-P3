@@ -13,7 +13,7 @@ require "../config.php";
 // Accepteer zowel JSON-body als POST-data
 $data = json_decode(file_get_contents("php://input"), true);
 $id = $data['id'] ?? ($_POST['id'] ?? null);
-$ingevoerdeLesnaam = trim($data['lesnaam'] ?? ($_POST['lesnaam'] ?? ''));
+$ingevoerdeAchternaam = trim($data['achternaam'] ?? ($_POST['achternaam'] ?? ''));
 
 if (!$id) {
     http_response_code(400);
@@ -34,7 +34,12 @@ if (!in_array($rol, ['Medewerker', 'Administrator'])) {
 
 try {
     // Haal de les op voor verificatie
-    $stmtFetch = $pdo->prepare("SELECT Naam FROM les WHERE Id = :id AND IsActief = 1");
+    $stmtFetch = $pdo->prepare("
+        SELECT r.Achternaam
+        FROM les l
+        LEFT JOIN reservering r ON l.Datum = r.Datum AND l.Tijd = r.Tijd AND r.IsActief = 1
+        WHERE l.Id = :id AND l.IsActief = 1
+    ");
     $stmtFetch->execute([":id" => $id]);
     $les = $stmtFetch->fetch(PDO::FETCH_ASSOC);
 
@@ -44,10 +49,10 @@ try {
         exit();
     }
 
-    // Vergelijk de lesnaam (case-insensitive)
-    if (strcasecmp($les['Naam'], $ingevoerdeLesnaam) !== 0) {
+    // Vergelijk de achternaam (case-insensitive)
+    if (strcasecmp(trim($les['Achternaam'] ?? ''), $ingevoerdeAchternaam) !== 0) {
         http_response_code(400);
-        echo json_encode(["success" => false, "message" => "De ingevoerde lesnaam komt niet overeen. De les is NIET verwijderd."]);
+        echo json_encode(["success" => false, "message" => "De ingevoerde achternaam komt niet overeen. De les is NIET verwijderd."]);
         exit();
     }
 

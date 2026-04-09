@@ -210,7 +210,7 @@ $aantalLessen = count($lessen);
           $achternaam  = $les['Achternaam'] ?? '';
           $voornaam  = $les['Voornaam'] ?? '';
         ?>
-        <tr data-achternaam="<?= htmlspecialchars(strtolower($achternaam)) ?>"
+        <tr data-achternaam="<?= htmlspecialchars($achternaam) ?>"
             data-status="<?= htmlspecialchars($statusRaw) ?>"
             data-les-id="<?= (int)($les['LesId'] ?? 0) ?>"
             data-les-naam="<?= htmlspecialchars($les['LesNaam'] ?? '') ?>"
@@ -248,7 +248,7 @@ $aantalLessen = count($lessen);
         $achternaam  = $les['Achternaam'] ?? '';
       ?>
       <div class="les-card"
-           data-achternaam="<?= htmlspecialchars(strtolower($achternaam)) ?>"
+           data-achternaam="<?= htmlspecialchars($achternaam) ?>"
            data-status="<?= htmlspecialchars($statusRaw) ?>"
            data-les-id="<?= (int)($les['LesId'] ?? 0) ?>"
            data-les-naam="<?= htmlspecialchars($les['LesNaam'] ?? '') ?>"
@@ -496,8 +496,8 @@ $aantalLessen = count($lessen);
             <div class="modal-body">
                 <p id="deleteModalTekst" style="font-size: 14px; margin-bottom: 20px; color: var(--color-text-primary);"></p>
                 <div class="form-group">
-                    <label for="confirmLesnaam">Typ de lesnaam ter bevestiging <span class="required">*</span></label>
-                    <input type="text" id="confirmLesnaam" placeholder="Lesnaam invullen..." required />
+                    <label for="confirmAchternaam">Typ de achternaam ter bevestiging <span class="required">*</span></label>
+                    <input type="text" id="confirmAchternaam" placeholder="Achternaam invullen..." required />
                     <div id="deleteError" style="color: #f87171; font-size: 12px; margin-top: 5px; display: none;"></div>
                 </div>
             </div>

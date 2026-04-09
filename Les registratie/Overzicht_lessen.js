@@ -35,7 +35,8 @@ function filterLessen() {
   let zichtbaar = 0; 
 
   rijen.forEach((rij) => {
-    const achternaamOk = !zoek || (rij.dataset.achternaam && rij.dataset.achternaam.includes(zoek));
+    const datasetAchternaam = (rij.dataset.achternaam || '').toLowerCase();
+    const achternaamOk = !zoek || datasetAchternaam.includes(zoek);
     const statusOk    = !status || rij.dataset.status === status;
     const toon = achternaamOk && statusOk;
     rij.style.display = toon ? '' : 'none';
@@ -43,7 +44,8 @@ function filterLessen() {
   });
 
   cards.forEach((card) => {
-    const achternaamOk = !zoek || (card.dataset.achternaam && card.dataset.achternaam.includes(zoek));
+    const datasetAchternaam = (card.dataset.achternaam || '').toLowerCase();
+    const achternaamOk = !zoek || datasetAchternaam.includes(zoek);
     const statusOk    = !status || card.dataset.status === status;
     card.style.display = (achternaamOk && statusOk) ? '' : 'none';
   });
@@ -198,17 +200,17 @@ const sluitDeleteModal = document.getElementById('sluitDeleteModal');
 const annuleerDeleteModal = document.getElementById('annuleerDeleteModal');
 const bevestigDeleteBtn = document.getElementById('bevestigDelete');
 const deleteModalTekst = document.getElementById('deleteModalTekst');
-const confirmLesnaamInput = document.getElementById('confirmLesnaam');
+const confirmAchternaamInput = document.getElementById('confirmAchternaam');
 const deleteError = document.getElementById('deleteError');
 
 let currentDeleteId = null;
-let currentDeleteNaam = null;
+let currentDeleteAchternaam = null;
 
-function openDeleteModal(id, naam) {
+function openDeleteModal(id, achternaam) {
   currentDeleteId = id;
-  currentDeleteNaam = naam;
-  deleteModalTekst.innerHTML = `Bent u zeker dat u de les <strong>${naam}</strong> wilt verwijderen? Dit kan niet ongedaan worden gemaakt.`;
-  confirmLesnaamInput.value = '';
+  currentDeleteAchternaam = achternaam;
+  deleteModalTekst.innerHTML = `Bent u zeker dat u deze les wilt verwijderen? Typ ter bevestiging de achternaam <strong>${achternaam}</strong>. Dit kan niet ongedaan worden gemaakt.`;
+  confirmAchternaamInput.value = '';
   deleteError.style.display = 'none';
   if (deleteModalBackdrop) deleteModalBackdrop.classList.add('open');
   document.body.style.overflow = 'hidden';
@@ -218,7 +220,7 @@ function closeDeleteModal() {
   if (deleteModalBackdrop) deleteModalBackdrop.classList.remove('open');
   document.body.style.overflow = '';
   currentDeleteId = null;
-  currentDeleteNaam = null;
+  currentDeleteAchternaam = null;
 }
 
 if (sluitDeleteModal) sluitDeleteModal.addEventListener('click', closeDeleteModal);
@@ -232,12 +234,12 @@ if (deleteModalBackdrop) {
 
 if (bevestigDeleteBtn) {
   bevestigDeleteBtn.addEventListener('click', async () => {
-    if (!currentDeleteId || !currentDeleteNaam) return;
+    if (!currentDeleteId || !currentDeleteAchternaam) return;
 
-    const invoer = confirmLesnaamInput.value.trim();
+    const invoer = confirmAchternaamInput.value.trim();
 
-    if (invoer.toLowerCase() !== currentDeleteNaam.toLowerCase()) {
-      deleteError.textContent = 'De ingevoerde lesnaam komt niet overeen. De les is NIET verwijderd.';
+    if (invoer.toLowerCase() !== currentDeleteAchternaam.toLowerCase()) {
+      deleteError.textContent = 'De ingevoerde achternaam komt niet overeen. De les is NIET verwijderd.';
       deleteError.style.display = 'block';
       return;
     }
@@ -246,7 +248,7 @@ if (bevestigDeleteBtn) {
       const res = await fetch('delete_les.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ id: currentDeleteId, lesnaam: invoer })
+        body: JSON.stringify({ id: currentDeleteId, achternaam: invoer })
       });
 
       const data = await res.json();
@@ -318,7 +320,7 @@ document.querySelectorAll('.btn-edit-card').forEach(btn => {
 document.querySelectorAll('.btn-delete').forEach(btn => {
   btn.addEventListener('click', () => {
     const row = btn.closest('tr');
-    if (row) openDeleteModal(row.dataset.lesId, row.dataset.lesNaam);
+    if (row) openDeleteModal(row.dataset.lesId, row.dataset.achternaam);
   });
 });
 
@@ -326,7 +328,7 @@ document.querySelectorAll('.btn-delete').forEach(btn => {
 document.querySelectorAll('.btn-delete-card').forEach(btn => {
   btn.addEventListener('click', () => {
     const card = btn.closest('.les-card');
-    if (card) openDeleteModal(card.dataset.lesId, card.dataset.lesNaam);
+    if (card) openDeleteModal(card.dataset.lesId, card.dataset.achternaam);
   });
 });
 
