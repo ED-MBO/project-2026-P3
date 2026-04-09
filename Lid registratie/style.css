@@ -265,6 +265,56 @@ tr:hover {
   color: var(--color-text-primary);
 }
 
+.btn-wijzig {
+  background: transparent;
+  color: var(--color-accent);
+  border: 1px solid var(--color-border);
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  font-family: Inter, system-ui, sans-serif;
+}
+
+.btn-wijzig:hover {
+  border-color: var(--color-accent);
+  color: #8ba3ff;
+}
+
+.btn-verwijder {
+  background: transparent;
+  color: #f87171;
+  border: 1px solid rgba(248, 113, 113, 0.45);
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  font-family: Inter, system-ui, sans-serif;
+  margin-left: 8px;
+}
+
+.btn-verwijder:hover {
+  border-color: #f87171;
+  background: rgba(248, 113, 113, 0.12);
+}
+
+.acties-cel {
+  white-space: nowrap;
+}
+
+.card-acties {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
+
+.card-acties .btn-verwijder {
+  margin-left: 0;
+}
+
 /* Flash meldingen */
 .alert-success,
 .alert-error {
@@ -379,6 +429,45 @@ tr:hover {
 
 .required {
   color: #f87171;
+}
+
+.btn-danger {
+  background: #b91c1c;
+  color: #fff;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  font-family: Inter, system-ui, sans-serif;
+}
+
+.btn-danger:hover {
+  filter: brightness(1.08);
+}
+
+.modal-confirm .modal-confirm-text {
+  font-size: 14px;
+  color: var(--color-text-muted);
+  line-height: 1.5;
+  margin-bottom: 12px;
+}
+
+.modal-confirm .modal-confirm-text strong {
+  color: var(--color-text-primary);
+  font-weight: 700;
+}
+
+.modal-confirm-fout {
+  margin-top: 10px;
+  font-size: 13px;
+  color: #f87171;
+}
+
+.modal-footer-confirm {
+  justify-content: flex-end;
+  flex-wrap: wrap;
 }
 
 @media (max-width: 768px) {

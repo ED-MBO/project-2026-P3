@@ -24,6 +24,12 @@ function filterLeden() {
   );
 }
 
+function escapeHtml(str) {
+  const div = document.createElement("div");
+  div.textContent = str == null ? "" : String(str);
+  return div.innerHTML;
+}
+
 function updateCount() {
   const countLine = document.getElementById("countLine");
   const filtered = filterLeden();
@@ -38,20 +44,26 @@ function renderTabel() {
   const filtered = filterLeden();
   const body = document.getElementById("ledenBody");
   if (filtered.length === 0) {
-    body.innerHTML = '<tr><td colspan="5" class="empty-cell">' +
+    body.innerHTML = '<tr><td colspan="6" class="empty-cell">' +
       (leden.length === 0 ? "Nog geen leden toegevoegd." : "Geen leden gevonden.") +
       "</td></tr>";
     return;
   }
   body.innerHTML = filtered.map((lid) => {
     const statusClass = (lid.Status || "Actief").toLowerCase().replace(/\s+/g, "-");
+    const wijzigBtn = `<button type="button" class="btn-wijzig" data-actie="wijzig" data-id="${lid.Id}">Wijzigen</button>`;
+    const verwijderBtn = lid.Status === "Actief"
+      ? `<button type="button" class="btn-verwijder" data-actie="verwijder" data-id="${lid.Id}">Verwijderen</button>`
+      : "";
     return `
       <tr>
-        <td>${lid.Naam || ""}</td>
-        <td>${lid.Mobiel || "—"}</td>
-        <td>${lid.Email || ""}</td>
-        <td>${lid.LidSinds || ""}</td>
-        <td><span class="status status-${statusClass}">${lid.Status || "Actief"}</span></td>
+        <td>${escapeHtml(lid.Naam || "")}</td>
+        <td>${escapeHtml(lid.Mobiel || "—")}</td>
+        <td>${escapeHtml(lid.Email || "")}</td>
+        <td>${escapeHtml(lid.LidSinds || "")}</td>
+        <td><span class="status status-${statusClass}">${escapeHtml(lid.Status || "Actief")}</span></td>
+        <td>${wijzigBtn}</td>
+        <td>${verwijderBtn}</td>
       </tr>
     `;
   }).join("");
@@ -66,29 +78,34 @@ function renderCards() {
   }
   container.innerHTML = filtered.map((lid) => {
     const statusClass = (lid.Status || "Actief").toLowerCase().replace(/\s+/g, "-");
+    const wijzigBtn = `<button type="button" class="btn-wijzig" data-actie="wijzig" data-id="${lid.Id}">Wijzigen</button>`;
+    const verwijderBtn = lid.Status === "Actief"
+      ? `<button type="button" class="btn-verwijder" data-actie="verwijder" data-id="${lid.Id}">Verwijderen</button>`
+      : "";
     return `
       <div class="lid-card">
         <div class="lid-card-header">
           <div>
-            <div class="lid-card-title">${lid.Naam || ""}</div>
-            <div class="lid-card-sub">${lid.Email || ""}</div>
+            <div class="lid-card-title">${escapeHtml(lid.Naam || "")}</div>
+            <div class="lid-card-sub">${escapeHtml(lid.Email || "")}</div>
           </div>
-          <span class="status status-${statusClass}">${lid.Status || "Actief"}</span>
+          <span class="status status-${statusClass}">${escapeHtml(lid.Status || "Actief")}</span>
         </div>
         <div class="lid-card-grid">
           <div class="lid-card-field">
             <label>Mobiel</label>
-            <span>${lid.Mobiel || "—"}</span>
+            <span>${escapeHtml(lid.Mobiel || "—")}</span>
           </div>
           <div class="lid-card-field">
             <label>E-mail</label>
-            <span>${lid.Email || "—"}</span>
+            <span>${escapeHtml(lid.Email || "—")}</span>
           </div>
           <div class="lid-card-field">
             <label>Lid sinds</label>
-            <span>${lid.LidSinds || "—"}</span>
+            <span>${escapeHtml(lid.LidSinds || "—")}</span>
           </div>
         </div>
+        <div class="card-acties">${wijzigBtn}${verwijderBtn}</div>
       </div>
     `;
   }).join("");
@@ -147,6 +164,113 @@ if (modalBackdrop) {
     if (e.target === modalBackdrop) closeModal();
   });
 }
+
+/* Lid wijzigen */
+const editModalBackdrop = document.getElementById("editModalBackdrop");
+const sluitEditModal = document.getElementById("sluitEditModal");
+const annuleerEditModal = document.getElementById("annuleerEditModal");
+
+function vindLid(id) {
+  return leden.find((l) => String(l.Id) === String(id));
+}
+
+function openWijzigModal(lid) {
+  if (!editModalBackdrop || !lid) return;
+  document.getElementById("edit_lid_id").value = lid.Id;
+  document.getElementById("edit_voornaam").value = lid.Voornaam || "";
+  document.getElementById("edit_tussenvoegsel").value = lid.Tussenvoegsel || "";
+  document.getElementById("edit_achternaam").value = lid.Achternaam || "";
+  document.getElementById("edit_relatienummer").value = lid.Relatienummer || "";
+  document.getElementById("edit_mobiel").value = lid.Mobiel || "";
+  document.getElementById("edit_email").value = lid.Email || "";
+  document.getElementById("edit_opmerking").value = lid.Opmerking || "";
+  editModalBackdrop.classList.add("open");
+}
+
+function closeEditModal() {
+  if (editModalBackdrop) editModalBackdrop.classList.remove("open");
+}
+
+if (sluitEditModal) sluitEditModal.addEventListener("click", closeEditModal);
+if (annuleerEditModal) annuleerEditModal.addEventListener("click", closeEditModal);
+if (editModalBackdrop) {
+  editModalBackdrop.addEventListener("click", (e) => {
+    if (e.target === editModalBackdrop) closeEditModal();
+  });
+}
+
+/* Lid verwijderen */
+const deleteModalBackdrop = document.getElementById("deleteModalBackdrop");
+const deleteModalBericht = document.getElementById("deleteModalBericht");
+const deleteModalFout = document.getElementById("deleteModalFout");
+const deleteAchternaamCheck = document.getElementById("delete_achternaam_check");
+const deleteLidId = document.getElementById("delete_lid_id");
+const deleteBevestigAchternaam = document.getElementById("delete_bevestig_achternaam");
+const deleteLidForm = document.getElementById("deleteLidForm");
+const sluitDeleteModal = document.getElementById("sluitDeleteModal");
+const annuleerVerwijder = document.getElementById("annuleerVerwijder");
+const bevestigVerwijder = document.getElementById("bevestigVerwijder");
+let deleteDoelAchternaam = "";
+
+function openVerwijderModal(lid) {
+  if (!deleteModalBackdrop || !deleteModalBericht || !lid) return;
+  deleteDoelAchternaam = String(lid.Achternaam || "");
+  deleteModalBericht.innerHTML =
+    `Weet u zeker dat u lid <strong>${escapeHtml(lid.Naam || "")}</strong> wilt verwijderen?<br>` +
+    `Vul ter bevestiging exact deze achternaam in: <strong>${escapeHtml(deleteDoelAchternaam || "onbekend")}</strong>.`;
+  if (deleteLidId) deleteLidId.value = lid.Id;
+  if (deleteAchternaamCheck) deleteAchternaamCheck.value = "";
+  if (deleteModalFout) {
+    deleteModalFout.style.display = "none";
+    deleteModalFout.textContent = "";
+  }
+  deleteModalBackdrop.classList.add("open");
+  if (deleteAchternaamCheck) deleteAchternaamCheck.focus();
+}
+
+function closeDeleteModal() {
+  if (deleteModalBackdrop) deleteModalBackdrop.classList.remove("open");
+  if (deleteLidId) deleteLidId.value = "";
+  if (deleteBevestigAchternaam) deleteBevestigAchternaam.value = "";
+  if (deleteAchternaamCheck) deleteAchternaamCheck.value = "";
+  deleteDoelAchternaam = "";
+}
+
+if (sluitDeleteModal) sluitDeleteModal.addEventListener("click", closeDeleteModal);
+if (annuleerVerwijder) annuleerVerwijder.addEventListener("click", closeDeleteModal);
+if (deleteModalBackdrop) {
+  deleteModalBackdrop.addEventListener("click", (e) => {
+    if (e.target === deleteModalBackdrop) closeDeleteModal();
+  });
+}
+if (bevestigVerwijder && deleteLidForm) {
+  bevestigVerwijder.addEventListener("click", () => {
+    const ingevuld = (deleteAchternaamCheck?.value || "").trim();
+    if (ingevuld.toLowerCase() !== deleteDoelAchternaam.trim().toLowerCase()) {
+      if (deleteModalFout) {
+        deleteModalFout.textContent = "Achternaam komt niet overeen. Verwijderen is geannuleerd.";
+        deleteModalFout.style.display = "block";
+      }
+      return;
+    }
+    if (deleteBevestigAchternaam) deleteBevestigAchternaam.value = ingevuld;
+    deleteLidForm.submit();
+  });
+}
+
+document.body.addEventListener("click", (e) => {
+  const wijzigBtn = e.target.closest("[data-actie=wijzig]");
+  if (wijzigBtn) {
+    const lid = vindLid(wijzigBtn.getAttribute("data-id"));
+    if (lid) openWijzigModal(lid);
+    return;
+  }
+  const verwijderBtn = e.target.closest("[data-actie=verwijder]");
+  if (verwijderBtn) {
+    const lid = vindLid(verwijderBtn.getAttribute("data-id"));
+    if (lid) openVerwijderModal(lid);
+  }
+});
 
 /* Flash meldingen auto-hide na 3 seconden */
 ["successAlert", "errorAlert"].forEach((id) => {

@@ -24,8 +24,10 @@ try {
             Voornaam,
             Tussenvoegsel,
             Achternaam,
+            Relatienummer,
             Mobiel,
             Email,
+            Opmerking,
             Datumaangemaakt,
             IsActief
         FROM lid
@@ -39,8 +41,13 @@ try {
         $leden[] = [
             'Id'         => (int) $r['Id'],
             'Naam'       => $naam,
+            'Voornaam'   => $r['Voornaam'],
+            'Tussenvoegsel' => $r['Tussenvoegsel'] ?? '',
+            'Achternaam' => $r['Achternaam'],
+            'Relatienummer' => (int) $r['Relatienummer'],
             'Mobiel'     => $r['Mobiel'] ?? '',
             'Email'      => $r['Email'],
+            'Opmerking'  => $r['Opmerking'] ?? '',
             'LidSinds'   => date('d-m-Y', strtotime($r['Datumaangemaakt'])),
             'Status'     => (int) $r['IsActief'] === 1 ? 'Actief' : 'Inactief',
         ];
