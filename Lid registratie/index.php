@@ -80,6 +80,8 @@ unset($_SESSION['flash_succes_lid'], $_SESSION['flash_fout_lid']);
                         <th>E-mail</th>
                         <th>Lid sinds</th>
                         <th>Status</th>
+                        <th>Wijzigen</th>
+                        <th>Verwijderen</th>
                     </tr>
                 </thead>
                 <tbody id="ledenBody">
@@ -143,6 +145,80 @@ unset($_SESSION['flash_succes_lid'], $_SESSION['flash_fout_lid']);
             </form>
         </div>
     </div>
+
+    <div class="modal-backdrop" id="editModalBackdrop">
+        <div class="modal" role="dialog" aria-modal="true" aria-labelledby="editModalTitel">
+            <div class="modal-header">
+                <h2 id="editModalTitel">Lid wijzigen</h2>
+                <button type="button" class="modal-close" id="sluitEditModal" aria-label="Sluiten">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <form method="POST" action="update_lid.php" id="editLidForm">
+                <input type="hidden" name="lid_id" id="edit_lid_id" value="" />
+                <div class="form-group">
+                    <label for="edit_voornaam">Voornaam <span class="required">*</span></label>
+                    <input type="text" id="edit_voornaam" name="voornaam" required />
+                </div>
+                <div class="form-group">
+                    <label for="edit_tussenvoegsel">Tussenvoegsel</label>
+                    <input type="text" id="edit_tussenvoegsel" name="tussenvoegsel" />
+                </div>
+                <div class="form-group">
+                    <label for="edit_achternaam">Achternaam <span class="required">*</span></label>
+                    <input type="text" id="edit_achternaam" name="achternaam" required />
+                </div>
+                <div class="form-group">
+                    <label for="edit_relatienummer">Relatienummer <span class="required">*</span></label>
+                    <input type="number" id="edit_relatienummer" name="relatienummer" required />
+                </div>
+                <div class="form-group">
+                    <label for="edit_mobiel">Mobiel <span class="required">*</span></label>
+                    <input type="text" id="edit_mobiel" name="mobiel" required />
+                </div>
+                <div class="form-group">
+                    <label for="edit_email">E-mail <span class="required">*</span></label>
+                    <input type="email" id="edit_email" name="email" required />
+                </div>
+                <div class="form-group">
+                    <label for="edit_opmerking">Opmerking</label>
+                    <input type="text" id="edit_opmerking" name="opmerking" />
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn-primary">
+                        <i class="fa-solid fa-floppy-disk"></i> Opslaan
+                    </button>
+                    <button type="button" class="btn-secondary" id="annuleerEditModal">Annuleren</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal-backdrop" id="deleteModalBackdrop">
+        <div class="modal modal-confirm" role="dialog" aria-modal="true" aria-labelledby="deleteModalTitel">
+            <div class="modal-header">
+                <h2 id="deleteModalTitel">Lid verwijderen</h2>
+                <button type="button" class="modal-close" id="sluitDeleteModal" aria-label="Sluiten">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <p class="modal-confirm-text" id="deleteModalBericht"></p>
+            <div class="form-group">
+                <label for="delete_achternaam_check">Vul de achternaam in ter bevestiging <span class="required">*</span></label>
+                <input type="text" id="delete_achternaam_check" placeholder="Achternaam" autocomplete="off" />
+            </div>
+            <p class="modal-confirm-fout" id="deleteModalFout" style="display: none;"></p>
+            <div class="modal-footer modal-footer-confirm">
+                <button type="button" class="btn-danger" id="bevestigVerwijder">Ja, verwijderen</button>
+                <button type="button" class="btn-secondary" id="annuleerVerwijder">Nee</button>
+            </div>
+        </div>
+    </div>
+
+    <form method="POST" action="delete_lid.php" id="deleteLidForm" hidden>
+        <input type="hidden" name="lid_id" id="delete_lid_id" value="" />
+        <input type="hidden" name="bevestig_achternaam" id="delete_bevestig_achternaam" value="" />
+    </form>
 
     <script src="script.js?v=<?= time() ?>"></script>
 </body>
