@@ -5,12 +5,14 @@ const navigatieMenu = document.querySelector(".navbar");
 const sluitKnop = document.querySelector(".close-menu");
 const overlayElement = document.querySelector(".overlay");
 
+// Opent het mobiele navigatiemenu en blokkeert scrollen.
 function openNavigatie() {
   navigatieMenu.classList.add("active");
   overlayElement.style.display = "block";
   document.body.style.overflow = "hidden";
 } 
 
+// Sluit het mobiele navigatiemenu en herstelt scrollen.
 function sluitNavigatie() {
   navigatieMenu.classList.remove("active");
   overlayElement.style.display = "none";
@@ -30,6 +32,7 @@ const cfg = window.accountBeheerConfig || {
 
 let accounts = [];
 
+// Laadt accounts uit de backend en triggert de eerste render.
 async function laadAccounts() {
   try {
     const response = await fetch("get_accounts.php");
@@ -54,6 +57,7 @@ const cardContainer = document.getElementById("cardContainer");
 const emptyState = document.getElementById("emptyState");
 const countLine = document.getElementById("countLine");
 
+// Vult de rol-filter dropdown op basis van aanwezige accounts.
 function vulRollen() {
   rolFilter.innerHTML = '<option value="">Alle rollen</option>';
   const uniek = [...new Set(accounts.map((a) => a.rol).filter(Boolean))].sort();
@@ -65,6 +69,7 @@ function vulRollen() {
   });
 }
 
+// Filtert accounts op zoekterm, rol en inlogstatus.
 function filterAccounts() {
   const zoek = zoekInput.value.toLowerCase();
   const rol = rolFilter.value;
@@ -79,12 +84,14 @@ function filterAccounts() {
   );
 }
 
+// Escapet tekst veilig voor HTML-output.
 function escapeHtml(str) {
   const div = document.createElement("div");
   div.textContent = str == null ? "" : String(str);
   return div.innerHTML;
 }
 
+// Rendert de desktoptabel met accountgegevens en acties.
 function renderTabel(lijst) {
   tabelBody.innerHTML = "";
 
@@ -115,6 +122,7 @@ function renderTabel(lijst) {
   });
 }
 
+// Rendert de mobiele kaarten met accountgegevens en acties.
 function renderCards(lijst) {
   cardContainer.innerHTML = "";
   lijst.forEach((a) => {
@@ -147,6 +155,7 @@ function renderCards(lijst) {
   });
 }
 
+// Voert filteren en hertekenen van tabel/kaarten uit.
 function update() {
   const filtered = filterAccounts();
   countLine.textContent = `${filtered.length} van ${accounts.length} account(s) zichtbaar`;
@@ -194,10 +203,12 @@ const editRolGroepReadonly = document.getElementById("editRolGroepReadonly");
 const editRolSelect = document.getElementById("edit_rol");
 const editRolReadonlyText = document.getElementById("edit_rol_readonly_text");
 
+// Sluit de modal voor account wijzigen.
 function sluitEditVenster() {
   if (editModalBackdrop) editModalBackdrop.classList.remove("open");
 }
 
+// Opent de wijzig-modal en vult het formulier met accountdata.
 function openWijzigModal(account) {
   if (!editModalBackdrop || !account) return;
 
@@ -241,6 +252,7 @@ function openWijzigModal(account) {
   editModalBackdrop.classList.add("open");
 }
 
+// Zoekt een account in het lokale overzicht op id.
 function vindAccount(id) {
   return accounts.find((x) => String(x.id) === String(id));
 }
@@ -273,6 +285,7 @@ const annuleerVerwijder = document.getElementById("annuleerVerwijder");
 const bevestigVerwijder = document.getElementById("bevestigVerwijder");
 let deleteDoelAchternaam = "";
 
+// Sluit de verwijder-modal en reset tijdelijke velden.
 function sluitVerwijderModal() {
   if (deleteModalBackdrop) deleteModalBackdrop.classList.remove("open");
   if (deleteGebruikerId) deleteGebruikerId.value = "";
@@ -285,6 +298,7 @@ function sluitVerwijderModal() {
   deleteDoelAchternaam = "";
 }
 
+// Opent de verwijderbevestiging met verplichte achternaam-check.
 function openVerwijderBevestiging(id, naam) {
   if (!deleteModalBackdrop || !deleteModalBericht || !deleteGebruikerId) return;
   const acc = vindAccount(id);

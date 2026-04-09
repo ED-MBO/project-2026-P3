@@ -1,5 +1,6 @@
 let lessen = [];
 
+// Laadt lessen voor dashboard-overzicht en triggert render.
 async function laadLessen() {
   try {
     const res = await fetch("get_lessen.php");
@@ -16,6 +17,7 @@ async function laadLessen() {
   }
 }
 
+// Filtert lessen op zoekterm en status.
 const filterLessen = () => {
   const zoek = document.getElementById("search")?.value.toLowerCase() || "";
   const status = document.getElementById("statusFilter")?.value || "";
@@ -26,9 +28,11 @@ const filterLessen = () => {
   );
 };
 
+// Bepaalt CSS-klasse voor statusbadges.
 const statusClass = (status) =>
   "status-" + status.toLowerCase().replace(/\s+/g, "-");
 
+// Rendert de tabel met lessen.
 const renderTabel = (lijst) => {
   const body = document.getElementById("lessenBody");
   if (!body) return;
@@ -45,6 +49,7 @@ const renderTabel = (lijst) => {
   });
 };
 
+// Rendert mobiele kaarten met lessen.
 const renderCards = (lijst) => {
   const container = document.getElementById("cardContainer");
   if (!container) return;
@@ -67,6 +72,7 @@ const renderCards = (lijst) => {
   });
 };
 
+// Werkt teller, empty-state en weergaven bij.
 const update = () => {
   const filtered = filterLessen();
   const countLine = document.getElementById("countLine");
@@ -85,6 +91,7 @@ const update = () => {
 });
 
 // Hamburger menu
+// Toont of verbergt het mobiele navigatiemenu.
 const toggleMenu = (show) => {
   document.getElementById("navbar")?.classList.toggle("active", show);
   const overlay = document.getElementById("overlay");

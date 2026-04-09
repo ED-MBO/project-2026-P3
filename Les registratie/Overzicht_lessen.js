@@ -10,6 +10,7 @@ hamburger.addEventListener('click', () => {
   document.body.style.overflow = 'hidden';
 });
 
+// Sluit het mobiele navigatiemenu en herstelt scrollen op de pagina.
 function sluitMenu() {
   navbar.classList.remove('active');
   overlay.style.display = 'none';
@@ -25,6 +26,7 @@ const statusSelect = document.getElementById('statusFilter');
 const countLine    = document.getElementById('countLine');
 const emptyState   = document.getElementById('emptyState');
 
+// Filtert lessen op zoekterm + gekozen veld + status en werkt tabel/cards/teller bij.
 function filterLessen() {
   const zoek   = zoekInput.value.toLowerCase();
   const status = statusSelect.value;
@@ -63,11 +65,13 @@ const openLesModal = document.getElementById('openLesModal');
 const sluitModal = document.getElementById('sluitModal');
 const annuleerModal = document.getElementById('annuleerModal');
 
+// Opent de "nieuwe les" modal en blokkeert achtergrondscroll.
 function openModal() {
   if (modalBackdrop) modalBackdrop.classList.add('open');
   document.body.style.overflow = 'hidden';
 }
 
+// Sluit de "nieuwe les" modal en herstelt achtergrondscroll.
 function closeModal() {
   if (modalBackdrop) modalBackdrop.classList.remove('open');
   document.body.style.overflow = '';
@@ -89,6 +93,7 @@ const sluitEditModal = document.getElementById('sluitEditModal');
 const annuleerEditModal = document.getElementById('annuleerEditModal');
 const editLesForm = document.getElementById('editLesForm');
 
+// Opent de edit-modal en vult alle velden met data van de geselecteerde les.
 function openEditModal(lesData) {
   document.getElementById('editLesId').value = lesData.id;
   document.getElementById('editNaam').value = lesData.naam || '';
@@ -106,11 +111,13 @@ function openEditModal(lesData) {
   document.body.style.overflow = 'hidden';
 }
 
+// Sluit de edit-modal.
 function closeEditModal() {
   if (editModalBackdrop) editModalBackdrop.classList.remove('open');
   document.body.style.overflow = '';
 }
 
+// Leegt alle client-side foutmeldingen en verwijdert invalid styling in de edit-modal.
 function clearEditErrors() {
   const errorFields = ['editNaamError', 'editPrijsError', 'editDatumError', 'editTijdError', 'editMinError', 'editMaxError'];
   errorFields.forEach(id => {
@@ -127,6 +134,7 @@ function clearEditErrors() {
   });
 }
 
+// Toont een foutmelding bij een specifiek veld in de edit-modal.
 function showEditError(fieldId, errorId, message) {
   const field = document.getElementById(fieldId);
   const error = document.getElementById(errorId);
@@ -206,6 +214,7 @@ const deleteError = document.getElementById('deleteError');
 let currentDeleteId = null;
 let currentDeleteAchternaam = null;
 
+// Opent de verwijder-modal en vraagt bevestiging via achternaam.
 function openDeleteModal(id, achternaam) {
   currentDeleteId = id;
   currentDeleteAchternaam = achternaam;
@@ -216,6 +225,7 @@ function openDeleteModal(id, achternaam) {
   document.body.style.overflow = 'hidden';
 }
 
+// Sluit de verwijder-modal en reset tijdelijke delete-state.
 function closeDeleteModal() {
   if (deleteModalBackdrop) deleteModalBackdrop.classList.remove('open');
   document.body.style.overflow = '';
@@ -287,6 +297,7 @@ if (bevestigDeleteBtn) {
 }
 
 // ===================== EDIT & DELETE BUTTON LISTENERS =====================
+// Leest lesdata uit dataset-attributen van een tabelrij of kaart.
 function getLesDataFromElement(el) {
   return {
     id: el.dataset.lesId,
@@ -346,10 +357,12 @@ const lidDropdownToggle = document.getElementById('lidDropdownToggle');
 const lesForm = document.querySelector('#modalBackdrop form');
 const leden = Array.isArray(window.bestaandeLeden) ? window.bestaandeLeden : [];
 
+// Normaliseert tekst voor case-insensitive zoeken.
 function normalize(value) {
   return (value || '').trim().toLowerCase();
 }
 
+// Rendert de suggestielijst voor "lid kiezen" op basis van de ingevoerde zoekterm.
 function renderSuggesties(query) {
   if (!lidSuggesties) return;
   const zoek = normalize(query);
@@ -373,6 +386,7 @@ function renderSuggesties(query) {
   lidSuggesties.classList.add('open');
 }
 
+// Koppelt een gekozen lid aan het formulier (verborgen id + zichtbare naam).
 function selecteerLid(id, naam) {
   if (!lidIdInput || !lidZoekInput) return;
   lidIdInput.value = String(id || '');

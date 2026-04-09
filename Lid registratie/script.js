@@ -1,5 +1,6 @@
 let leden = [];
 
+// Laadt leden uit de backend en start de eerste render.
 async function laadLeden() {
   try {
     const response = await fetch("get_leden.php");
@@ -14,6 +15,7 @@ async function laadLeden() {
   }
 }
 
+// Filtert leden op zoekterm en status.
 function filterLeden() {
   const zoek = document.getElementById("search").value.toLowerCase().trim();
   const status = document.getElementById("statusFilter").value;
@@ -24,12 +26,14 @@ function filterLeden() {
   );
 }
 
+// Escapet tekst veilig voor HTML-output.
 function escapeHtml(str) {
   const div = document.createElement("div");
   div.textContent = str == null ? "" : String(str);
   return div.innerHTML;
 }
 
+// Werkt de teller bovenin bij op basis van huidig filter.
 function updateCount() {
   const countLine = document.getElementById("countLine");
   const filtered = filterLeden();
@@ -40,6 +44,7 @@ function updateCount() {
   }
 }
 
+// Rendert de tabelweergave van leden.
 function renderTabel() {
   const filtered = filterLeden();
   const body = document.getElementById("ledenBody");
@@ -69,6 +74,7 @@ function renderTabel() {
   }).join("");
 }
 
+// Rendert de mobiele kaartweergave van leden.
 function renderCards() {
   const filtered = filterLeden();
   const container = document.getElementById("cardContainer");
@@ -111,6 +117,7 @@ function renderCards() {
   }).join("");
 }
 
+// Past filters toe en ververst alle weergaven.
 function update() {
   const filtered = filterLeden();
   const emptyState = document.getElementById("emptyState");
@@ -127,11 +134,13 @@ document.getElementById("statusFilter").addEventListener("change", update);
 const navbar = document.getElementById("navbar");
 const overlay = document.getElementById("overlay");
 
+// Opent het mobiele navigatiemenu.
 function openMenu() {
   navbar.classList.add("active");
   overlay.style.display = "block";
 }
 
+// Sluit het mobiele navigatiemenu.
 function closeMenu() {
   navbar.classList.remove("active");
   overlay.style.display = "none";
@@ -147,10 +156,12 @@ const openBtn = document.getElementById("openLidModal");
 const sluitModal = document.getElementById("sluitModal");
 const annuleerModal = document.getElementById("annuleerModal");
 
+// Opent de modal voor nieuw lid.
 function openModal() {
   if (modalBackdrop) modalBackdrop.classList.add("open");
 }
 
+// Sluit de modal voor nieuw lid.
 function closeModal() {
   if (modalBackdrop) modalBackdrop.classList.remove("open");
 }
@@ -170,10 +181,12 @@ const editModalBackdrop = document.getElementById("editModalBackdrop");
 const sluitEditModal = document.getElementById("sluitEditModal");
 const annuleerEditModal = document.getElementById("annuleerEditModal");
 
+// Zoekt een lid in de geladen lijst op id.
 function vindLid(id) {
   return leden.find((l) => String(l.Id) === String(id));
 }
 
+// Opent de wijzig-modal en vult velden met liddata.
 function openWijzigModal(lid) {
   if (!editModalBackdrop || !lid) return;
   document.getElementById("edit_lid_id").value = lid.Id;
@@ -187,6 +200,7 @@ function openWijzigModal(lid) {
   editModalBackdrop.classList.add("open");
 }
 
+// Sluit de wijzig-modal van leden.
 function closeEditModal() {
   if (editModalBackdrop) editModalBackdrop.classList.remove("open");
 }
@@ -212,6 +226,7 @@ const annuleerVerwijder = document.getElementById("annuleerVerwijder");
 const bevestigVerwijder = document.getElementById("bevestigVerwijder");
 let deleteDoelAchternaam = "";
 
+// Opent de verwijder-modal met achternaambevestiging.
 function openVerwijderModal(lid) {
   if (!deleteModalBackdrop || !deleteModalBericht || !lid) return;
   deleteDoelAchternaam = String(lid.Achternaam || "");
@@ -228,6 +243,7 @@ function openVerwijderModal(lid) {
   if (deleteAchternaamCheck) deleteAchternaamCheck.focus();
 }
 
+// Sluit de verwijder-modal en reset tijdelijke invoer.
 function closeDeleteModal() {
   if (deleteModalBackdrop) deleteModalBackdrop.classList.remove("open");
   if (deleteLidId) deleteLidId.value = "";

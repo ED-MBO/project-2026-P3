@@ -11,6 +11,7 @@ let jarenGeladen = false;
   select.appendChild(option);
 })(); 
 
+// Toont een foutmelding en verbergt het ledenoverzicht.
 function toonFout(msg) {
   const el = document.getElementById("alertEl");
   const tekst = document.getElementById("alertMsg");
@@ -21,6 +22,7 @@ function toonFout(msg) {
   if (overzicht) overzicht.style.display = "none";
 }
 
+// Verbergt een eventuele foutmelding en toont het overzicht.
 function verbergFout() {
   const el = document.getElementById("alertEl");
   const overzicht = document.getElementById("ledenOverzicht");
@@ -28,6 +30,7 @@ function verbergFout() {
   if (overzicht) overzicht.style.display = "block";
 }
 
+// Vult de KPI-kaarten met actuele ledenstatistieken.
 function vulKaarten(data) {
   const totaalNu = data.totaal.at(-1) || 0;
   const totaalVorig = data.totaal.at(-2) || totaalNu;
@@ -46,6 +49,7 @@ function vulKaarten(data) {
   document.getElementById("cNieuw").textContent = "Nieuw deze periode";
 }
 
+// Bouwt een visuele badge op voor groei/daling per periode.
 function maakGroeiBadge(delta, percentage) {
   const badge = document.createElement("span");
   badge.style.cssText = `
@@ -79,6 +83,7 @@ function maakGroeiBadge(delta, percentage) {
   return badge;
 }
 
+// Rendert de trendtabel met totalen, nieuwe leden en groei.
 function vulTabel(labels, totaal, nieuw) {
   const body = document.getElementById("tabelBody");
   if (!body) return;
@@ -104,6 +109,7 @@ function vulTabel(labels, totaal, nieuw) {
   });
 }
 
+// Tekent de ledenlijn-grafiek met Chart.js.
 function tekenGrafiek(labels, totaal) {
   const canvas = document.getElementById("ledenChart");
   if (!canvas) return;
@@ -165,6 +171,7 @@ function tekenGrafiek(labels, totaal) {
   });
 }
 
+// Vult de jaarkeuze met jaren uit de backend.
 function vulJarenDropdown(jaren) {
   const select = document.getElementById("jaarSelect");
   if (!select) return;
@@ -180,6 +187,7 @@ function vulJarenDropdown(jaren) {
   jarenGeladen = true;
 }
 
+// Haalt ledendata op voor gekozen periode en werkt dashboard bij.
 async function laadLedenData() {
   verbergFout();
 

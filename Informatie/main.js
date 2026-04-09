@@ -45,6 +45,7 @@ hamburger.addEventListener("click", () => {
   document.body.style.overflow = "hidden";
 });
 
+// Sluit het mobiele menu en maakt de pagina weer scrollbaar.
 function closeNav() {
   nav.classList.remove("active");
   overlay.style.display = "none";

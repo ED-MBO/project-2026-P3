@@ -12,6 +12,7 @@ hamburger.addEventListener('click', () => {
   document.body.style.overflow = 'hidden';
 });
 
+// Sluit het mobiele navigatiemenu en herstelt scrollen.
 function sluitMenu() {
   navbar.classList.remove('active');
   overlay.style.display = 'none';
@@ -29,6 +30,7 @@ const statusSelect = document.getElementById('statusFilter');
 const countLine    = document.getElementById('countLine');
 const emptyState   = document.getElementById('emptyState');
 
+// Filtert reserveringen op naam en status en werkt teller/weergaven bij.
 function filterReserveringen() {
   const zoek   = zoekInput.value.toLowerCase();
   const status = statusSelect.value;
@@ -67,11 +69,13 @@ const openBtn     = document.getElementById('openModal');
 const sluitBtn    = document.getElementById('sluitModal');
 const annuleerBtn = document.getElementById('annuleerModal');
 
+// Opent de modal voor nieuwe reservering.
 function openModal() {
   backdrop.classList.add('open');
   document.body.style.overflow = 'hidden';
 }
 
+// Sluit de modal voor nieuwe reservering.
 function sluitModal() {
   backdrop.classList.remove('open');
   document.body.style.overflow = '';
@@ -99,6 +103,7 @@ const sluitEditModal    = document.getElementById('sluitEditModal');
 const annuleerEditModal = document.getElementById('annuleerEditModal');
 const editResForm       = document.getElementById('editResForm');
 
+// Opent de edit-modal en vult velden met geselecteerde reserveringsdata.
 function openEditModal(resData) {
   document.getElementById('editResId').value           = resData.id;
   document.getElementById('editVoornaam').value         = resData.voornaam || '';
@@ -116,11 +121,13 @@ function openEditModal(resData) {
   document.body.style.overflow = 'hidden';
 }
 
+// Sluit de edit-modal van reserveringen.
 function closeEditModal() {
   if (editModalBackdrop) editModalBackdrop.classList.remove('open');
   document.body.style.overflow = '';
 }
 
+// Verwijdert zichtbare validatiefouten in de edit-modal.
 function clearEditErrors() {
   const errorFields = ['editVoornaamError', 'editAchternaamError', 'editNummerError', 'editDatumError', 'editTijdError'];
   errorFields.forEach(id => {
@@ -137,6 +144,7 @@ function clearEditErrors() {
   });
 }
 
+// Toont een validatiefout bij een specifiek veld.
 function showEditError(fieldId, errorId, message) {
   const field = document.getElementById(fieldId);
   const error = document.getElementById(errorId);
@@ -215,6 +223,7 @@ const deleteError          = document.getElementById('deleteError');
 let currentDeleteId   = null;
 let currentDeleteAchternaam = null;
 
+// Opent de verwijder-modal met verplichte achternaam-bevestiging.
 function openDeleteModal(id, achternaam) {
   currentDeleteId   = id;
   currentDeleteAchternaam = achternaam;
@@ -225,6 +234,7 @@ function openDeleteModal(id, achternaam) {
   document.body.style.overflow = 'hidden';
 }
 
+// Sluit de verwijder-modal en reset tijdelijke delete-state.
 function closeDeleteModal() {
   if (deleteModalBackdrop) deleteModalBackdrop.classList.remove('open');
   document.body.style.overflow = '';
@@ -298,6 +308,7 @@ if (bevestigDeleteBtn) {
 /* =========================================
    EDIT & DELETE BUTTON LISTENERS
    ========================================= */
+// Leest reserveringsdata uit data-attributen van rij of kaart.
 function getResDataFromElement(el) {
   return {
     id:             el.dataset.resId,

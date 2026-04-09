@@ -10,6 +10,7 @@ hamburger.addEventListener("click", () => {
   document.body.style.overflow = "hidden";
 });
 
+// Sluit het mobiele navigatiemenu en herstelt scrollen.
 function closeNav() {
   nav.classList.remove("active");
   overlay.style.display = "none";
@@ -23,11 +24,13 @@ overlay.addEventListener("click", closeNav);
 const modal = document.getElementById("modalBackdrop");
 
 if (modal) {
+  // Opent de modal voor medewerker aanmaken/wijzigen.
   function openModal() {
     modal.classList.add("open");
     document.body.style.overflow = "hidden";
   }
 
+  // Sluit de medewerker-modal.
   function closeModal() {
     modal.classList.remove("open");
     document.body.style.overflow = "";
@@ -60,6 +63,7 @@ const deleteError = document.getElementById("deleteError");
 
 let currentDeleteId = null;
 
+// Opent de verwijder-modal met gegevens van de geselecteerde medewerker.
 function openDeleteModal(m) {
   currentDeleteId = m.id;
   deleteModalTekst.innerHTML = `Bent u zeker dat u <strong>${m.naam}</strong> wilt verwijderen? Dit kan niet ongedaan worden gemaakt.`;
@@ -69,6 +73,7 @@ function openDeleteModal(m) {
   document.body.style.overflow = "hidden";
 }
 
+// Sluit de verwijder-modal en wist tijdelijke state.
 function closeDeleteModal() {
   deleteModal.classList.remove("open");
   document.body.style.overflow = "";
@@ -146,6 +151,7 @@ const cardContainer = document.getElementById("cardContainer");
 const emptyState = document.getElementById("emptyState");
 const countLine = document.getElementById("countLine");
 
+// Laadt medewerkers uit de backend en rendert filters/weergaven.
 async function laadMedewerkers() {
   try {
     const res = await fetch("get_medewerkers.php");
@@ -164,6 +170,7 @@ async function laadMedewerkers() {
   }
 }
 
+// Vult de afdelingsfilter op basis van geladen medewerkers.
 function vulAfdelingen() {
   afdelingSelect.innerHTML = '<option value="">Alle afdelingen</option>';
   [...new Set(medewerkers.map((m) => m.afdeling).filter(Boolean))].forEach(
@@ -175,6 +182,7 @@ function vulAfdelingen() {
   );
 }
 
+// Filtert medewerkers op naam, afdeling en status.
 function filterMedewerkers() {
   const zoek = zoekInput.value.toLowerCase();
   const afd = afdelingSelect.value;
@@ -187,10 +195,12 @@ function filterMedewerkers() {
   );
 }
 
+// Bepaalt de CSS-klasse voor een statusbadge.
 function statusClass(s) {
   return "status-" + (s ?? "").toLowerCase().replace(/\s/g, "");
 }
 
+// Rendert de tabel met medewerkers en acties.
 function renderTabel(lijst) {
   tabelBody.innerHTML = "";
   if (!lijst.length) {
@@ -215,6 +225,7 @@ function renderTabel(lijst) {
   });
 }
 
+// Rendert mobiele kaarten met medewerkers en acties.
 function renderCards(lijst) {
   cardContainer.innerHTML = "";
   lijst.forEach((m) => {
@@ -244,6 +255,7 @@ function renderCards(lijst) {
   });
 }
 
+// Koppelt klik-events voor wijzigknoppen.
 function attachEditListeners() {
   document.querySelectorAll(".btn-edit, .btn-edit-card").forEach(btn => {
     btn.addEventListener("click", () => {
@@ -262,6 +274,7 @@ function attachEditListeners() {
   });
 }
 
+// Koppelt klik-events voor verwijderknoppen.
 function attachDeleteListeners() {
   document.querySelectorAll(".btn-delete, .btn-delete-card").forEach(btn => {
     btn.addEventListener("click", () => {
@@ -271,12 +284,14 @@ function attachDeleteListeners() {
   });
 }
 
+// Start het verwijderproces voor een medewerker.
 async function verwijderMedewerker(id) {
   const m = medewerkers.find((x) => x.id == id);
   if (!m) return;
   openDeleteModal(m);
 }
 
+// Past filters toe en ververst tabel/kaarten plus listeners.
 function update() {
   const filtered = filterMedewerkers();
   countLine.textContent = `${filtered.length} van ${medewerkers.length} collega's zichtbaar`;
