@@ -198,6 +198,7 @@ if (modalBackdrop) {
 const editModalBackdrop = document.getElementById("editModalBackdrop");
 const sluitEditModal = document.getElementById("sluitEditModal");
 const annuleerEditModal = document.getElementById("annuleerEditModal");
+const editAccountForm = document.getElementById("editAccountForm");
 const editRolGroepSelect = document.getElementById("editRolGroepSelect");
 const editRolGroepReadonly = document.getElementById("editRolGroepReadonly");
 const editRolSelect = document.getElementById("edit_rol");
@@ -360,6 +361,59 @@ if (editModalBackdrop) {
   editModalBackdrop.addEventListener("click", (e) => {
     if (e.target === editModalBackdrop) sluitEditVenster();
   });
+}
+
+// Laat duidelijke feedback zien als opslaan traag of mislukt aanvoelt.
+if (editAccountForm) {
+  const submitBtn = editAccountForm.querySelector('button[type="submit"]');
+  const cancelBtn = document.getElementById("annuleerEditModal");
+  const origineleTekst = submitBtn ? submitBtn.innerHTML : "";
+  let submitBezig = false;
+  let slowTimer = null;
+
+  editAccountForm.addEventListener("submit", () => {
+    if (!submitBtn || submitBezig) return;
+    submitBezig = true;
+    submitBtn.disabled = true;
+    if (cancelBtn) cancelBtn.disabled = true;
+    submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Opslaan...';
+
+    slowTimer = window.setTimeout(() => {
+      let slowNotice = document.getElementById("editSlowNotice");
+      if (!slowNotice) {
+        slowNotice = document.createElement("p");
+        slowNotice.id = "editSlowNotice";
+        slowNotice.className = "form-slow-notice";
+        const footer = editAccountForm.querySelector(".modal-footer");
+        if (footer) footer.insertAdjacentElement("beforebegin", slowNotice);
+      }
+      slowNotice.textContent =
+        "Opslaan duurt langer dan verwacht. Controleer uw verbinding en wacht even.";
+      slowNotice.style.display = "block";
+    }, 3000);
+  });
+
+  const resetEditSubmitState = () => {
+    submitBezig = false;
+    if (slowTimer) {
+      window.clearTimeout(slowTimer);
+      slowTimer = null;
+    }
+    const slowNotice = document.getElementById("editSlowNotice");
+    if (slowNotice) slowNotice.style.display = "none";
+    if (submitBtn) {
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = origineleTekst;
+    }
+    if (cancelBtn) cancelBtn.disabled = false;
+  };
+
+  if (annuleerEditModal) {
+    annuleerEditModal.addEventListener("click", resetEditSubmitState);
+  }
+  if (sluitEditModal) {
+    sluitEditModal.addEventListener("click", resetEditSubmitState);
+  }
 }
 
 laadAccounts();

@@ -350,6 +350,13 @@ tr:hover {
   outline: none;
   border-color: var(--color-accent);
 }
+
+.form-slow-notice {
+  display: none;
+  margin: 0 0 10px;
+  font-size: 12px;
+  color: #facc15;
+}
 .required {
   color: #f87171;
 }

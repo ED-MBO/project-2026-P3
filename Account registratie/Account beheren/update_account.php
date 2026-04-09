@@ -4,39 +4,46 @@ if (empty($_SESSION['ingelogd']) || empty($_SESSION['gebruiker_id'])) {
     header('Location: ../../login.php');
     exit();
 }
+if (!defined('DB_SILENT_FAIL')) {
+    define('DB_SILENT_FAIL', true);
+}
 require_once __DIR__ . '/../../config.php';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     header('Location: index.php');
     exit();
 }
-
-$stmtRol = $pdo->prepare("SELECT Naam FROM rol WHERE GebruikerId = ? AND IsActief = 1 LIMIT 1");
-$stmtRol->execute([$_SESSION['gebruiker_id']]);
-$mijnRol = $stmtRol->fetchColumn() ?: 'Lid';
-
-// controleert of je rechten hebt om rollen te wijzigen
-if (!in_array($mijnRol, ['Medewerker', 'Administrator'], true)) {
-    $_SESSION['flash_fout_account'] = 'U heeft geen rechten om accounts te wijzigen.';
+if (!$pdo) {
+    $_SESSION['flash_fout_account'] = 'Opslaan mislukt: er is geen verbinding met de database. Probeer het zo opnieuw.';
     header('Location: index.php');
     exit();
 }
-
-$id             = isset($_POST['gebruiker_id']) ? (int) $_POST['gebruiker_id'] : 0;
-$voornaam       = trim($_POST['voornaam'] ?? '');
-$tussenvoegsel  = trim($_POST['tussenvoegsel'] ?? '');
-$achternaam     = trim($_POST['achternaam'] ?? '');
-$gebruikersnaam = trim($_POST['gebruikersnaam'] ?? '');
-$wachtwoord     = $_POST['wachtwoord'] ?? '';
-$rolGepost      = trim($_POST['rol'] ?? '');
-
-if ($id <= 0 || $voornaam === '' || $achternaam === '' || $gebruikersnaam === '') {
-    $_SESSION['flash_fout_account'] = 'Vul alle verplichte velden in.';
-    header('Location: index.php');
-    exit();
-}
-
 try {
+    $stmtRol = $pdo->prepare("SELECT Naam FROM rol WHERE GebruikerId = ? AND IsActief = 1 LIMIT 1");
+    $stmtRol->execute([$_SESSION['gebruiker_id']]);
+    $mijnRol = $stmtRol->fetchColumn() ?: 'Lid';
+
+    // controleert of je rechten hebt om rollen te wijzigen
+    if (!in_array($mijnRol, ['Medewerker', 'Administrator'], true)) {
+        $_SESSION['flash_fout_account'] = 'U heeft geen rechten om accounts te wijzigen.';
+        header('Location: index.php');
+        exit();
+    }
+
+    $id             = isset($_POST['gebruiker_id']) ? (int) $_POST['gebruiker_id'] : 0;
+    $voornaam       = trim($_POST['voornaam'] ?? '');
+    $tussenvoegsel  = trim($_POST['tussenvoegsel'] ?? '');
+    $achternaam     = trim($_POST['achternaam'] ?? '');
+    $gebruikersnaam = trim($_POST['gebruikersnaam'] ?? '');
+    $wachtwoord     = $_POST['wachtwoord'] ?? '';
+    $rolGepost      = trim($_POST['rol'] ?? '');
+
+    if ($id <= 0 || $voornaam === '' || $achternaam === '' || $gebruikersnaam === '') {
+        $_SESSION['flash_fout_account'] = 'Vul alle verplichte velden in.';
+        header('Location: index.php');
+        exit();
+    }
+
     $stmtDoel = $pdo->prepare("
         SELECT g.Id,
                (SELECT r.Naam FROM rol r WHERE r.GebruikerId = g.Id AND r.IsActief = 1 LIMIT 1) AS HuidigeRol
@@ -136,10 +143,10 @@ try {
 
     $_SESSION['flash_succes_account'] = 'Account is bijgewerkt.';
 } catch (PDOException $e) {
-    if ($pdo->inTransaction()) {
+    if ($pdo instanceof PDO && $pdo->inTransaction()) {
         $pdo->rollBack();
     }
-    $_SESSION['flash_fout_account'] = 'Er ging iets mis bij het opslaan.';
+    $_SESSION['flash_fout_account'] = 'Wijzigen mislukt: database is tijdelijk niet beschikbaar. Probeer het opnieuw.';
 }
 
 
