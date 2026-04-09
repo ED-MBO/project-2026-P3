@@ -15,6 +15,7 @@ $stmtRol = $pdo->prepare("SELECT Naam FROM rol WHERE GebruikerId = ? AND IsActie
 $stmtRol->execute([$_SESSION['gebruiker_id']]);
 $mijnRol = $stmtRol->fetchColumn() ?: 'Lid';
 
+// controleert of je rechten hebt om rollen te wijzigen
 if (!in_array($mijnRol, ['Medewerker', 'Administrator'], true)) {
     $_SESSION['flash_fout_account'] = 'U heeft geen rechten om accounts te wijzigen.';
     header('Location: index.php');
@@ -140,6 +141,7 @@ try {
     }
     $_SESSION['flash_fout_account'] = 'Er ging iets mis bij het opslaan.';
 }
+
 
 header('Location: index.php');
 exit();

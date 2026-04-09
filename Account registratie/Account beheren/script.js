@@ -263,27 +263,62 @@ document.body.addEventListener("click", (e) => {
 
 const deleteModalBackdrop = document.getElementById("deleteModalBackdrop");
 const deleteModalBericht = document.getElementById("deleteModalBericht");
+const deleteModalFout = document.getElementById("deleteModalFout");
+const deleteAchternaamCheck = document.getElementById("delete_achternaam_check");
 const deleteGebruikerId = document.getElementById("delete_gebruiker_id");
+const deleteBevestigAchternaam = document.getElementById("delete_bevestig_achternaam");
 const deleteAccountForm = document.getElementById("deleteAccountForm");
 const sluitDeleteModal = document.getElementById("sluitDeleteModal");
 const annuleerVerwijder = document.getElementById("annuleerVerwijder");
 const bevestigVerwijder = document.getElementById("bevestigVerwijder");
+let deleteDoelAchternaam = "";
 
 function sluitVerwijderModal() {
   if (deleteModalBackdrop) deleteModalBackdrop.classList.remove("open");
   if (deleteGebruikerId) deleteGebruikerId.value = "";
+  if (deleteBevestigAchternaam) deleteBevestigAchternaam.value = "";
+  if (deleteAchternaamCheck) deleteAchternaamCheck.value = "";
+  if (deleteModalFout) {
+    deleteModalFout.style.display = "none";
+    deleteModalFout.textContent = "";
+  }
+  deleteDoelAchternaam = "";
 }
 
 function openVerwijderBevestiging(id, naam) {
   if (!deleteModalBackdrop || !deleteModalBericht || !deleteGebruikerId) return;
-  deleteModalBericht.textContent =
-    `Weet u zeker dat u het account van ${naam} wilt verwijderen? Dit kan niet ongedaan worden gemaakt.`;
+  const acc = vindAccount(id);
+  deleteDoelAchternaam = acc?.achternaam ? String(acc.achternaam) : "";
+  const veiligeNaam = escapeHtml(naam);
+  const veiligeAchternaam = escapeHtml(deleteDoelAchternaam || "onbekend");
+  deleteModalBericht.innerHTML =
+    `Weet u zeker dat u het account van <strong>${veiligeNaam}</strong> wilt verwijderen?<br>` +
+    `Vul ter bevestiging exact deze achternaam in: <strong>${veiligeAchternaam}</strong>.`;
   deleteGebruikerId.value = id;
+  if (deleteAchternaamCheck) deleteAchternaamCheck.value = "";
+  if (deleteModalFout) {
+    deleteModalFout.style.display = "none";
+    deleteModalFout.textContent = "";
+  }
   deleteModalBackdrop.classList.add("open");
+  if (deleteAchternaamCheck) deleteAchternaamCheck.focus();
 }
 
 if (bevestigVerwijder && deleteAccountForm) {
   bevestigVerwijder.addEventListener("click", () => {
+    if (!deleteGebruikerId || !deleteGebruikerId.value) return;
+    const ingevuld = deleteAchternaamCheck ? deleteAchternaamCheck.value.trim() : "";
+    const verwacht = deleteDoelAchternaam.trim();
+    if (ingevuld.toLowerCase() !== verwacht.toLowerCase()) {
+      if (deleteModalFout) {
+        deleteModalFout.textContent = "Achternaam komt niet overeen. Verwijderen is geannuleerd.";
+        deleteModalFout.style.display = "block";
+      }
+      return;
+    }
+    if (deleteBevestigAchternaam) {
+      deleteBevestigAchternaam.value = ingevuld;
+    }
     if (deleteGebruikerId && deleteGebruikerId.value) {
       deleteAccountForm.submit();
     }

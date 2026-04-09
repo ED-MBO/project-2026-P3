@@ -22,8 +22,14 @@ if (!in_array($mijnRol, ['Medewerker', 'Administrator'], true)) {
 }
 
 $id = isset($_POST['gebruiker_id']) ? (int) $_POST['gebruiker_id'] : 0;
+$bevestigAchternaam = trim($_POST['bevestig_achternaam'] ?? '');
 if ($id <= 0) {
     $_SESSION['flash_fout_account'] = 'Ongeldig account.';
+    header('Location: index.php');
+    exit();
+}
+if ($bevestigAchternaam === '') {
+    $_SESSION['flash_fout_account'] = 'Vul de achternaam in om verwijderen te bevestigen.';
     header('Location: index.php');
     exit();
 }
@@ -35,10 +41,17 @@ if ($id === (int) $_SESSION['gebruiker_id']) {
 }
 
 try {
-    $check = $pdo->prepare("SELECT Id FROM gebruiker WHERE Id = ? AND IsActief = 1 LIMIT 1");
+    $check = $pdo->prepare("SELECT Id, Achternaam FROM gebruiker WHERE Id = ? AND IsActief = 1 LIMIT 1");
     $check->execute([$id]);
-    if (!$check->fetch()) {
+    $teVerwijderen = $check->fetch(PDO::FETCH_ASSOC);
+    if (!$teVerwijderen) {
         $_SESSION['flash_fout_account'] = 'Account niet gevonden of al verwijderd.';
+        header('Location: index.php');
+        exit();
+    }
+    $achternaamDb = trim((string) ($teVerwijderen['Achternaam'] ?? ''));
+    if (strcasecmp($bevestigAchternaam, $achternaamDb) !== 0) {
+        $_SESSION['flash_fout_account'] = 'Achternaam komt niet overeen. Account is niet verwijderd.';
         header('Location: index.php');
         exit();
     }

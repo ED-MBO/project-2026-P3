@@ -34,7 +34,7 @@ unset($_SESSION['flash_succes'], $_SESSION['flash_fout']);
     <title>Medewerker Beheren</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
-    <link rel="stylesheet" href="/Medewerker registratie/Medewerker beheren/medewerker-beheren.css" />
+    <link rel="stylesheet" href="/Medewerker registratie/Medewerker beheren/medewerker-beheren.css?v=<?= time() ?>" />
 </head>
 
 <body>
@@ -50,6 +50,11 @@ unset($_SESSION['flash_succes'], $_SESSION['flash_fout']);
             <button class="btn-primary" id="openModal">
                 <i class="fa-solid fa-plus"></i> Nieuwe medewerker
             </button>
+        </div>
+
+        <div class="alert-success" id="jsSuccessAlert" style="display: none; margin-top: 16px;">
+            <i class="fa-solid fa-circle-check"></i>
+            <span id="jsSuccessMessage"></span>
         </div>
 
         <?php if ($flashSucces): ?>
@@ -86,6 +91,8 @@ unset($_SESSION['flash_succes'], $_SESSION['flash_fout']);
                     <th>Naam</th>
                     <th>Afdeling</th>
                     <th>Status</th>
+                    <th>Wijzigen</th>
+                    <th>Verwijderen</th>
                 </tr>
             </thead>
             <tbody id="body"></tbody>
@@ -107,7 +114,8 @@ unset($_SESSION['flash_succes'], $_SESSION['flash_fout']);
                     <i class="fa-solid fa-xmark"></i>
                 </button>
             </div>
-            <form method="POST" action="add_medewerker.php">
+            <form method="POST" action="add_medewerker.php" id="medewerkerForm">
+                <input type="hidden" id="medewerkerId" name="medewerkerId" />
                 <div class="form-group">
                     <label for="voornaam">Voornaam <span class="required">*</span></label>
                     <input type="text" id="voornaam" name="voornaam" placeholder="Bijv. Jan" required />
@@ -129,6 +137,34 @@ unset($_SESSION['flash_succes'], $_SESSION['flash_fout']);
                     </button>
                 </div>
             </form>
+        </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div class="modal-backdrop" id="deleteModalBackdrop">
+        <div class="modal" role="dialog" aria-modal="true" aria-labelledby="deleteModalTitel">
+            <div class="modal-header">
+                <h2 id="deleteModalTitel">Medewerker verwijderen</h2>
+                <button class="modal-close" id="sluitDeleteModal" aria-label="Sluiten">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p id="deleteModalTekst" style="font-size: 14px; margin-bottom: 20px; color: var(--color-text-primary);"></p>
+                <div class="form-group">
+                    <label for="confirmAchternaam">Typ de achternaam ter bevestiging <span class="required">*</span></label>
+                    <input type="text" id="confirmAchternaam" placeholder="Achternaam invullen..." required />
+                    <div id="deleteError" style="color: #f87171; font-size: 12px; margin-top: 5px; display: none;"></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn-primary btn-danger" id="bevestigDelete">
+                    <i class="fa-solid fa-trash-can"></i> Definitief verwijderen
+                </button>
+                <button type="button" class="btn-secondary" id="annuleerDeleteModal">
+                    Annuleren
+                </button>
+            </div>
         </div>
     </div>
 

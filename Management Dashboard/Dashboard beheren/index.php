@@ -141,6 +141,51 @@ if (!$isMedewerkerOfAdmin) {
                 </table>
             </div>
         </div>
+
+        <hr class="divider" />
+
+        <!-- reserveringen -->
+        <h1>Aantal Reserveringen per Periode</h1>
+        <p class="sub">
+            Inzicht in het verloop van reserveringen over tijd.
+        </p>
+
+        <div id="alertReserveringen" class="alert">
+            <i class="fa-solid fa-circle-exclamation"></i>
+            <span id="alertMsgReserveringen">Het overzicht kon niet geladen worden.</span>
+        </div>
+
+        <div id="reserveringenOverzicht">
+            <div class="controls">
+                <label for="periodeTypeRes">Periode:</label>
+                <select id="periodeTypeRes">
+                    <option value="maand">Per maand</option>
+                    <option value="jaar">Per jaar</option>
+                </select>
+                <label id="jaarLabelRes" for="jaarSelectRes">Jaar:</label>
+                <select id="jaarSelectRes"></select>
+            </div>
+
+            <div class="chart-card">
+                <div class="chart-title" id="chartTitleRes">Aantal reserveringen per maand</div>
+                <div class="chart-sub">Totaal aantal reserveringen per periode</div>
+                <div class="chart-wrapper">
+                    <canvas id="reserveringenChart" height="260"></canvas>
+                </div>
+            </div>
+
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Periode</th>
+                            <th>Aantal reserveringen</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabelBodyRes"></tbody>
+                </table>
+            </div>
+        </div>
     </main>
 
     <?php require_once __DIR__ . '/../../includes/footer.php'; ?>
@@ -148,6 +193,7 @@ if (!$isMedewerkerOfAdmin) {
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
     <script src="script.js"></script>
     <script src="leden.js"></script>
+    <script src="reserveringen.js"></script>
 </body>
 
 </html>

@@ -433,7 +433,18 @@ tr:hover {
   font-size: 14px;
   color: var(--color-text-muted);
   line-height: 1.5;
-  margin-bottom: 0;
+  margin-bottom: 12px;
+}
+
+.modal-confirm .modal-confirm-text strong {
+  color: var(--color-text-primary);
+  font-weight: 700;
+}
+
+.modal-confirm-fout {
+  margin-top: 10px;
+  font-size: 13px;
+  color: #f87171;
 }
 
 .modal-footer-confirm {

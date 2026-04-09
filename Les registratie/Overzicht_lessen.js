@@ -55,7 +55,7 @@ function filterLessen() {
 zoekInput.addEventListener('input', filterLessen);
 statusSelect.addEventListener('change', filterLessen);
 
-// Les-modal openen/sluiten
+// ===================== MODAL: NIEUWE LES =====================
 const modalBackdrop = document.getElementById('modalBackdrop');
 const openLesModal = document.getElementById('openLesModal');
 const sluitModal = document.getElementById('sluitModal');
@@ -63,10 +63,12 @@ const annuleerModal = document.getElementById('annuleerModal');
 
 function openModal() {
   if (modalBackdrop) modalBackdrop.classList.add('open');
+  document.body.style.overflow = 'hidden';
 }
 
 function closeModal() {
   if (modalBackdrop) modalBackdrop.classList.remove('open');
+  document.body.style.overflow = '';
 }
 
 if (openLesModal) openLesModal.addEventListener('click', openModal);
@@ -79,7 +81,262 @@ if (modalBackdrop) {
   });
 }
 
-// Lid zoeken met eigen dropdown
+// ===================== MODAL: LES WIJZIGEN =====================
+const editModalBackdrop = document.getElementById('editModalBackdrop');
+const sluitEditModal = document.getElementById('sluitEditModal');
+const annuleerEditModal = document.getElementById('annuleerEditModal');
+const editLesForm = document.getElementById('editLesForm');
+
+function openEditModal(lesData) {
+  document.getElementById('editLesId').value = lesData.id;
+  document.getElementById('editNaam').value = lesData.naam || '';
+  document.getElementById('editPrijs').value = lesData.prijs || '';
+  document.getElementById('editDatum').value = lesData.datum || '';
+  document.getElementById('editTijd').value = lesData.tijd || '';
+  document.getElementById('editMinPersonen').value = lesData.min || '3';
+  document.getElementById('editMaxPersonen').value = lesData.max || '9';
+  document.getElementById('editBeschikbaarheid').value = lesData.beschikbaarheid || 'Ingepland';
+
+  // Reset alle validatiefouten
+  clearEditErrors();
+
+  if (editModalBackdrop) editModalBackdrop.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeEditModal() {
+  if (editModalBackdrop) editModalBackdrop.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function clearEditErrors() {
+  const errorFields = ['editNaamError', 'editPrijsError', 'editDatumError', 'editTijdError', 'editMinError', 'editMaxError'];
+  errorFields.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) {
+      el.style.display = 'none';
+      el.textContent = '';
+    }
+  });
+  // reset invalid classes
+  ['editNaam', 'editPrijs', 'editDatum', 'editTijd', 'editMinPersonen', 'editMaxPersonen'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.classList.remove('invalid');
+  });
+}
+
+function showEditError(fieldId, errorId, message) {
+  const field = document.getElementById(fieldId);
+  const error = document.getElementById(errorId);
+  if (field) field.classList.add('invalid');
+  if (error) {
+    error.textContent = message;
+    error.style.display = 'block';
+  }
+}
+
+// Client-side validatie voor het edit formulier
+if (editLesForm) {
+  editLesForm.addEventListener('submit', (e) => {
+    clearEditErrors();
+    let heeftFouten = false;
+
+    const naam = document.getElementById('editNaam').value.trim();
+    const prijs = document.getElementById('editPrijs').value.trim();
+    const datum = document.getElementById('editDatum').value.trim();
+    const tijd = document.getElementById('editTijd').value.trim();
+    const minP = document.getElementById('editMinPersonen').value.trim();
+    const maxP = document.getElementById('editMaxPersonen').value.trim();
+
+    if (!naam) {
+      showEditError('editNaam', 'editNaamError', 'Lesnaam is verplicht.');
+      heeftFouten = true;
+    }
+    if (!prijs || isNaN(prijs) || parseFloat(prijs) < 0) {
+      showEditError('editPrijs', 'editPrijsError', 'Een geldige prijs is verplicht.');
+      heeftFouten = true;
+    }
+    if (!datum) {
+      showEditError('editDatum', 'editDatumError', 'Datum is verplicht.');
+      heeftFouten = true;
+    }
+    if (!tijd) {
+      showEditError('editTijd', 'editTijdError', 'Tijd is verplicht.');
+      heeftFouten = true;
+    }
+    if (!minP || isNaN(minP) || parseInt(minP) < 1) {
+      showEditError('editMinPersonen', 'editMinError', 'Min. personen is verplicht (minimaal 1).');
+      heeftFouten = true;
+    }
+    if (!maxP || isNaN(maxP) || parseInt(maxP) < 1) {
+      showEditError('editMaxPersonen', 'editMaxError', 'Max. personen is verplicht (minimaal 1).');
+      heeftFouten = true;
+    }
+    if (minP && maxP && !isNaN(minP) && !isNaN(maxP) && parseInt(minP) > parseInt(maxP)) {
+      showEditError('editMinPersonen', 'editMinError', 'Minimum mag niet groter zijn dan maximum.');
+      heeftFouten = true;
+    }
+
+    if (heeftFouten) {
+      e.preventDefault();
+    }
+  });
+}
+
+if (sluitEditModal) sluitEditModal.addEventListener('click', closeEditModal);
+if (annuleerEditModal) annuleerEditModal.addEventListener('click', closeEditModal);
+
+if (editModalBackdrop) {
+  editModalBackdrop.addEventListener('click', (e) => {
+    if (e.target === editModalBackdrop) closeEditModal();
+  });
+}
+
+// ===================== MODAL: LES VERWIJDEREN =====================
+const deleteModalBackdrop = document.getElementById('deleteModalBackdrop');
+const sluitDeleteModal = document.getElementById('sluitDeleteModal');
+const annuleerDeleteModal = document.getElementById('annuleerDeleteModal');
+const bevestigDeleteBtn = document.getElementById('bevestigDelete');
+const deleteModalTekst = document.getElementById('deleteModalTekst');
+const confirmLesnaamInput = document.getElementById('confirmLesnaam');
+const deleteError = document.getElementById('deleteError');
+
+let currentDeleteId = null;
+let currentDeleteNaam = null;
+
+function openDeleteModal(id, naam) {
+  currentDeleteId = id;
+  currentDeleteNaam = naam;
+  deleteModalTekst.innerHTML = `Bent u zeker dat u de les <strong>${naam}</strong> wilt verwijderen? Dit kan niet ongedaan worden gemaakt.`;
+  confirmLesnaamInput.value = '';
+  deleteError.style.display = 'none';
+  if (deleteModalBackdrop) deleteModalBackdrop.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeDeleteModal() {
+  if (deleteModalBackdrop) deleteModalBackdrop.classList.remove('open');
+  document.body.style.overflow = '';
+  currentDeleteId = null;
+  currentDeleteNaam = null;
+}
+
+if (sluitDeleteModal) sluitDeleteModal.addEventListener('click', closeDeleteModal);
+if (annuleerDeleteModal) annuleerDeleteModal.addEventListener('click', closeDeleteModal);
+
+if (deleteModalBackdrop) {
+  deleteModalBackdrop.addEventListener('click', (e) => {
+    if (e.target === deleteModalBackdrop) closeDeleteModal();
+  });
+}
+
+if (bevestigDeleteBtn) {
+  bevestigDeleteBtn.addEventListener('click', async () => {
+    if (!currentDeleteId || !currentDeleteNaam) return;
+
+    const invoer = confirmLesnaamInput.value.trim();
+
+    if (invoer.toLowerCase() !== currentDeleteNaam.toLowerCase()) {
+      deleteError.textContent = 'De ingevoerde lesnaam komt niet overeen. De les is NIET verwijderd.';
+      deleteError.style.display = 'block';
+      return;
+    }
+
+    try {
+      const res = await fetch('delete_les.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: currentDeleteId, lesnaam: invoer })
+      });
+
+      const data = await res.json();
+
+      if (data.success) {
+        // Verwijder de rij en card uit de DOM
+        const rij = document.querySelector(`#tabelBody tr[data-les-id="${currentDeleteId}"]`);
+        if (rij) rij.remove();
+
+        const card = document.querySelector(`#cardContainer .les-card[data-les-id="${currentDeleteId}"]`);
+        if (card) card.remove();
+
+        closeDeleteModal();
+
+        // Toon succesbericht
+        const jsAlert = document.getElementById('jsSuccessAlert');
+        const jsMsg = document.getElementById('jsSuccessMessage');
+        if (jsAlert && jsMsg) {
+          jsMsg.textContent = 'Les succesvol verwijderd!';
+          jsAlert.style.display = 'flex';
+          setTimeout(() => (jsAlert.style.display = 'none'), 3000);
+        }
+
+        // Update counter
+        filterLessen();
+      } else {
+        deleteError.textContent = data.message || 'Er is een fout opgetreden.';
+        deleteError.style.display = 'block';
+      }
+    } catch (err) {
+      console.error(err);
+      deleteError.textContent = 'Server fout bij verwijderen.';
+      deleteError.style.display = 'block';
+    }
+  });
+}
+
+// ===================== EDIT & DELETE BUTTON LISTENERS =====================
+function getLesDataFromElement(el) {
+  return {
+    id: el.dataset.lesId,
+    naam: el.dataset.lesNaam,
+    prijs: el.dataset.lesPrijs,
+    datum: el.dataset.lesDatum,
+    tijd: el.dataset.lesTijd,
+    min: el.dataset.lesMin,
+    max: el.dataset.lesMax,
+    beschikbaarheid: el.dataset.lesBeschikbaarheid
+  };
+}
+
+// Edit knoppen - tabel
+document.querySelectorAll('.btn-edit').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const row = btn.closest('tr');
+    if (row) openEditModal(getLesDataFromElement(row));
+  });
+});
+
+// Edit knoppen - cards
+document.querySelectorAll('.btn-edit-card').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const card = btn.closest('.les-card');
+    if (card) openEditModal(getLesDataFromElement(card));
+  });
+});
+
+// Delete knoppen - tabel
+document.querySelectorAll('.btn-delete').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const row = btn.closest('tr');
+    if (row) openDeleteModal(row.dataset.lesId, row.dataset.lesNaam);
+  });
+});
+
+// Delete knoppen - cards
+document.querySelectorAll('.btn-delete-card').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const card = btn.closest('.les-card');
+    if (card) openDeleteModal(card.dataset.lesId, card.dataset.lesNaam);
+  });
+});
+
+// ===================== FLASH BERICHTEN AUTO-HIDE =====================
+['successAlert', 'errorAlert'].forEach(id => {
+  const el = document.getElementById(id);
+  if (el) setTimeout(() => (el.style.display = 'none'), 3000);
+});
+
+// ===================== LID ZOEKEN (voor nieuwe les modal) =====================
 const lidZoekInput = document.getElementById('lid_zoek');
 const lidIdInput = document.getElementById('lid_id');
 const lidSuggesties = document.getElementById('lidSuggesties');

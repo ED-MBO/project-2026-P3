@@ -21,6 +21,11 @@ if (!$isMedewerkerOfAdmin) {
     exit();
 }
 
+// Flash berichten uitlezen en direct wissen
+$flashSucces = $_SESSION['flash_succes'] ?? null;
+$flashFout   = $_SESSION['flash_fout']   ?? null;
+unset($_SESSION['flash_succes'], $_SESSION['flash_fout']);
+
 // --- Verwerk formulier POST ---
 $modalFouten = [];
 $modalSucces = false;
@@ -67,7 +72,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nieuweReservering']))
 }
 
 // --- Haal reserveringen op (opnieuw zodat nieuwe direct zichtbaar is) ---
-$sql = "SELECT Voornaam, Tussenvoegsel, Achternaam, Datum, Tijd, Reserveringstatus
+$sql = "SELECT Id, Voornaam, Tussenvoegsel, Achternaam, Nummer, Datum, Tijd, Reserveringstatus
         FROM reservering
         WHERE IsActief = 1
         ORDER BY Datum, Tijd";
@@ -105,10 +110,23 @@ $aantalReserveringen = count($reserveringen);
             </button>
         </div>
 
-        <?php if ($modalSucces): ?>
-        <div class="alert-success">
+        <!-- Flash berichten -->
+        <div class="alert-success" id="jsSuccessAlert" style="display: none; margin-top: 16px;">
             <i class="fa-solid fa-circle-check"></i>
-            Reservering is succesvol aangemaakt en toegevoegd aan de tabel.
+            <span id="jsSuccessMessage"></span>
+        </div>
+
+        <?php if ($flashSucces || $modalSucces): ?>
+        <div class="alert-success" id="successAlert">
+            <i class="fa-solid fa-circle-check"></i>
+            <?= htmlspecialchars($flashSucces ?: 'Reservering is succesvol aangemaakt en toegevoegd aan de tabel.') ?>
+        </div>
+        <?php endif; ?>
+
+        <?php if ($flashFout): ?>
+        <div class="alert-error" id="errorAlert">
+            <i class="fa-solid fa-circle-xmark"></i>
+            <?= htmlspecialchars($flashFout) ?>
         </div>
         <?php endif; ?>
 
@@ -125,9 +143,12 @@ $aantalReserveringen = count($reserveringen);
             <thead>
                 <tr>
                     <th>Naam lid</th>
+                    <th>Nummer</th>
                     <th>Datum</th>
                     <th>Tijd</th>
                     <th>Status</th>
+                    <th>Wijzigen</th>
+                    <th>Verwijderen</th>
                 </tr>
             </thead>
             <tbody id="tabelBody">
@@ -142,11 +163,29 @@ $aantalReserveringen = count($reserveringen);
         $statusClass = 'status-' . strtolower(str_replace(' ', '', $status));
       ?>
                 <tr data-naam="<?= htmlspecialchars(strtolower($naam)) ?>"
-                    data-status="<?= htmlspecialchars($status) ?>">
+                    data-status="<?= htmlspecialchars($status) ?>"
+                    data-res-id="<?= (int)($res['Id'] ?? 0) ?>"
+                    data-res-voornaam="<?= htmlspecialchars($res['Voornaam'] ?? '') ?>"
+                    data-res-tussenvoegsel="<?= htmlspecialchars($res['Tussenvoegsel'] ?? '') ?>"
+                    data-res-achternaam="<?= htmlspecialchars($res['Achternaam'] ?? '') ?>"
+                    data-res-nummer="<?= htmlspecialchars($res['Nummer'] ?? '') ?>"
+                    data-res-datum="<?= htmlspecialchars($res['Datum'] ?? '') ?>"
+                    data-res-tijd="<?= htmlspecialchars($res['Tijd'] ?? '') ?>"
+                    data-res-status="<?= htmlspecialchars($status) ?>"
+                    data-res-naam="<?= htmlspecialchars($naam) ?>">
                     <td><?= htmlspecialchars($naam) ?></td>
+                    <td><?= htmlspecialchars($res['Nummer'] ?? '') ?></td>
                     <td><?= htmlspecialchars(date('d-m-Y', strtotime($res['Datum']))) ?></td>
                     <td><?= htmlspecialchars(substr($res['Tijd'], 0, 5)) ?></td>
                     <td><span class="status <?= $statusClass ?>"><?= htmlspecialchars($status) ?></span></td>
+                    <td>
+                        <button class="btn-action-white btn-edit"
+                                data-id="<?= (int)($res['Id'] ?? 0) ?>">Wijzigen</button>
+                    </td>
+                    <td>
+                        <button class="btn-action-white btn-delete"
+                                data-id="<?= (int)($res['Id'] ?? 0) ?>">Verwijderen</button>
+                    </td>
                 </tr>
                 <?php endforeach; ?>
             </tbody>
@@ -164,8 +203,30 @@ $aantalReserveringen = count($reserveringen);
       $statusClass = 'status-' . strtolower(str_replace(' ', '', $status));
     ?>
             <div class="res-card" data-naam="<?= htmlspecialchars(strtolower($naam)) ?>"
-                data-status="<?= htmlspecialchars($status) ?>">
-                <h3><?= htmlspecialchars($naam) ?></h3>
+                data-status="<?= htmlspecialchars($status) ?>"
+                data-res-id="<?= (int)($res['Id'] ?? 0) ?>"
+                data-res-voornaam="<?= htmlspecialchars($res['Voornaam'] ?? '') ?>"
+                data-res-tussenvoegsel="<?= htmlspecialchars($res['Tussenvoegsel'] ?? '') ?>"
+                data-res-achternaam="<?= htmlspecialchars($res['Achternaam'] ?? '') ?>"
+                data-res-nummer="<?= htmlspecialchars($res['Nummer'] ?? '') ?>"
+                data-res-datum="<?= htmlspecialchars($res['Datum'] ?? '') ?>"
+                data-res-tijd="<?= htmlspecialchars($res['Tijd'] ?? '') ?>"
+                data-res-status="<?= htmlspecialchars($status) ?>"
+                data-res-naam="<?= htmlspecialchars($naam) ?>">
+                <h3><?= htmlspecialchars($naam) ?>
+                  <div style="float: right;">
+                    <button class="btn-edit-card" data-id="<?= (int)($res['Id'] ?? 0) ?>" title="Reservering wijzigen" style="border: none; background: transparent; cursor: pointer; color: #6b8cff; font-size: 16px; margin-right: 4px;">
+                      <i class="fa-solid fa-pen"></i>
+                    </button>
+                    <button class="btn-delete-card" data-id="<?= (int)($res['Id'] ?? 0) ?>" title="Reservering verwijderen" style="border: none; background: transparent; cursor: pointer; color: #ff6b6b; font-size: 16px;">
+                      <i class="fa-solid fa-trash-can"></i>
+                    </button>
+                  </div>
+                </h3>
+                <div class="card-row">
+                    <span class="card-label">Nummer</span>
+                    <span><?= htmlspecialchars($res['Nummer'] ?? '') ?></span>
+                </div>
                 <div class="card-row">
                     <span class="card-label">Datum</span>
                     <span><?= htmlspecialchars(date('d-m-Y', strtotime($res['Datum']))) ?></span>
@@ -189,7 +250,7 @@ $aantalReserveringen = count($reserveringen);
 
     <?php require_once __DIR__ . '/../includes/footer.php'; ?>
 
-    <!-- ===================== MODAL ===================== -->
+    <!-- ===================== MODAL: NIEUWE RESERVERING ===================== -->
     <div class="modal-backdrop <?= !empty($modalFouten) ? 'open' : '' ?>" id="modalBackdrop">
         <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitel">
 
@@ -289,13 +350,107 @@ $aantalReserveringen = count($reserveringen);
 
         </div>
     </div>
-    <!-- ================================================= -->
+
+    <!-- ===================== MODAL: RESERVERING WIJZIGEN ===================== -->
+    <div class="modal-backdrop" id="editModalBackdrop">
+        <div class="modal" role="dialog" aria-modal="true" aria-labelledby="editModalTitel">
+            <div class="modal-header">
+                <h2 id="editModalTitel">Reservering wijzigen</h2>
+                <button class="modal-close" id="sluitEditModal" aria-label="Sluiten">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <form method="POST" action="edit_reservering.php" id="editResForm" novalidate>
+                <input type="hidden" id="editResId" name="reserveringId" />
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="editVoornaam">Voornaam <span class="required">*</span></label>
+                        <input type="text" id="editVoornaam" name="voornaam" maxlength="50" placeholder="Bijv. Laura" required />
+                        <span class="field-error" id="editVoornaamError" style="display:none"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="editTussenvoegsel">Tussenvoegsel</label>
+                        <input type="text" id="editTussenvoegsel" name="tussenvoegsel" maxlength="10" placeholder="Bijv. de" />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="editAchternaam">Achternaam <span class="required">*</span></label>
+                    <input type="text" id="editAchternaam" name="achternaam" maxlength="50" placeholder="Bijv. Klein" required />
+                    <span class="field-error" id="editAchternaamError" style="display:none"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="editNummer">Nummer <span class="required">*</span></label>
+                    <input type="number" id="editNummer" name="nummer" min="1" placeholder="Bijv. 201" required />
+                    <span class="field-error" id="editNummerError" style="display:none"></span>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="editDatum">Datum <span class="required">*</span></label>
+                        <input type="date" id="editDatum" name="datum" required />
+                        <span class="field-error" id="editDatumError" style="display:none"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="editTijd">Tijd <span class="required">*</span></label>
+                        <input type="time" id="editTijd" name="tijd" required />
+                        <span class="field-error" id="editTijdError" style="display:none"></span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="editReserveringstatus">Status</label>
+                    <select id="editReserveringstatus" name="reserveringstatus">
+                        <option value="Gereserveerd">Gereserveerd</option>
+                        <option value="Vrij">Vrij</option>
+                    </select>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="submit" class="btn-primary">
+                        <i class="fa-solid fa-floppy-disk"></i> Wijzigingen opslaan
+                    </button>
+                    <button type="button" class="btn-secondary" id="annuleerEditModal">Annuleren</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ===================== MODAL: RESERVERING VERWIJDEREN ===================== -->
+    <div class="modal-backdrop" id="deleteModalBackdrop">
+        <div class="modal" role="dialog" aria-modal="true" aria-labelledby="deleteModalTitel">
+            <div class="modal-header">
+                <h2 id="deleteModalTitel">Reservering verwijderen</h2>
+                <button class="modal-close" id="sluitDeleteModal" aria-label="Sluiten">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p id="deleteModalTekst" style="font-size: 14px; margin-bottom: 20px; color: var(--color-text-primary);"></p>
+                <div class="form-group">
+                    <label for="confirmNaam">Typ de naam ter bevestiging <span class="required">*</span></label>
+                    <input type="text" id="confirmNaam" placeholder="Naam invullen..." required />
+                    <div id="deleteError" style="color: #f87171; font-size: 12px; margin-top: 5px; display: none;"></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn-primary btn-danger" id="bevestigDelete">
+                    <i class="fa-solid fa-trash-can"></i> Definitief verwijderen
+                </button>
+                <button type="button" class="btn-secondary" id="annuleerDeleteModal">
+                    Annuleren
+                </button>
+            </div>
+        </div>
+    </div>
 
     <script>
     const totaal = <?= $aantalReserveringen ?>;
     const modalOpenBijLaad = <?= !empty($modalFouten) ? 'true' : 'false' ?>;
     </script>
-    <script src="Reservering_Registratie.js"></script>
+    <script src="Reservering_Registratie.js?v=<?= time() ?>"></script>
 
 </body>
 
