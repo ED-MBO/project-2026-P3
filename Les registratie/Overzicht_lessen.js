@@ -21,12 +21,14 @@ overlay.addEventListener('click', sluitMenu);
 
 // Filteren
 const zoekInput    = document.getElementById('search');
+const zoekOpSelect = document.getElementById('zoekOp');
 const statusSelect = document.getElementById('statusFilter');
 const countLine    = document.getElementById('countLine');
 const emptyState   = document.getElementById('emptyState');
 
 function filterLessen() {
   const zoek   = zoekInput.value.toLowerCase();
+  const zoekOp = zoekOpSelect ? zoekOpSelect.value : 'alles';
   const status = statusSelect.value;
 
   const rijen = document.querySelectorAll('#tabelBody tr');
@@ -35,19 +37,69 @@ function filterLessen() {
   let zichtbaar = 0; 
 
   rijen.forEach((rij) => {
-    const datasetAchternaam = (rij.dataset.achternaam || '').toLowerCase();
-    const achternaamOk = !zoek || datasetAchternaam.includes(zoek);
+    const voornaam = (rij.dataset.voornaam || '').toLowerCase();
+    const achternaam = (rij.dataset.achternaam || '').toLowerCase();
+    const prijs = (rij.dataset.lesPrijs || '').toLowerCase();
+    const datum = (rij.dataset.lesDatum || '').toLowerCase();
+
+    let zoekOk = true;
+    if (zoek) {
+      switch (zoekOp) {
+        case 'naam':
+          zoekOk = voornaam.includes(zoek) || achternaam.includes(zoek);
+          break;
+        case 'prijs':
+          zoekOk = prijs.includes(zoek);
+          break;
+        case 'datum':
+          zoekOk = datum.includes(zoek);
+          break;
+        case 'alles':
+        default:
+          zoekOk =
+            voornaam.includes(zoek) ||
+            achternaam.includes(zoek) ||
+            prijs.includes(zoek) ||
+            datum.includes(zoek);
+      }
+    }
+
     const statusOk    = !status || rij.dataset.status === status;
-    const toon = achternaamOk && statusOk;
+    const toon = zoekOk && statusOk;
     rij.style.display = toon ? '' : 'none';
     if (toon) zichtbaar++;
   });
 
   cards.forEach((card) => {
-    const datasetAchternaam = (card.dataset.achternaam || '').toLowerCase();
-    const achternaamOk = !zoek || datasetAchternaam.includes(zoek);
+    const voornaam = (card.dataset.voornaam || '').toLowerCase();
+    const achternaam = (card.dataset.achternaam || '').toLowerCase();
+    const prijs = (card.dataset.lesPrijs || '').toLowerCase();
+    const datum = (card.dataset.lesDatum || '').toLowerCase();
+
+    let zoekOk = true;
+    if (zoek) {
+      switch (zoekOp) {
+        case 'naam':
+          zoekOk = voornaam.includes(zoek) || achternaam.includes(zoek);
+          break;
+        case 'prijs':
+          zoekOk = prijs.includes(zoek);
+          break;
+        case 'datum':
+          zoekOk = datum.includes(zoek);
+          break;
+        case 'alles':
+        default:
+          zoekOk =
+            voornaam.includes(zoek) ||
+            achternaam.includes(zoek) ||
+            prijs.includes(zoek) ||
+            datum.includes(zoek);
+      }
+    }
+
     const statusOk    = !status || card.dataset.status === status;
-    card.style.display = (achternaamOk && statusOk) ? '' : 'none';
+    card.style.display = (zoekOk && statusOk) ? '' : 'none';
   });
 
   countLine.textContent = `${zichtbaar} van ${totaal} lessen zichtbaar`;
@@ -55,6 +107,9 @@ function filterLessen() {
 }
 
 zoekInput.addEventListener('input', filterLessen);
+if (zoekOpSelect) {
+  zoekOpSelect.addEventListener('change', filterLessen);
+}
 statusSelect.addEventListener('change', filterLessen);
 
 // ===================== MODAL: NIEUWE LES =====================

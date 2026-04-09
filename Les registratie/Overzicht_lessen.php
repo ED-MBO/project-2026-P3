@@ -178,7 +178,13 @@ $aantalLessen = count($lessen);
   <?php endif; ?>
 
   <div class="topbar">
-    <input type="text" id="search" placeholder="Zoek op achternaam..."/>
+    <input type="text" id="search" placeholder="Zoek..."/>
+    <select id="zoekOp">
+                <option value="alles">Zoek op alles</option>
+                <option value="naam">Naam</option>
+                <option value="prijs">Prijs</option>
+                <option value="datum">Datum</option>
+            </select>
     <select id="statusFilter">
       <option value="">Alle statussen</option>
       <option value="Ingepland">Ingepland</option>
@@ -211,6 +217,7 @@ $aantalLessen = count($lessen);
           $voornaam  = $les['Voornaam'] ?? '';
         ?>
         <tr data-achternaam="<?= htmlspecialchars($achternaam) ?>"
+            data-voornaam="<?= htmlspecialchars($voornaam) ?>"
             data-status="<?= htmlspecialchars($statusRaw) ?>"
             data-les-id="<?= (int)($les['LesId'] ?? 0) ?>"
             data-les-naam="<?= htmlspecialchars($les['LesNaam'] ?? '') ?>"
@@ -249,6 +256,7 @@ $aantalLessen = count($lessen);
       ?>
       <div class="les-card"
            data-achternaam="<?= htmlspecialchars($achternaam) ?>"
+           data-voornaam="<?= htmlspecialchars($les['Voornaam'] ?? '') ?>"
            data-status="<?= htmlspecialchars($statusRaw) ?>"
            data-les-id="<?= (int)($les['LesId'] ?? 0) ?>"
            data-les-naam="<?= htmlspecialchars($les['LesNaam'] ?? '') ?>"
