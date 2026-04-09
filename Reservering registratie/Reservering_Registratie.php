@@ -430,8 +430,8 @@ $aantalReserveringen = count($reserveringen);
             <div class="modal-body">
                 <p id="deleteModalTekst" style="font-size: 14px; margin-bottom: 20px; color: var(--color-text-primary);"></p>
                 <div class="form-group">
-                    <label for="confirmNaam">Typ de naam ter bevestiging <span class="required">*</span></label>
-                    <input type="text" id="confirmNaam" placeholder="Naam invullen..." required />
+                    <label for="confirmAchternaam">Typ de achternaam ter bevestiging <span class="required">*</span></label>
+                    <input type="text" id="confirmAchternaam" placeholder="Achternaam invullen..." required />
                     <div id="deleteError" style="color: #f87171; font-size: 12px; margin-top: 5px; display: none;"></div>
                 </div>
             </div>

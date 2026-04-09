@@ -13,7 +13,7 @@ require "../config.php";
 // Accepteer zowel JSON-body als POST-data
 $data = json_decode(file_get_contents("php://input"), true);
 $id = $data['id'] ?? ($_POST['id'] ?? null);
-$ingevoerdeNaam = trim($data['naam'] ?? ($_POST['naam'] ?? ''));
+$ingevoerdeAchternaam = trim($data['achternaam'] ?? ($_POST['achternaam'] ?? ''));
 
 if (!$id) {
     http_response_code(400);
@@ -44,17 +44,10 @@ try {
         exit();
     }
 
-    // Bouw volledige naam op voor vergelijking
-    $volledigeNaam = $reservering['Voornaam'];
-    if (!empty(trim($reservering['Tussenvoegsel']))) {
-        $volledigeNaam .= ' ' . $reservering['Tussenvoegsel'];
-    }
-    $volledigeNaam .= ' ' . $reservering['Achternaam'];
-
-    // Vergelijk de naam (case-insensitive)
-    if (strcasecmp(trim($volledigeNaam), trim($ingevoerdeNaam)) !== 0) {
+    // Vergelijk de achternaam (case-insensitive)
+    if (strcasecmp(trim($reservering['Achternaam']), $ingevoerdeAchternaam) !== 0) {
         http_response_code(400);
-        echo json_encode(["success" => false, "message" => "De ingevoerde naam komt niet overeen. De reservering is NIET verwijderd."]);
+        echo json_encode(["success" => false, "message" => "De ingevoerde achternaam komt niet overeen. De reservering is NIET verwijderd."]);
         exit();
     }
 

@@ -178,7 +178,13 @@ $aantalLessen = count($lessen);
   <?php endif; ?>
 
   <div class="topbar">
-    <input type="text" id="search" placeholder="Zoek op achternaam..."/>
+    <input type="text" id="search" placeholder="Zoek..."/>
+    <select id="zoekOp">
+                <option value="alles">Zoek op alles</option>
+                <option value="naam">Naam</option>
+                <option value="prijs">Prijs</option>
+                <option value="datum">Datum</option>
+            </select>
     <select id="statusFilter">
       <option value="">Alle statussen</option>
       <option value="Ingepland">Ingepland</option>
@@ -210,7 +216,8 @@ $aantalLessen = count($lessen);
           $achternaam  = $les['Achternaam'] ?? '';
           $voornaam  = $les['Voornaam'] ?? '';
         ?>
-        <tr data-achternaam="<?= htmlspecialchars(strtolower($achternaam)) ?>"
+        <tr data-achternaam="<?= htmlspecialchars($achternaam) ?>"
+            data-voornaam="<?= htmlspecialchars($voornaam) ?>"
             data-status="<?= htmlspecialchars($statusRaw) ?>"
             data-les-id="<?= (int)($les['LesId'] ?? 0) ?>"
             data-les-naam="<?= htmlspecialchars($les['LesNaam'] ?? '') ?>"
@@ -248,7 +255,8 @@ $aantalLessen = count($lessen);
         $achternaam  = $les['Achternaam'] ?? '';
       ?>
       <div class="les-card"
-           data-achternaam="<?= htmlspecialchars(strtolower($achternaam)) ?>"
+           data-achternaam="<?= htmlspecialchars($achternaam) ?>"
+           data-voornaam="<?= htmlspecialchars($les['Voornaam'] ?? '') ?>"
            data-status="<?= htmlspecialchars($statusRaw) ?>"
            data-les-id="<?= (int)($les['LesId'] ?? 0) ?>"
            data-les-naam="<?= htmlspecialchars($les['LesNaam'] ?? '') ?>"
@@ -496,8 +504,8 @@ $aantalLessen = count($lessen);
             <div class="modal-body">
                 <p id="deleteModalTekst" style="font-size: 14px; margin-bottom: 20px; color: var(--color-text-primary);"></p>
                 <div class="form-group">
-                    <label for="confirmLesnaam">Typ de lesnaam ter bevestiging <span class="required">*</span></label>
-                    <input type="text" id="confirmLesnaam" placeholder="Lesnaam invullen..." required />
+                    <label for="confirmAchternaam">Typ de achternaam ter bevestiging <span class="required">*</span></label>
+                    <input type="text" id="confirmAchternaam" placeholder="Achternaam invullen..." required />
                     <div id="deleteError" style="color: #f87171; font-size: 12px; margin-top: 5px; display: none;"></div>
                 </div>
             </div>
